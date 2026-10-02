@@ -50,6 +50,7 @@ function badge(p: Profession): string {
     
     <div class="hero-visual">
       <div class="organic-blob"></div>
+      <img src="/hero-character.png" alt="idoconverter creator" class="hero-character" />
       <div class="css-window">
         <div class="window-header">
           <div class="mac-controls">
@@ -542,6 +543,20 @@ function badge(p: Profession): string {
     border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
     z-index: 0;
     transform: rotate(-10deg);
+  }
+  .hero-character {
+    position: absolute;
+    bottom: -20px;
+    left: -150px;
+    width: 250px;
+    height: auto;
+    z-index: 2; /* In front of window */
+    pointer-events: none;
+  }
+  @media (max-width: 900px) {
+    .hero-character {
+      display: none; /* Hide on small screens to prevent overlap */
+    }
   }
   .css-window {
     position: relative;
