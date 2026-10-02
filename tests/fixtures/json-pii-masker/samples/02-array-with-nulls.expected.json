@@ -1,0 +1,12 @@
+{
+  "users": [
+    {
+      "email": "[REDACTED]",
+      "active": true
+    },
+    {
+      "email": null,
+      "active": false
+    }
+  ]
+}

@@ -159,4 +159,24 @@ describe('JSON PII Masker', () => {
     expect(run('[]').output).toBe('[]');
     expect(run('null').output).toBe('null');
   });
+
+  describe('tool spec samples (docs/tools/json-pii-masker.md)', () => {
+    const samplesDir = path.join(FIXTURES_DIR, 'samples');
+    const names = fs.readdirSync(samplesDir)
+      .filter(f => f.endsWith('.input.json'))
+      .map(f => f.replace('.input.json', ''));
+
+    it('has samples', () => expect(names.length).toBeGreaterThanOrEqual(3));
+
+    for (const name of names) {
+      it(name, () => {
+        const read = (suffix: string) => fs.readFileSync(path.join(samplesDir, `${name}.${suffix}.json`), 'utf-8');
+        const optionsFile = path.join(samplesDir, `${name}.options.json`);
+        const options = fs.existsSync(optionsFile) ? JSON.parse(fs.readFileSync(optionsFile, 'utf-8')) : {};
+        const result = run(read('input'), options);
+        expect(result.ok).toBe(true);
+        expect(JSON.parse(result.output!)).toEqual(JSON.parse(read('expected')));
+      });
+    }
+  });
 });

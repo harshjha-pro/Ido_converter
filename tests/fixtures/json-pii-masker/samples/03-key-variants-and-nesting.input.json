@@ -1,0 +1,8 @@
+{
+  "accessToken": "abc123",
+  "Authorization": {
+    "scheme": "Bearer",
+    "value": "xyz"
+  },
+  "count": 3
+}

@@ -1,0 +1,12 @@
+{
+  "users": [
+    {
+      "email": "a@b.com",
+      "active": true
+    },
+    {
+      "email": null,
+      "active": false
+    }
+  ]
+}

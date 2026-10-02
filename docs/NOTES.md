@@ -11,8 +11,8 @@ The AI assistant reads this at the start of every session and updates it at the 
 | Item | Status |
 |---|---|
 | Current milestone | Milestone 1: Skeleton and first tool |
-| Current tool | JSON PII masker (task 1.4): logic, page and tests done; Definition of Done still needs cross-browser check and a tool spec in `docs/tools/` |
-| Blockers | Open questions below; questions 13–16 for the repo layout |
+| Current tool | JSON PII masker (task 1.4): logic, page and tests done; tool spec written; Definition of Done still needs the Edge/Firefox/Safari check and a search phrase in the tracker |
+| Blockers | Open questions below |
 | Next step | Task 1.5 (test deploy), then Milestone 2 |
 
 ## 2. Open questions
@@ -30,10 +30,10 @@ The AI assistant reads this at the start of every session and updates it at the 
 | 9 | Feature list per paid tier | | |
 | 10 | Payment gateway choice for India | | |
 | 11 | Data retention period and deletion process for stored history | | |
-| 13 | Docs live in `Docs/` but every doc refers to `docs/`, and AGENTS.md/CLAUDE.md expect to sit at the repo root. Rename `Docs/` → `docs/` and move AGENTS.md/CLAUDE.md to the root? (Renames need approval per AGENTS.md.) | | |
-| 14 | `public/footer-art.png` is outside Astro's configured `website/public/`, so it is not served. Move it, or delete it if unused? | | |
-| 15 | `tsc --noEmit` fails on the tests because `@types/node` is missing (it is not in CI). Add `@types/node` as a dev dependency (MIT, types only)? | | |
-| 16 | `.claude/skills/idoconverter-design/SKILL.md` does not exist; the skill file is at `Docs/SKILL.md`. Move it? | | |
+| 13 | Docs live in `Docs/` but every doc refers to `docs/`, and AGENTS.md/CLAUDE.md expect to sit at the repo root. Rename `Docs/` → `docs/` and move AGENTS.md/CLAUDE.md to the root? (Renames need approval per AGENTS.md.) | | Yes, done 2026-10-02. `Design.md` also renamed to `DESIGN.md` to match the references. |
+| 14 | `public/footer-art.png` is outside Astro's configured `website/public/`, so it is not served. Move it, or delete it if unused? | | Moved to `website/public/` 2026-10-02. |
+| 15 | `tsc --noEmit` fails on the tests because `@types/node` is missing (it is not in CI). Add `@types/node` as a dev dependency (MIT, types only)? | | Yes, added 2026-10-02. |
+| 16 | `.claude/skills/idoconverter-design/SKILL.md` does not exist; the skill file is at `Docs/SKILL.md`. Move it? | | Moved 2026-10-02. |
 | 12 | What exactly is the "motion" need — a few subtle CSS transitions on the home page, or real animated marketing sections (which would mean adding React just for that)? | | |
 
 ## 3. Decisions log
@@ -57,6 +57,7 @@ The AI assistant reads this at the start of every session and updates it at the 
 | 2026-09-30 | CLAUDE.md added, imports AGENTS.md (@AGENTS.md) and docs/CONTEXT.md — avoids duplicating rules across tools | Claude Code's own recommended pattern for projects that may use multiple AI coding tools |
 | 2026-09-30 | docs/DESIGN.md duplicated as a Claude Code skill at .claude/skills/idoconverter-design/SKILL.md | Lets design rules auto-trigger only for UI work instead of loading every session |
 | 2026-09-30 | Chrome DevTools MCP added (`claude mcp add chrome-devtools --scope user -- npx chrome-devtools-mcp@latest`) | Automates checking the Network tab for the "no tool sends input anywhere" rule, plus 360px and performance testing |
+| 2026-10-02 | Repo layout matches the docs: `docs/` (lowercase), `AGENTS.md` and `CLAUDE.md` at the root, design skill at `.claude/skills/idoconverter-design/SKILL.md` | Every document referred to these paths; agents only auto-load root files |
 | 2026-09-30 | Motion MCP and a UI/component-generation MCP NOT added | Motion MCP is React-only (motion/react), and this project has no React — adding it means adding React as a new dependency. A component-generation MCP would produce styling that doesn't match the locked DESIGN.md tokens. Both need the team to clarify scope first — see open question 11. |
 
 ## 4. Tool tracker
@@ -193,3 +194,13 @@ Tests run and result: vitest 16/16 pass; `npm run build` passes. Built page chec
 Problems / open questions: see open questions 13–16.
 Next: tool spec in `docs/tools/json-pii-masker.md`, cross-browser check, then task 1.5.
 Suggested commit message: Fix build and harden JSON PII masker against leaks
+
+### 2026-10-02 (repo layout and tool spec)
+Milestone / tool: Milestone 1 / Task 1.4: JSON PII Masker
+Done: Renamed `Docs/` → `docs/` and `Design.md` → `DESIGN.md`; moved AGENTS.md and CLAUDE.md to the root, SKILL.md to `.claude/skills/idoconverter-design/`, footer-art.png to `website/public/`. Wrote `docs/tools/json-pii-masker.md` with 5 samples, stored as fixtures and run in the tests.
+Decisions: Spec samples live as `*.input.json` / `*.expected.json` (+ optional `*.options.json`) fixtures, per TECHNICAL_SPEC section 10.
+New dependencies (name, size, license): `@types/node` ^20 (dev only, ~2.4 MB on disk, not shipped to the browser, MIT). Why: type-check the tests, which use `fs` and `path`.
+Tests run and result: vitest 22/22 pass; `tsc --noEmit` clean; `npm run build` passes.
+Problems / open questions: none new.
+Next: Edge/Firefox/Safari check of the masker page, fill its search phrase in the tracker, then task 1.5 (test deploy).
+Suggested commit message: Align repo layout with docs and add JSON PII masker tool spec

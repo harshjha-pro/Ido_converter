@@ -15,7 +15,7 @@
 
 **Domain:** idoconverter (already owned)
 **Hosting:** Hostinger shared hosting (no VPS, plan is already busy)
-**AI build tool:** Google Antigravity (reads `AGENTS.md` as its rules file)
+**AI build tool:** Claude Code (reads `CLAUDE.md`, which imports `AGENTS.md`)
 
 ## 2. Why this idea, and why this shape
 
@@ -184,7 +184,7 @@ Full rules: `AGENTS.md`.
 
 - Milestone: 1 (skeleton built, design system being applied)
 - Professions with any live pages: Developers (one tool)
-- Tools with working logic: JSON PII masker (tests and build passing; cross-browser check and tool spec pending)
+- Tools with working logic: JSON PII masker (tests and build passing, tool spec written; cross-browser check pending)
 - Extension: not started
 - Legal pages: not started
 - Live/deployed: no
