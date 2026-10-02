@@ -1,0 +1,112 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import CaNotice from '../../components/CaNotice.astro';
+import { TDS_ENTRIES, TDS_DATA } from '../../../../core/ca/tds-lookup';
+
+const rateText = (rates: { payee: string; rate: number }[]) =>
+  rates.length === 1 ? `${rates[0].rate}%` : rates.map(r => `${r.rate}% (${r.payee === 'individual-huf' ? 'individual/HUF' : 'others'})`).join(', ');
+const sources = TDS_DATA.generalSources.map(s => ({ ...s, lastChecked: TDS_DATA.lastChecked }));
+---
+
+<ToolLayout
+  slug="tds-rate-lookup"
+  howTo="Search by the old section number you know (194J, 194C, 194-I) or by type of payment (rent, professional, contractor). Each row shows the rate, the threshold and its official source. To check a payment, choose the nature of payment, enter the amount (and the year's total paid to that payee) and see whether TDS applies and how much."
+  faq={[
+    { q: "Did TDS rates change under the Income-tax Act, 2025?", a: "From tax year 2026-27 TDS provisions are in section 393 of the new Act, set out in tables. The CBDT says the rates and thresholds were kept the same as under the 1961 Act; quote the section 393 table item instead of the old section number." },
+    { q: "Why are some payments missing?", a: "Only rates and thresholds we could confirm on the Income Tax Department's website are listed. For anything else, check section 393 of the Act or ask your CA." },
+    { q: "What if the payee has no PAN?", a: "A higher rate applies when a valid PAN is not furnished. Check the Act for the rate that applies." },
+    { q: "Does the checker handle the whole year?", a: "It tells you whether the threshold is crossed and the TDS on this payment. When a yearly limit is crossed part-way through the year, TDS on the earlier payments may also be due; your CA can confirm the catch-up." }
+  ]}
+>
+  <div class="tool-ui">
+    <CaNotice slug="tds-rate-lookup" sources={sources} />
+    <label class="options-group" for="q"><strong>Search</strong>
+      <input id="q" type="search" class="text-input" placeholder="194J, rent, contractor…" autocomplete="off" />
+    </label>
+    <div class="table-scroll">
+      <table class="data-table">
+        <thead><tr><th>Payment</th><th>Old section</th><th>Rate</th><th>Threshold</th><th>Source</th></tr></thead>
+        <tbody id="rows">
+          {TDS_ENTRIES.map((e) => (
+            <tr data-id={e.id}>
+              <td>{e.nature}</td><td>{e.oldSection}</td><td>{rateText(e.rates)}</td><td>{e.thresholdText}</td>
+              <td><a href={e.source.url} rel="noopener noreferrer" target="_blank">Source</a></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p id="no-match" class="result-detail" hidden>No verified item matches. Check section 393 of the Income-tax Act, 2025.</p>
+    <p class="result-detail">Tax year {TDS_DATA.taxYear}. Last checked {TDS_DATA.lastChecked}. {TDS_DATA.noPanNote}</p>
+
+    <form id="calc" class="controls-panel" novalidate>
+      <h2 class="panel-label">Does TDS apply to this payment?</h2>
+      <div class="field-row">
+        <label class="field" for="entry">Nature of payment
+          <select id="entry" class="style-select">
+            {TDS_ENTRIES.map((e) => <option value={e.id}>{e.nature} ({e.oldSection})</option>)}
+          </select>
+        </label>
+        <label class="field" for="amount"><span id="amount-label">This payment (₹)</span>
+          <input id="amount" class="text-input" type="number" inputmode="decimal" min="0" step="any" required />
+        </label>
+        <label class="field" for="year">Paid to this payee this year incl. this payment (₹, optional)
+          <input id="year" class="text-input" type="number" inputmode="decimal" min="0" step="any" />
+        </label>
+      </div>
+      <label class="field" id="payee-wrap" for="payee" hidden>Payee
+        <select id="payee" class="style-select"><option value="individual-huf">Individual or HUF</option><option value="other">Others (firm, company…)</option></select>
+      </label>
+      <label class="options-group-inline" id="senior-wrap" hidden><input type="checkbox" id="senior" /> Payee is a senior citizen</label>
+      <button type="submit" class="btn-primary btn-run">Check &rarr;</button>
+      <div id="status-area" class="status-area" role="status"></div>
+      <p id="result" class="result-detail" aria-live="polite"></p>
+    </form>
+  </div>
+</ToolLayout>
+
+<style>
+  .table-scroll { overflow-x: auto; }
+  .data-table { width: 100%; border-collapse: collapse; font-size: var(--text-small); }
+  .data-table th, .data-table td { text-align: left; padding: var(--space-2); border-bottom: 1px solid var(--color-border); vertical-align: top; }
+  .data-table th { color: var(--color-bg-dark); }
+  .data-table td:nth-child(2), .data-table td:nth-child(3) { white-space: nowrap; }
+</style>
+
+<script>
+  import { searchTds, checkTds, TDS_ENTRIES, type PayeeType } from '../../../../core/ca/tds-lookup';
+  import { byId, setStatus } from '../../scripts/tool-ui';
+
+  const inr = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 2 });
+  byId<HTMLInputElement>('q').addEventListener('input', (e) => {
+    const ids = new Set(searchTds((e.target as HTMLInputElement).value).map(x => x.id));
+    document.querySelectorAll<HTMLTableRowElement>('#rows tr').forEach(tr => { tr.hidden = !ids.has(tr.dataset.id!); });
+    byId('no-match').hidden = ids.size > 0;
+  });
+
+  const entryEl = byId<HTMLSelectElement>('entry');
+  function syncFields() {
+    const e = TDS_ENTRIES.find(x => x.id === entryEl.value)!;
+    byId('payee-wrap').hidden = e.rates.length < 2;
+    byId('senior-wrap').hidden = !e.threshold.seniorAmount;
+    byId('amount-label').textContent = e.threshold.type === 'perMonth' ? 'Rent per month (₹)' : e.id === 'property-purchase' ? 'Higher of price and stamp duty value (₹)' : 'This payment (₹)';
+  }
+  entryEl.addEventListener('change', syncFields);
+  syncFields();
+
+  byId<HTMLFormElement>('calc').addEventListener('submit', (ev) => {
+    ev.preventDefault();
+    const n = (id: string) => { const v = byId<HTMLInputElement>(id).value.trim(); return v === '' ? undefined : Number(v); };
+    const r = checkTds({ entryId: entryEl.value, amount: n('amount') ?? Number.NaN, yearTotal: n('year'), payeeType: byId<HTMLSelectElement>('payee').value as PayeeType, seniorCitizen: byId<HTMLInputElement>('senior').checked });
+    if (!r.ok || !r.output) {
+      byId('result').textContent = '';
+      setStatus(byId('status-area'), `Error: ${r.error}`, 'error');
+      return;
+    }
+    const o = r.output;
+    byId('result').textContent = o.applies
+      ? `TDS applies: ${o.rate}% = ${inr.format(o.tds)} on this payment. ${o.reason}`
+      : `No TDS on this payment. ${o.reason}`;
+    setStatus(byId('status-area'), 'Checked.', 'success');
+  });
+</script>

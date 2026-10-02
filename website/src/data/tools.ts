@@ -77,6 +77,10 @@ export const TOOLS: ToolEntry[] = [
     title: 'GST Late Fee and Interest Calculator', description: 'GSTR-3B late fee with turnover caps and Section 50 interest, including the 2026 cash ledger rule.',
     searchPhrase: 'GSTR-3B late fee and interest calculator', seoTitle: 'GSTR-3B Late Fee and Interest Calculator (2026)',
     seoDescription: 'Calculate GSTR-3B late fee with turnover-based caps and 18% interest on cash liability, including the January 2026 cash ledger benefit. Sources shown.' },
+  { profession: 'ca', slug: 'tds-rate-lookup', group: 'tds', live: caReviewed('tds-rate-lookup'),
+    title: 'TDS Rate and Threshold Lookup', description: 'Find TDS rates and thresholds for 2026-27 under section 393, by old section number or payment type, and check if TDS applies.',
+    searchPhrase: 'TDS rate chart 2026-27 section 393', seoTitle: 'TDS Rate Chart 2026-27 (Section 393) and Threshold Check',
+    seoDescription: 'TDS rates and thresholds for tax year 2026-27 under section 393 of the Income-tax Act 2025, searchable by old section (194J, 194C, 194-I). Check if TDS applies. Sources shown.' },
 ];
 
 export function toolUrl(tool: ToolEntry): string {

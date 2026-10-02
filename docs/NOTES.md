@@ -85,7 +85,7 @@ Fill the search phrase and "who ranks" columns during Milestone 0 by googling th
 | Bank statement CSV cleaner (Tally mapping) | CAs | bank statement CSV for Tally import | Parsify, AI Accountant, Suvit (paid, from planning research) | Medium | 2 | Built, unlisted until CA review |
 | GST inclusive and exclusive calculator | CAs | GST calculator new rates 2025 inclusive exclusive | ClearTax, Groww and many others (from planning research) | High | 2 | Built, unlisted until CA review |
 | GST late fee and interest calculator | CAs | GSTR-3B late fee and interest calculator | ClearTax and other tax sites (from planning research) | Medium | 2 | Built, unlisted until CA review |
-| TDS rate and threshold lookup | CAs | | | Medium | 2 | Not started |
+| TDS rate and threshold lookup | CAs | TDS rate chart 2026-27 section 393 | ClearTax, Groww, fincalculator.in (from planning research) | Medium | 2 | Built, unlisted until CA review |
 | Compliance due-date calendar | CAs | | | Medium | 2 | Not started |
 | JSON formatter and validator, JWT decoder | Developers | | | High | 3 | Not started |
 | Clamp generator, px/rem/em, color converter | Frontend | | | High | 3 | Not started |
@@ -515,3 +515,10 @@ Decisions: Due date is entered by the user (varies by filer type/state and by ex
 Tests: vitest 220/220; build passes. Browser: Jan 2026 example gives ₹500 + ₹295.89 with explanation; May 2021 refused; zero network requests; no horizontal scroll.
 Next: P2.3 tool 5 (TDS rate lookup).
 Suggested commit message: Add GSTR-3B late fee and interest calculator
+
+### 2026-10-02 (P2.3 tool 5: TDS rate and threshold lookup)
+Done: `core/ca/tds-rates.json` (11 rows confirmed on incometaxindia.gov.in, each with its own source; tax year 2026-27 under section 393), `core/ca/tds-lookup.ts` (search by old section or words; threshold checker), page `/ca/tds-rate-lookup` (searchable table with source links, checker with payee/senior fields shown only when relevant), spec, 8 tests.
+Decisions: Only verified rows; dividends and others with conflicting or missing sources left out (listed in the spec). Section 393 table item numbers not recorded. No-PAN rate not stated (not verified). Catch-up TDS not computed.
+Tests: vitest 228/228; build passes. Browser: "194J" search, no-match message, contractor ₹20,000 with ₹1,10,000 year total → 2% = ₹400; rent ₹45,000/month → no TDS; zero network requests; no horizontal scroll.
+Next: P2.3 tool 6 (compliance due-date calendar).
+Suggested commit message: Add TDS rate and threshold lookup
