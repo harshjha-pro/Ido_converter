@@ -1,0 +1,117 @@
+---
+import Layout from './Layout.astro';
+import { toolsFor, toolUrl, type Profession } from '../data/tools';
+
+interface Props {
+  profession: Profession;
+  /** Shown before the italic emphasis word in the H1, e.g. "Tools for" + "Developers". */
+  title: string;
+  emphasis: string;
+  subtitle: string;
+}
+
+const { profession, title, emphasis, subtitle } = Astro.props;
+const tools = toolsFor(profession).filter(t => t.live);
+---
+
+<Layout title={`${title} ${emphasis}`}>
+  <div class="page-header">
+    <h1>{title} <span class="font-serif-italic">{emphasis}</span></h1>
+    <p class="subtitle">{subtitle}</p>
+  </div>
+
+  <div class="tool-list">
+    {tools.map((tool) => (
+      <a href={toolUrl(tool)} class="tool-card">
+        <div class="tool-info">
+          <h2>{tool.title}</h2>
+          <p>{tool.description}</p>
+        </div>
+        <span class="tool-action btn-secondary" aria-hidden="true">Open tool &rarr;</span>
+      </a>
+    ))}
+    {tools.length === 0 && <p class="empty">Tools for this profession are coming soon.</p>}
+  </div>
+  <slot />
+</Layout>
+
+<style>
+  .page-header {
+    margin-bottom: var(--space-7);
+    max-width: 800px;
+  }
+  
+  .page-header h1 {
+    font-size: 3rem;
+    margin-bottom: var(--space-4);
+    letter-spacing: -0.02em;
+    color: var(--color-bg-dark);
+  }
+  
+  .subtitle {
+    font-size: var(--text-h3);
+    color: var(--color-text-muted);
+    line-height: 1.5;
+  }
+  
+  .tool-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+  
+  .tool-card {
+    color: inherit;
+    text-decoration: none;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-card-bg);
+    padding: var(--space-5);
+    border-radius: 24px;
+    border: 1px solid rgba(0,0,0,0.05);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+    gap: var(--space-4);
+  }
+  
+  @media (min-width: 600px) {
+    .tool-card {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--space-5) var(--space-6);
+    }
+  }
+  
+  .tool-info {
+    flex: 1;
+  }
+  
+  .tool-info h2 {
+    margin-bottom: var(--space-2);
+    color: var(--color-bg-dark);
+  }
+  
+  .tool-info p {
+    color: var(--color-text-muted);
+    margin-bottom: 0;
+    max-width: 600px;
+    font-size: var(--text-body);
+  }
+  
+  .tool-action {
+    flex-shrink: 0;
+    align-self: flex-start;
+  }
+
+  @media (min-width: 600px) {
+    .tool-action { align-self: center; }
+  }
+  .tool-card:hover, .tool-card:focus-visible {
+    border-color: var(--color-bg-dark);
+    color: inherit;
+  }
+  .empty {
+    color: var(--color-text-muted);
+  }
+</style>

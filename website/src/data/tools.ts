@@ -23,6 +23,8 @@ export const TOOLS: ToolEntry[] = [
     title: 'JSON to TypeScript and Zod', description: 'Paste JSON and get TypeScript interfaces and a Zod schema, with optional fields detected.' },
   { profession: 'developers', slug: 'json-repair', group: 'data', live: true,
     title: 'JSON Repair', description: 'Fix broken JSON from AI output or hand edits, and see exactly what changed.' },
+  { profession: 'jobseekers', slug: 'notice-period-buyout-calculator', group: 'offer', live: true,
+    title: 'Notice Period Buyout Calculator', description: 'Estimate what it costs to buy out the rest of your notice period, with the formula shown.' },
 ];
 
 export function toolUrl(tool: ToolEntry): string {

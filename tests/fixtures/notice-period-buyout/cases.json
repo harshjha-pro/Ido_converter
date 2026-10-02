@@ -1,0 +1,8 @@
+[
+  { "name": "normal: 90-day notice, 30 served", "input": { "monthlySalary": 60000, "noticeDays": 90, "daysServed": 30 }, "expected": { "dailyRate": 2000, "remainingDays": 60, "buyoutAmount": 120000 } },
+  { "name": "zero days served", "input": { "monthlySalary": 45000, "noticeDays": 60, "daysServed": 0 }, "expected": { "dailyRate": 1500, "remainingDays": 60, "buyoutAmount": 90000 } },
+  { "name": "full notice served", "input": { "monthlySalary": 80000, "noticeDays": 30, "daysServed": 30 }, "expected": { "dailyRate": 2666.67, "remainingDays": 0, "buyoutAmount": 0 } },
+  { "name": "served more than notice", "input": { "monthlySalary": 80000, "noticeDays": 30, "daysServed": 45 }, "expected": { "dailyRate": 2666.67, "remainingDays": 0, "buyoutAmount": 0 } },
+  { "name": "26 working-day basis", "input": { "monthlySalary": 52000, "noticeDays": 30, "daysServed": 10, "dayBasis": 26 }, "expected": { "dailyRate": 2000, "remainingDays": 20, "buyoutAmount": 40000 } },
+  { "name": "paise rounding", "input": { "monthlySalary": 33333, "noticeDays": 45, "daysServed": 7 }, "expected": { "dailyRate": 1111.1, "remainingDays": 38, "buyoutAmount": 42221.8 } }
+]

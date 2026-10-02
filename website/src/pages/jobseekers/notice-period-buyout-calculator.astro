@@ -1,0 +1,77 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import { relatedTools } from '../../data/tools';
+import { FORMULA_TEXT, DEFAULT_DAY_BASIS } from '../../../../core/jobseekers/notice-period-buyout';
+---
+
+<ToolLayout
+  title="Notice Period Buyout Calculator"
+  howTo="Enter the monthly salary your employer uses for notice recovery, your notice period in days, and the days you have already served. The calculator shows the daily rate, the days left and the estimated buyout amount, using the formula shown below the result."
+  faq={[
+    { q: "Is my salary sent anywhere?", a: "No. The calculation runs in your browser. Nothing is uploaded or stored." },
+    { q: "Which salary should I enter?", a: "The figure your employer uses to recover notice pay. Many use basic salary, others use gross or CTC divided by 12. Check your offer letter or HR policy." },
+    { q: "Why can I change the day basis?", a: "Employers turn a monthly salary into a daily rate differently: 30 days is common, some use 26 working days or the calendar days in the month. This is an assumption, so set it to match your employer." },
+    { q: "Is this the final amount I will pay?", a: "No, it is an estimate. Your employer's policy, any leave adjustment and deductions decide the final amount. Confirm with HR." }
+  ]}
+  relatedTools={relatedTools('notice-period-buyout-calculator')}
+>
+  <div class="tool-ui">
+    <form id="calc" class="controls-panel" novalidate>
+      <div class="field-row">
+        <label class="field" for="salary">Monthly salary (₹)
+          <input id="salary" class="text-input" type="number" inputmode="decimal" min="0" step="any" placeholder="60000" required />
+        </label>
+        <label class="field" for="notice">Notice period (days)
+          <input id="notice" class="text-input" type="number" inputmode="numeric" min="1" step="1" placeholder="90" required />
+        </label>
+        <label class="field" for="served">Days already served
+          <input id="served" class="text-input" type="number" inputmode="numeric" min="0" step="1" value="0" required />
+        </label>
+        <label class="field" for="basis">Day basis (days per month)
+          <input id="basis" class="text-input" type="number" inputmode="decimal" min="1" max="31" step="any" value={DEFAULT_DAY_BASIS} required />
+        </label>
+      </div>
+      <button type="submit" class="btn-primary btn-run">Calculate buyout &rarr;</button>
+      <div id="status-area" class="status-area" role="status"></div>
+    </form>
+
+    <section class="result-box" aria-live="polite" aria-labelledby="result-title">
+      <h2 id="result-title" class="panel-label">Estimated buyout</h2>
+      <p id="amount" class="big-number">—</p>
+      <p id="breakdown" class="result-detail"></p>
+      <p class="formula">{FORMULA_TEXT}</p>
+      <p class="result-detail"><strong>Assumption:</strong> employer practice varies (which salary, day basis, leave adjustment). This is an estimate, not your employer's final figure.</p>
+    </section>
+  </div>
+</ToolLayout>
+
+<script>
+  import { calculate } from '../../../../core/jobseekers/notice-period-buyout';
+  import { byId, setStatus } from '../../scripts/tool-ui';
+
+  const inr = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 2 });
+  const num = (id: string) => {
+    const raw = byId<HTMLInputElement>(id).value.trim();
+    return raw === '' ? Number.NaN : Number(raw);
+  };
+
+  byId<HTMLFormElement>('calc').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const amountEl = byId<HTMLParagraphElement>('amount');
+    const breakdownEl = byId<HTMLParagraphElement>('breakdown');
+    const statusEl = byId<HTMLDivElement>('status-area');
+    const r = calculate({ monthlySalary: num('salary'), noticeDays: num('notice'), daysServed: num('served'), dayBasis: num('basis') });
+    if (!r.ok || !r.output) {
+      amountEl.textContent = '—';
+      breakdownEl.textContent = '';
+      setStatus(statusEl, `Error: ${r.error}`, 'error');
+      return;
+    }
+    const o = r.output;
+    amountEl.textContent = inr.format(o.buyoutAmount);
+    breakdownEl.textContent = r.meta?.servedFullNotice
+      ? 'You have served the full notice period, so there is nothing to buy out.'
+      : `${o.remainingDays} days left × ${inr.format(o.dailyRate)} per day (monthly salary ÷ ${o.dayBasis}).`;
+    setStatus(statusEl, 'Calculated.', 'success');
+  });
+</script>

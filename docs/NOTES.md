@@ -74,7 +74,7 @@ Fill the search phrase and "who ranks" columns during Milestone 0 by googling th
 | JSON to TypeScript and Zod | Developers | | | Medium | 1 | Built, DoD partly verified |
 | JSON repair | Developers | | | Low to medium | 1 | Built, DoD partly verified |
 | Visa and passport photo sizer | Exam and form | | | Medium | 1 | Not started |
-| Notice period buyout calculator | Job seekers | | | Low | 1 | Not started |
+| Notice period buyout calculator | Job seekers | | | Low | 1 | Built, DoD partly verified |
 | Volumetric weight calculator | Online sellers | | | Medium | 1 | Not started |
 | Return-loss calculator | Online sellers | | | Low (unverified) | 1 | Not started |
 | GSTR-2B JSON to Excel (multi-month) | CAs | | | High | 2 | Not started |
@@ -299,3 +299,13 @@ Not verified here: the right-click menu itself (cannot be clicked in headless au
 Problems / open questions: Firefox needs `background.scripts`; handle in task 4.5.
 Next: prompt 12 needs the team to test the extension first. Then prompts 13–14.
 Suggested commit message: Add JSON Privacy Masker extension
+
+### 2026-10-02 (prompt 13: notice period buyout calculator)
+Milestone / tool: Milestone 5 / Task 5.1: Notice period buyout calculator
+Done: `core/jobseekers/notice-period-buyout.ts`, `/jobseekers/` profession page, tool page `/jobseekers/notice-period-buyout-calculator` with the formula and an assumption note on the page, spec, fixture with 6 cases, 16 tests. Shared `ProfessionLayout.astro` now used by `/developers/` and `/jobseekers/`; tool cards are whole-card links with an outlined "Open tool" (the page previously had six solid primary buttons, against the one-primary-CTA rule). Tool area padding reduced on phones.
+Formula (assumption): buyout = (monthly salary ÷ day basis) × max(0, notice days − days served). Day basis default 30, editable 1–31. Salary = whatever the employer uses (basic/gross); leave adjustment and taxes not included.
+New dependencies (name, size, license): None.
+Tests run and result: vitest 115/115 pass; build passes. Browser: ₹1,20,000 for 60,000 / 90 / 30; full notice → ₹0; empty salary → clear error; no requests carrying input (only the site's own font file for the ₹ glyph); no horizontal scroll at 360 px.
+Definition of Done: 1 PASS · 2 PASS · 3 PASS · 4 PARTIAL (Chromium only) · 5 PARTIAL (no related tools yet: only job seekers tool) · 6 PASS (form fields labelled, Enter submits) · 7 PASS · 8 N/A (not a CA/tax/visa/pricing tool; formula and assumption shown anyway).
+Next: prompt 14 (volumetric weight calculator).
+Suggested commit message: Add notice period buyout calculator and job seekers page
