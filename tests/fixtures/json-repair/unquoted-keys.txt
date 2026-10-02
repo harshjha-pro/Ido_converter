@@ -1,0 +1,1 @@
+{name: "Asha", age: 30, is_admin: false}

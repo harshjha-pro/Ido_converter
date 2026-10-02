@@ -1,0 +1,7 @@
+Sure! Here is the JSON you asked for:
+
+```json
+{"name": "Asha", "ok": true}
+```
+
+Let me know if you need anything else.

@@ -1,0 +1,90 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import { relatedTools } from '../../data/tools';
+---
+
+<ToolLayout
+  title="JSON Repair"
+  howTo="Paste broken JSON: AI chat output with code fences, hand-edited config, or a truncated response. Click Repair. You get valid JSON plus a list of every change with its line number. If something cannot be fixed safely, the tool tells you where and why."
+  faq={[
+    { q: "Is my JSON uploaded?", a: "No. Repair runs in your browser. Nothing is sent or stored." },
+    { q: "What can it fix?", a: "Trailing and missing commas, single or curly quotes, unquoted keys, // /* */ and # comments, markdown code fences and chat text around the JSON, Python True/False/None, NaN and undefined, raw line breaks and bad escapes in strings, odd numbers like +1, .5 and 0x1F, and truncated output." },
+    { q: "How does it handle truncated JSON?", a: "It closes open strings, arrays and objects, drops a key that has no value, and completes a cut-off true, false or null. The data that was cut off cannot be recovered, so check the end of the result." },
+    { q: "Why did it refuse to repair my input?", a: "When fixing would mean guessing the structure, for example a double colon or mismatched brackets, it stops and shows the line and column instead of inventing data." }
+  ]}
+  relatedTools={relatedTools('json-repair')}
+>
+  <div class="tool-ui">
+    <div class="panels two-col">
+      <div class="panel">
+        <label for="input-json" class="panel-label">Broken JSON</label>
+        <textarea id="input-json" class="io-area" spellcheck="false" placeholder="{name: 'Asha', tags: ['a', 'b',], active: True}"></textarea>
+        <button id="btn-run" class="btn-primary btn-run">Repair JSON &rarr;</button>
+        <div id="status-area" class="status-area" role="status"></div>
+      </div>
+      <div class="panel">
+        <div class="panel-header">
+          <label for="output-json" class="panel-label">Repaired JSON</label>
+          <button id="btn-copy" class="btn-secondary">Copy JSON</button>
+        </div>
+        <textarea id="output-json" class="io-area" readonly spellcheck="false"></textarea>
+      </div>
+    </div>
+    <section class="result-box" aria-labelledby="changes-title">
+      <h2 id="changes-title" class="panel-label">Changes</h2>
+      <ul id="changes" class="findings-list"><li>Nothing repaired yet.</li></ul>
+    </section>
+  </div>
+</ToolLayout>
+
+<script>
+  import { run, type RepairChange } from '../../../../core/developers/json-repair';
+  import { byId, setStatus, setupCopy, isLargeInput } from '../../scripts/tool-ui';
+
+  const inputEl = byId<HTMLTextAreaElement>('input-json');
+  const outputEl = byId<HTMLTextAreaElement>('output-json');
+  const statusEl = byId<HTMLDivElement>('status-area');
+  const changesEl = byId<HTMLUListElement>('changes');
+  const MAX_LISTED = 200;
+
+  function renderChanges(items: string[]) {
+    changesEl.replaceChildren(...items.map(text => {
+      const li = document.createElement('li');
+      li.textContent = text;
+      return li;
+    }));
+  }
+
+  byId<HTMLButtonElement>('btn-run').addEventListener('click', () => {
+    const input = inputEl.value;
+    const result = run(input);
+    if (!result.ok) {
+      outputEl.value = '';
+      renderChanges(['No changes applied.']);
+      setStatus(statusEl, result.error ?? 'Error', 'error');
+      return;
+    }
+    outputEl.value = result.output ?? '';
+    const changes = result.meta?.changes as RepairChange[];
+    if (result.meta?.alreadyValid) {
+      renderChanges(['The input was already valid JSON. It has only been formatted.']);
+    } else {
+      // Group repeats on the same line so a long one-line paste stays readable.
+      const grouped = new Map<string, number>();
+      for (const c of changes) {
+        const key = `Line ${c.line}: ${c.message}`;
+        grouped.set(key, (grouped.get(key) ?? 0) + 1);
+      }
+      const lines = [...grouped].map(([text, n]) => (n > 1 ? `${text} (×${n})` : text));
+      const shown = lines.slice(0, MAX_LISTED);
+      if (lines.length > MAX_LISTED) shown.push(`…and ${lines.length - MAX_LISTED} more.`);
+      renderChanges(shown);
+    }
+    setStatus(statusEl,
+      (result.meta?.alreadyValid ? 'Already valid.' : `Repaired with ${changes.length} change(s). Check the result.`)
+        + (isLargeInput(input) ? ' Large input: processing may be slow on some devices.' : ''),
+      'success');
+  });
+
+  setupCopy(byId<HTMLButtonElement>('btn-copy'), outputEl);
+</script>

@@ -1,0 +1,1 @@
+{'active': True, 'deleted': False, 'manager': None, 'score': NaN}

@@ -10,7 +10,7 @@ The AI assistant reads this at the start of every session and updates it at the 
 
 | Item | Status |
 |---|---|
-| Current milestone | Milestone 3: Data-to-code tools (Milestone 2 complete pending manual browser checks) |
+| Current milestone | Milestone 4: Extension (Milestones 1–3 complete pending manual browser checks) |
 | Current tool | JSON PII masker (task 1.4): logic, page and tests done; tool spec written; Definition of Done still needs the Edge/Firefox/Safari check and a search phrase in the tracker |
 | Blockers | Open questions below |
 | Next step | Task 1.5 (test deploy), then Milestone 2 |
@@ -72,7 +72,7 @@ Fill the search phrase and "who ranks" columns during Milestone 0 by googling th
 | Log and secret scrubber | Developers | | | Medium | 1 | Built, DoD partly verified |
 | SQL console output to JSON | Developers | | | Low to medium | 1 | Built, DoD partly verified |
 | JSON to TypeScript and Zod | Developers | | | Medium | 1 | Built, DoD partly verified |
-| JSON repair | Developers | | | Low to medium | 1 | Not started |
+| JSON repair | Developers | | | Low to medium | 1 | Built, DoD partly verified |
 | Visa and passport photo sizer | Exam and form | | | Medium | 1 | Not started |
 | Notice period buyout calculator | Job seekers | | | Low | 1 | Not started |
 | Volumetric weight calculator | Online sellers | | | Medium | 1 | Not started |
@@ -275,3 +275,15 @@ Tests run and result: vitest 72/72 pass; build passes.
 Definition of Done: 1 PASS · 2 PASS (zero requests) · 3 PASS · 4 PARTIAL (Chromium only) · 5 PASS · 6 PASS · 7 PASS · 8 N/A.
 Next: prompt 10 (JSON repair).
 Suggested commit message: Add JSON to TypeScript and Zod
+
+### 2026-10-02 (prompt 10: JSON repair, Milestone 3 wrap-up)
+Milestone / tool: Milestone 3 / Task 3.3: JSON repair
+Done: `core/developers/json-repair.ts` (tolerant parser that records each fix with a line number), page `/developers/json-repair` with a grouped change list, spec, 15 fixtures (one per repair case plus 3 unrepairable), 23 tests.
+Decisions: Valid input is only formatted and marked "already valid". Unfixable input returns a line/column reason rather than a guessed structure. Truncated output is closed and dangling keys dropped; lost data is not invented.
+New dependencies (name, size, license): None.
+Tests run and result: vitest 95/95 pass across all 6 developer tools; build passes.
+Definition of Done (JSON repair): 1 PASS · 2 PASS · 3 PASS · 4 PARTIAL (Chromium only) · 5 PASS · 6 PASS · 7 PASS · 8 N/A.
+All six developer tools: zero network requests while running, no horizontal scroll at 360 px and 1280 px, no console errors (headless Chromium). `/developers/` lists all six; home badge shows 6 tools.
+Milestone 3: COMPLETE (manual Edge/Firefox/Safari check and search phrases still pending for all six).
+Next: prompt 11 (extension build).
+Suggested commit message: Add JSON repair and complete developer tools

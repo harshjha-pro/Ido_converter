@@ -1,0 +1,5 @@
+{
+  // user record
+  "name": "Asha", /* inline */
+  "city": "Pune" # hash comment
+}
