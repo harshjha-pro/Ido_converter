@@ -1,0 +1,15 @@
+{
+  "id": 42,
+  "name": "Asha Verma",
+  "active": true,
+  "address": { "line1": "12 MG Road", "city": "Pune", "pin": "411001", "geo": { "lat": 18.52, "lng": 73.85 } },
+  "tags": ["admin", "beta"],
+  "orders": [
+    { "orderId": "A1", "total": 1499, "items": [{ "sku": "007-A", "qty": 2 }] },
+    { "orderId": "A2", "total": 250.5, "items": [], "coupon": "DIWALI10" },
+    { "orderId": "A3", "total": 99, "items": [{ "sku": "009-C", "qty": 1, "gift": true }], "coupon": null }
+  ],
+  "lastLogin": null,
+  "preferences": {},
+  "first-name": "Asha"
+}

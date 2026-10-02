@@ -1,0 +1,75 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import { relatedTools } from '../../data/tools';
+---
+
+<ToolLayout
+  title="JSON to TypeScript and Zod"
+  howTo="Paste a JSON sample, ideally one with several array items so optional fields can be detected. Choose a root type name. You get TypeScript interfaces and a matching Zod schema; copy either one."
+  faq={[
+    { q: "Is my JSON uploaded?", a: "No. Types are generated in your browser. Nothing is sent or stored." },
+    { q: "How are optional fields detected?", a: "When array items have different keys, a key missing from any item is marked optional (?: in TypeScript, .optional() in Zod) instead of failing." },
+    { q: "What happens with mixed types or null?", a: "Mixed types become a union (string | number). null makes a field nullable (string | null, .nullable() in Zod). An empty array becomes unknown[] because there is nothing to infer from." },
+    { q: "Do I need Zod installed?", a: "Only in your own project to use the schema (npm install zod). The generated code imports z from \"zod\". The TypeScript interfaces need nothing extra." }
+  ]}
+  relatedTools={relatedTools('json-to-typescript-zod')}
+>
+  <div class="tool-ui">
+    <div class="panels two-col">
+      <div class="panel">
+        <label for="input-json" class="panel-label">JSON sample</label>
+        <textarea id="input-json" class="io-area" spellcheck="false" placeholder='[{"id": 1, "name": "Asha"}, {"id": 2, "nick": null}]'></textarea>
+        <div class="field-row">
+          <label class="field" for="opt-root">Root type name
+            <input type="text" id="opt-root" class="text-input" value="Root" autocomplete="off" />
+          </label>
+        </div>
+        <button id="btn-run" class="btn-primary btn-run">Generate types &rarr;</button>
+        <div id="status-area" class="status-area" role="status"></div>
+      </div>
+      <div class="panel">
+        <div class="panel-header">
+          <label for="output-ts" class="panel-label">TypeScript</label>
+          <button id="btn-copy-ts" class="btn-secondary">Copy TypeScript</button>
+        </div>
+        <textarea id="output-ts" class="io-area short" readonly spellcheck="false"></textarea>
+        <div class="panel-header">
+          <label for="output-zod" class="panel-label">Zod schema</label>
+          <button id="btn-copy-zod" class="btn-secondary">Copy Zod</button>
+        </div>
+        <textarea id="output-zod" class="io-area short" readonly spellcheck="false"></textarea>
+      </div>
+    </div>
+  </div>
+</ToolLayout>
+
+<script>
+  import { run, type JsonToTsOutput } from '../../../../core/developers/json-to-ts-zod';
+  import { byId, setStatus, setupCopy, isLargeInput } from '../../scripts/tool-ui';
+
+  const inputEl = byId<HTMLTextAreaElement>('input-json');
+  const tsEl = byId<HTMLTextAreaElement>('output-ts');
+  const zodEl = byId<HTMLTextAreaElement>('output-zod');
+  const statusEl = byId<HTMLDivElement>('status-area');
+
+  byId<HTMLButtonElement>('btn-run').addEventListener('click', () => {
+    const input = inputEl.value;
+    const result = run(input, { rootName: byId<HTMLInputElement>('opt-root').value });
+    if (!result.ok) {
+      tsEl.value = '';
+      zodEl.value = '';
+      setStatus(statusEl, `Error: ${result.error}`, 'error');
+      return;
+    }
+    const out = result.output as JsonToTsOutput;
+    tsEl.value = out.typescript;
+    zodEl.value = out.zod;
+    setStatus(statusEl,
+      `Generated ${result.meta?.interfaceCount ?? 0} interface(s).`
+        + (isLargeInput(input) ? ' Large input: processing may be slow on some devices.' : ''),
+      'success');
+  });
+
+  setupCopy(byId<HTMLButtonElement>('btn-copy-ts'), tsEl);
+  setupCopy(byId<HTMLButtonElement>('btn-copy-zod'), zodEl);
+</script>

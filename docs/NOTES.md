@@ -71,7 +71,7 @@ Fill the search phrase and "who ranks" columns during Milestone 0 by googling th
 | Consistent pseudonymizer | Developers | | | Low | 1 | Built, DoD partly verified |
 | Log and secret scrubber | Developers | | | Medium | 1 | Built, DoD partly verified |
 | SQL console output to JSON | Developers | | | Low to medium | 1 | Built, DoD partly verified |
-| JSON to TypeScript and Zod | Developers | | | Medium | 1 | Not started |
+| JSON to TypeScript and Zod | Developers | | | Medium | 1 | Built, DoD partly verified |
 | JSON repair | Developers | | | Low to medium | 1 | Not started |
 | Visa and passport photo sizer | Exam and form | | | Medium | 1 | Not started |
 | Notice period buyout calculator | Job seekers | | | Low | 1 | Not started |
@@ -265,3 +265,13 @@ Tests run and result: vitest 60/60 pass; build passes.
 Definition of Done: 1 PASS · 2 PASS (zero requests) · 3 PASS (empty, no-table message, 10,000 rows) · 4 PARTIAL (Chromium only) · 5 PASS · 6 PASS · 7 PASS · 8 N/A.
 Next: prompt 09 (JSON to TypeScript and Zod).
 Suggested commit message: Add SQL output to JSON
+
+### 2026-10-02 (prompt 09: JSON to TypeScript and Zod)
+Milestone / tool: Milestone 3 / Task 3.2: JSON to TypeScript and Zod
+Done: `core/developers/json-to-ts-zod.ts` (type inference, array-item merging with optional keys, unions, nullable, empty arrays, naming), page `/developers/json-to-typescript-zod` with separate TypeScript and Zod outputs, spec, fixtures, 12 tests.
+Decisions: No Zod dependency on the site; the schema is generated as text. Tests type-check the generated TypeScript with the existing `typescript` package and assert the input JSON fits it. Generated Zod was checked once against real Zod 3 installed in a scratch folder, not in the project.
+New dependencies (name, size, license): None.
+Tests run and result: vitest 72/72 pass; build passes.
+Definition of Done: 1 PASS · 2 PASS (zero requests) · 3 PASS · 4 PARTIAL (Chromium only) · 5 PASS · 6 PASS · 7 PASS · 8 N/A.
+Next: prompt 10 (JSON repair).
+Suggested commit message: Add JSON to TypeScript and Zod
