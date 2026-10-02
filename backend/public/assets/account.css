@@ -1,0 +1,43 @@
+/* Account area: same tokens as the site (docs/DESIGN.md) but a distinct banner so people know they are in a storage area. */
+:root {
+  --color-bg-cream: #F4F0E4; --color-bg-dark: #12382A; --color-text-main: #111111; --color-text-muted: #5F6662;
+  --color-accent-green-text: #236E3F; --color-accent-yellow: #F2C94C; --color-error: #B42318; --color-border: #D1CDBC;
+  --color-card-bg: #FFFFFF; --space-1: 4px; --space-2: 8px; --space-3: 16px; --space-4: 24px; --space-5: 32px; --space-7: 64px;
+}
+* { box-sizing: border-box; }
+body { margin: 0; font: 16px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; color: var(--color-text-main); background: var(--color-bg-cream); min-width: 360px; }
+a { color: var(--color-accent-green-text); }
+.account-banner { background: var(--color-bg-dark); color: #FFFFFF; font-size: 14px; padding: var(--space-2) var(--space-3); text-align: center; }
+.account-banner a { color: var(--color-accent-yellow); }
+.account-header { display: flex; flex-wrap: wrap; gap: var(--space-3); justify-content: space-between; align-items: center; max-width: 1000px; margin: 0 auto; padding: var(--space-3); }
+.account-header nav { display: flex; gap: var(--space-3); align-items: center; flex-wrap: wrap; }
+.brand { font-weight: 700; font-size: 20px; color: var(--color-bg-dark); text-decoration: none; }
+.brand em { font-family: Georgia, serif; font-weight: 400; }
+.account-main { max-width: 1000px; margin: 0 auto; padding: var(--space-3) var(--space-3) var(--space-7); }
+.account-footer { text-align: center; font-size: 14px; color: var(--color-text-muted); padding: var(--space-4); }
+h1 { color: var(--color-bg-dark); font-size: 32px; margin: 0 0 var(--space-3); line-height: 1.2; }
+h2 { color: var(--color-bg-dark); font-size: 22px; margin: var(--space-4) 0 var(--space-2); }
+.card { background: var(--color-card-bg); border: 1px solid var(--color-border); border-radius: 16px; padding: var(--space-4); margin-bottom: var(--space-4); }
+.narrow { max-width: 480px; margin-left: auto; margin-right: auto; }
+.muted { color: var(--color-text-muted); font-size: 14px; }
+.form { display: flex; flex-direction: column; gap: var(--space-3); }
+.form label { display: flex; flex-direction: column; gap: var(--space-1); font-size: 14px; font-weight: 600; color: var(--color-bg-dark); }
+.form input, .form select, .form textarea { font: inherit; font-weight: 400; padding: var(--space-2); border: 1px solid var(--color-border); border-radius: 8px; background: #FFFFFF; color: var(--color-text-main); }
+.form textarea { min-height: 160px; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 14px; }
+.btn-primary { align-self: flex-start; background: var(--color-text-main); color: #FFFFFF; border: 0; border-radius: 9999px; padding: 12px 24px; font: inherit; font-weight: 500; cursor: pointer; text-decoration: none; display: inline-block; }
+.btn-secondary { background: transparent; color: var(--color-text-main); border: 1px solid var(--color-text-main); border-radius: 9999px; padding: var(--space-1) var(--space-3); font: inherit; font-size: 14px; cursor: pointer; text-decoration: none; display: inline-block; }
+.btn-danger { background: transparent; color: var(--color-error); border: 1px solid var(--color-error); border-radius: 9999px; padding: var(--space-1) var(--space-3); font: inherit; font-size: 14px; cursor: pointer; }
+.link-btn { background: none; border: 0; padding: 0; font: inherit; color: var(--color-accent-green-text); text-decoration: underline; cursor: pointer; }
+.inline { display: inline; }
+.flash { border-left: 4px solid var(--color-accent-green-text); background: var(--color-card-bg); padding: var(--space-2) var(--space-3); font-size: 14px; }
+.flash.error { border-left-color: var(--color-error); color: var(--color-error); }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th, td { text-align: left; padding: var(--space-2); border-bottom: 1px solid var(--color-border); vertical-align: top; }
+.table-wrap { overflow-x: auto; }
+.plans { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--space-3); }
+.plan { border: 1px solid var(--color-border); border-radius: 16px; padding: var(--space-3); background: #FFFFFF; }
+.plan h3 { margin: 0 0 var(--space-2); color: var(--color-bg-dark); }
+.notice { border-left: 4px solid var(--color-accent-yellow); background: var(--color-card-bg); padding: var(--space-2) var(--space-3); font-size: 14px; }
+pre.saved { white-space: pre-wrap; word-break: break-word; background: var(--color-bg-cream); padding: var(--space-3); border-radius: 8px; font-size: 13px; max-height: 480px; overflow: auto; }
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid var(--color-text-main); outline-offset: 2px; }
+.spaced { margin-top: var(--space-3); }

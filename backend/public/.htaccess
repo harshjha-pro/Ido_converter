@@ -1,0 +1,15 @@
+# Account app (document root = backend/public). src/, config/ and tests/ are outside the web root.
+Options -Indexes
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+<IfModule mod_headers.c>
+  Header always set Strict-Transport-Security "max-age=31536000"
+</IfModule>
+<IfModule mod_php.c>
+  php_flag display_errors off
+  php_flag expose_php off
+</IfModule>
