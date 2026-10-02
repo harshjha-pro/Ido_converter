@@ -159,3 +159,14 @@ Problems / open questions:
 Next:
 Suggested commit message:
 ```
+
+### 2026-10-02
+Milestone / tool: Milestone 1 / Task 1.4: JSON PII Masker
+Done: Built core logic, UI in Astro, and tests for JSON PII masker.
+Decisions: Regex based pattern matching running entirely in the browser. Fully isolated client-side script.
+New dependencies (name, size, license): None.
+Tests run and result: vitest tests passed (8/8).
+Problems / open questions: None.
+Next: Next tool in PRD.
+Suggested commit message: Feat: Implement JSON PII masker
+
