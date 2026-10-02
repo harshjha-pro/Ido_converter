@@ -1,0 +1,174 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+import '@fontsource/inter/400.css';
+import '@fontsource/inter/500.css';
+import '@fontsource/inter/600.css';
+import '@fontsource/playfair-display/400-italic.css';
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
+    <title>{title} | idoconverter</title>
+    <style is:global>
+      :root {
+        /* Colors */
+        --color-bg-cream: #F4F0E4;
+        --color-bg-dark: #12382A;
+        --color-bg-dark-light: #1A4D3A;
+        
+        --color-text-main: #111111;
+        --color-text-light: #FFFFFF;
+        --color-text-muted: #6B726F;
+        
+        --color-accent-green: #2F8F52;
+        --color-accent-green-text: #236E3F; /* WCAG AA accessible on cream */
+        --color-accent-yellow: #F2C94C;
+        
+        --color-btn-bg: #111111;
+        --color-btn-text: #FFFFFF;
+        
+        --color-border: #D1CDBC;
+        --color-card-bg: #FFFFFF;
+
+        /* Spacing Scale */
+        --space-1: 0.25rem; /* 4px */
+        --space-2: 0.5rem;  /* 8px */
+        --space-3: 1rem;    /* 16px */
+        --space-4: 1.5rem;  /* 24px */
+        --space-5: 2rem;    /* 32px */
+        --space-6: 3rem;    /* 48px */
+        --space-7: 4rem;    /* 64px */
+
+        /* Typography */
+        --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+        --font-serif: 'Playfair Display', Georgia, serif;
+        
+        --text-h1: 2.5rem;
+        --text-h2: 2rem;
+        --text-h3: 1.5rem;
+        --text-body: 1rem;
+        --text-small: 0.875rem;
+        
+        --line-height-body: 1.6;
+        --line-height-heading: 1.2;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+        font-family: var(--font-sans);
+        line-height: var(--line-height-body);
+        color: var(--color-text-main);
+        background-color: var(--color-bg-cream);
+        min-width: 360px;
+        min-height: 100%;
+        display: flex;
+        flex-direction: column;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      h1, h2, h3, h4 {
+        color: var(--color-text-main);
+        font-weight: 600;
+        line-height: var(--line-height-heading);
+        margin-top: 0;
+        margin-bottom: var(--space-3);
+      }
+      
+      /* The special serif italic class for emphasis in headings */
+      .font-serif-italic {
+        font-family: var(--font-serif);
+        font-style: italic;
+        font-weight: 400;
+      }
+
+      h1 { font-size: var(--text-h1); }
+      h2 { font-size: var(--text-h2); }
+      h3 { font-size: var(--text-h3); }
+
+      p {
+        margin-top: 0;
+        margin-bottom: var(--space-4);
+        font-size: var(--text-body);
+      }
+
+      a {
+        color: var(--color-accent-green-text);
+        text-decoration: none;
+        transition: color 0.2s ease;
+      }
+      
+      a:hover, a:focus {
+        color: var(--color-text-main);
+      }
+      
+      a:focus-visible {
+        outline: 2px solid var(--color-text-main);
+        outline-offset: 2px;
+        border-radius: 2px;
+      }
+
+      /* Base Layout constraints */
+      .container {
+        width: 100%;
+        max-width: 1100px; /* Slightly wider for the modern landing page feel */
+        margin: 0 auto;
+        padding: 0 var(--space-4);
+      }
+
+      main {
+        flex: 1;
+        width: 100%;
+        padding: var(--space-7) 0;
+      }
+
+      /* Primary Pill Button */
+      .btn-primary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--color-btn-bg);
+        color: var(--color-btn-text);
+        padding: 0.75rem 1.5rem;
+        border-radius: 9999px; /* Pill shape */
+        font-size: var(--text-body);
+        font-weight: 500;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        transition: transform 0.2s ease, opacity 0.2s ease;
+      }
+      .btn-primary:hover, .btn-primary:focus {
+        opacity: 0.9;
+        transform: translateY(-1px);
+        color: var(--color-btn-text);
+      }
+    </style>
+  </head>
+  <body>
+    <Header />
+    <main>
+      <div class="container">
+        <slot />
+      </div>
+    </main>
+    <Footer />
+  </body>
+</html>

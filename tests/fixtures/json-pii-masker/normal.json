@@ -1,0 +1,17 @@
+{
+  "user": {
+    "name": "Jane Doe",
+    "email": "jane.doe@example.com",
+    "phone": "+1-555-1234",
+    "password": "supersecretpassword",
+    "token": "ey12345.ey67890.abcdef",
+    "profile": {
+      "aadhaar": "1234 5678 9012",
+      "pan": "ABCDE1234F",
+      "bio": "You can reach me at jane.doe@example.com or 555-987-6543."
+    },
+    "isAdmin": true,
+    "loginCount": 42
+  },
+  "metadata": null
+}

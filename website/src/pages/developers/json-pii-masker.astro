@@ -1,0 +1,192 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+---
+
+<ToolLayout 
+  title="JSON PII Masker"
+  howTo="Paste your JSON in the input area. Configure your masking options (by keys or patterns). Get your masked JSON safely."
+  faq={[
+    { q: "Is my data sent anywhere?", a: "No, all processing happens locally in your browser. We do not upload your data." },
+    { q: "Does it keep the JSON structure?", a: "Yes, arrays and nested objects remain intact." },
+    { q: "What happens if a pattern detection is wrong?", a: "Pattern-based scrubbing can miss secrets or over-mask. Always review the output before sharing." }
+  ]}
+  relatedTools={[
+    { title: "Consistent Pseudonymizer", path: "#" },
+    { title: "Log and Secret Scrubber", path: "#" }
+  ]}
+>
+  <div class="tool-ui">
+    <div class="panels">
+      <div class="panel">
+        <label for="input-json" class="panel-label">Input JSON</label>
+        <textarea id="input-json" class="io-area" placeholder='{"email": "secret@mail.com"}'></textarea>
+      </div>
+      <div class="controls-panel">
+        <div class="options-group">
+          <strong>Mask by Pattern</strong>
+          <label><input type="checkbox" id="opt-email" checked /> Emails</label>
+          <label><input type="checkbox" id="opt-phone" checked /> Phone Numbers</label>
+          <label><input type="checkbox" id="opt-jwt" checked /> JWT Tokens</label>
+          <label><input type="checkbox" id="opt-aadhaar" checked /> Aadhaar (12 digits)</label>
+          <label><input type="checkbox" id="opt-pan" checked /> PAN</label>
+        </div>
+        <div class="options-group">
+          <strong>Mask by Key Name (comma separated)</strong>
+          <input type="text" id="opt-keys" value="email, phone, name, password, token, secret, authorization, aadhaar, pan" class="keys-input" />
+        </div>
+        <div class="options-group">
+          <strong>Mask Style</strong>
+          <select id="opt-style" class="style-select">
+            <option value="placeholder">[REDACTED]</option>
+            <option value="full">Full (***)</option>
+            <option value="partial">Partial (s***t@mail.com)</option>
+          </select>
+        </div>
+        
+        <button id="btn-mask" class="btn-primary" style="margin-top: 1rem; width: 100%;">Mask Data &rarr;</button>
+        <div id="status-area" class="status-area"></div>
+      </div>
+      <div class="panel">
+        <div class="panel-header">
+          <label for="output-json" class="panel-label">Masked Output</label>
+          <button id="btn-copy" class="btn-secondary">Copy Output</button>
+        </div>
+        <textarea id="output-json" class="io-area" readonly></textarea>
+      </div>
+    </div>
+  </div>
+</ToolLayout>
+
+<style>
+  .tool-ui {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+  .panels {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+  @media (min-width: 900px) {
+    .panels {
+      grid-template-columns: 2fr 1fr 2fr;
+    }
+  }
+  .panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+  .panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .panel-label {
+    font-weight: 600;
+    color: var(--color-bg-dark);
+    font-size: 0.95rem;
+  }
+  .io-area {
+    width: 100%;
+    height: 400px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    padding: var(--space-3);
+    font-family: monospace;
+    font-size: 0.85rem;
+    resize: vertical;
+    background: var(--color-card-bg);
+    color: var(--color-bg-dark);
+  }
+  .controls-panel {
+    background: var(--color-card-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    padding: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+  .options-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 0.85rem;
+  }
+  .options-group strong {
+    color: var(--color-bg-dark);
+    margin-bottom: 4px;
+    font-size: 0.9rem;
+  }
+  .keys-input, .style-select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    font-family: var(--font-primary);
+  }
+  .status-area {
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    text-align: center;
+    font-weight: 600;
+  }
+  .success { color: var(--color-accent-green-text); }
+  .error { color: #D63333; }
+</style>
+
+<script>
+  import { run } from '../../../../../core/developers/json-pii-masker';
+
+  const btnMask = document.getElementById('btn-mask') as HTMLButtonElement;
+  const btnCopy = document.getElementById('btn-copy') as HTMLButtonElement;
+  const inputEl = document.getElementById('input-json') as HTMLTextAreaElement;
+  const outputEl = document.getElementById('output-json') as HTMLTextAreaElement;
+  const statusEl = document.getElementById('status-area') as HTMLDivElement;
+
+  btnMask.addEventListener('click', () => {
+    const input = inputEl.value;
+    statusEl.textContent = '';
+    statusEl.className = 'status-area';
+
+    const keysStr = (document.getElementById('opt-keys') as HTMLInputElement).value;
+    const keysToMask = keysStr.split(',').map(s => s.trim()).filter(Boolean);
+
+    const maskStyle = (document.getElementById('opt-style') as HTMLSelectElement).value as any;
+
+    const options = {
+      keysToMask,
+      maskEmail: (document.getElementById('opt-email') as HTMLInputElement).checked,
+      maskPhone: (document.getElementById('opt-phone') as HTMLInputElement).checked,
+      maskJWT: (document.getElementById('opt-jwt') as HTMLInputElement).checked,
+      maskAadhaar: (document.getElementById('opt-aadhaar') as HTMLInputElement).checked,
+      maskPAN: (document.getElementById('opt-pan') as HTMLInputElement).checked,
+      maskStyle
+    };
+
+    const result = run(input, options);
+
+    if (result.ok) {
+      outputEl.value = result.output || '';
+      statusEl.textContent = `Success! Masked ${result.meta?.replacementCount || 0} values.`;
+      statusEl.classList.add('success');
+    } else {
+      outputEl.value = '';
+      statusEl.textContent = `Error: ${result.error}`;
+      statusEl.classList.add('error');
+    }
+  });
+
+  btnCopy.addEventListener('click', () => {
+    if (outputEl.value) {
+      navigator.clipboard.writeText(outputEl.value);
+      const originalText = btnCopy.textContent;
+      btnCopy.textContent = 'Copied!';
+      setTimeout(() => {
+        btnCopy.textContent = originalText;
+      }, 2000);
+    }
+  });
+</script>

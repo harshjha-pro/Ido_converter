@@ -1,0 +1,19 @@
+{
+  "name": "idoconverter",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@fontsource/inter": "^5.3.0",
+    "@fontsource/playfair-display": "^5.3.0",
+    "astro": "^4.15.0",
+    "typescript": "^5.5.0",
+    "vitest": "^2.1.0"
+  }
+}

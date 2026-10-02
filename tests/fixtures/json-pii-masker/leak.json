@@ -1,0 +1,14 @@
+{
+  "test_name": "Rigorous Leak Test",
+  "leaks": [
+    "Contact: admin@secret-corp.com",
+    "Call us at +1-800-555-0199 for support.",
+    "Session token is eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+    "My PAN is ABCDE1234F.",
+    "Aadhaar: 1234-5678-9012"
+  ],
+  "keys_to_target": {
+    "SECRET": "this must go",
+    "password": "this must go too"
+  }
+}

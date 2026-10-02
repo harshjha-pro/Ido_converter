@@ -1,0 +1,1294 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Home">
+  <!-- 1. Hero Section -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <div class="badge-pill yellow-pill">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+        BROWSER-BASED TOOLS FOR REAL WORK
+      </div>
+      
+      <h1>Tools made to <span class="font-serif-italic">fit</span> your task.</h1>
+      
+      <p class="hero-desc-main">Runs in your browser. Your data never leaves your device.</p>
+      
+      <p class="hero-desc-sub">Small, fast and tools for developers, online sellers, job seekers, exam applicants and more. No uploads. No accounts. No limits.</p>
+      
+      <div class="hero-actions">
+        <a href="/developers" class="btn-primary">Explore All Tools &rarr;</a>
+        <a href="#how-it-works" class="btn-ghost">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
+          See How it Works
+        </a>
+      </div>
+      
+      <div class="trust-marks">
+        <div class="trust-mark">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--color-accent-green)" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M9 12l2 2 4-4"/></svg>
+          100% in your browser
+        </div>
+        <div class="trust-mark">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--color-accent-green)" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M9 12l2 2 4-4"/></svg>
+          No Sign-up
+        </div>
+        <div class="trust-mark">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--color-accent-green)" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M9 12l2 2 4-4"/></svg>
+          Free to use
+        </div>
+      </div>
+    </div>
+    
+    <div class="hero-visual">
+      <div class="organic-blob"></div>
+      <div class="css-window">
+        <div class="window-header">
+          <div class="mac-controls">
+            <span class="mac-dot red"></span>
+            <span class="mac-dot yellow"></span>
+            <span class="mac-dot green"></span>
+          </div>
+          <div class="window-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent-green)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            JSON PII Masker
+          </div>
+          <div class="window-badge">Save locally</div>
+        </div>
+        <div class="window-body">
+          <div class="code-panel">
+            <div class="panel-head">Input JSON</div>
+            <div class="code-lines">
+              <div class="line"><span class="c-key">"name"</span>: <span class="c-val">"Rachel Thomas"</span>,</div>
+              <div class="line"><span class="c-key">"email"</span>: <span class="c-val">"rachel@mail.com"</span>,</div>
+              <div class="line"><span class="c-key">"phone"</span>: <span class="c-val">"+1-555-0198"</span></div>
+            </div>
+          </div>
+          <div class="arrow-divider">
+            <span class="circle-arr">&rarr;</span>
+          </div>
+          <div class="code-panel">
+            <div class="panel-head">Masked Output</div>
+            <div class="code-lines">
+              <div class="line"><span class="c-key">"name"</span>: <span class="c-mask">"MASKED"</span>,</div>
+              <div class="line"><span class="c-key">"email"</span>: <span class="c-mask">"MASKED"</span>,</div>
+              <div class="line"><span class="c-key">"phone"</span>: <span class="c-mask">"MASKED"</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="window-footer">
+          <div class="security-text"><svg width="12" height="12" viewBox="0 0 24 24" fill="var(--color-accent-green)" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M9 12l2 2 4-4"/></svg> Your data never leaves your device.</div>
+          <button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg> Copy Output</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Professions Section -->
+  <section class="professions-section">
+    <div class="section-head">
+      <span class="eyebrow">TOOLS FOR REAL PROFESSIONALS</span>
+      <h2>Built around <span class="font-serif-italic">your actual work.</span></h2>
+      <p>Six professions. Practical tools. No unnecessary clutter.</p>
+    </div>
+    
+    <div class="grid">
+      <a href="/developers" class="prof-card">
+        <div class="card-top">
+          <div class="icon-box green-tint">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+          </div>
+          <h3>Developers</h3>
+          <p>Transform, clean and safely share data (JSON, SQL, logs and more).</p>
+        </div>
+        <div class="card-bottom">
+          <span class="pill-badge">4 tools</span>
+          <span class="round-btn">&rarr;</span>
+        </div>
+      </a>
+
+      <a href="/sellers" class="prof-card">
+        <div class="card-top">
+          <div class="icon-box yellow-tint">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+          </div>
+          <h3>Online sellers</h3>
+          <p>Calculate costs, check weights and prepare images for marketplaces.</p>
+        </div>
+        <div class="card-bottom">
+          <span class="pill-badge">2 tools</span>
+          <span class="round-btn">&rarr;</span>
+        </div>
+      </a>
+
+      <a href="/jobseekers" class="prof-card">
+        <div class="card-top">
+          <div class="icon-box blue-tint">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+          </div>
+          <h3>Job seekers</h3>
+          <p>Get help with resumes, offers and salary calculations.</p>
+        </div>
+        <div class="card-bottom">
+          <span class="pill-badge">1 tool</span>
+          <span class="round-btn">&rarr;</span>
+        </div>
+      </a>
+
+      <a href="/forms" class="prof-card">
+        <div class="card-top">
+          <div class="icon-box gray-tint">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><path d="M9 15L11 17L15 13"></path></svg>
+          </div>
+          <h3>Exam & form applicants</h3>
+          <p>Create photos and documents that meet portal size rules.</p>
+        </div>
+        <div class="card-bottom">
+          <span class="pill-badge">1 tool</span>
+          <span class="round-btn">&rarr;</span>
+        </div>
+      </a>
+
+      <a href="/ca" class="prof-card">
+        <div class="card-top">
+          <div class="icon-box green-tint">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect><line x1="8" y1="6" x2="16" y2="6"></line><line x1="16" y1="14" x2="16" y2="14.01"></line><line x1="12" y1="14" x2="12" y2="14.01"></line><line x1="8" y1="14" x2="8" y2="14.01"></line><line x1="16" y1="10" x2="16" y2="10.01"></line><line x1="12" y1="10" x2="12" y2="10.01"></line><line x1="8" y1="10" x2="8" y2="10.01"></line><line x1="16" y1="18" x2="16" y2="18.01"></line><line x1="12" y1="18" x2="12" y2="18.01"></line><line x1="8" y1="18" x2="8" y2="18.01"></line></svg>
+          </div>
+          <h3>CAs and accountants</h3>
+          <p>GST, TDS and bank data tools for your daily work.</p>
+        </div>
+        <div class="card-bottom">
+          <span class="pill-badge yellow-pill">Planned Phase 2</span>
+          <span class="round-btn">&rarr;</span>
+        </div>
+      </a>
+
+      <a href="/frontend" class="prof-card">
+        <div class="card-top">
+          <div class="icon-box yellow-tint">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="13.5" cy="5.5" r="2.5"/><circle cx="8.5" cy="10.5" r="2.5"/><circle cx="18.5" cy="12.5" r="2.5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c4 0 7.3-2.3 8.9-5.7.4-1-.1-2.1-1.1-2.3-3.2-.5-5.3-3.6-4.6-6.8.2-1-1-1.7-1.8-1-1 1-2.5 1.4-4 .9C7 6.4 7.6 4.3 9.4 3.7c1-.3 1-1.7 0-2z"/></svg>
+          </div>
+          <h3>Frontend developers</h3>
+          <p>Quick CSS, color and unit conversions.</p>
+        </div>
+        <div class="card-bottom">
+          <span class="pill-badge yellow-pill">Planned Phase 2</span>
+          <span class="round-btn">&rarr;</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- 3. Features Bar -->
+  <section class="features-bar">
+    <div class="feat-item">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <div class="feat-text">
+        <h4>100% Private</h4>
+        <p>Your data never leaves your browser</p>
+      </div>
+    </div>
+    <div class="feat-item">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+      <div class="feat-text">
+        <h4>No Sign-up</h4>
+        <p>Start using tools right away</p>
+      </div>
+    </div>
+    <div class="feat-item">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path><line x1="12" y1="2" x2="12" y2="12"></line></svg>
+      <div class="feat-text">
+        <h4>No Daily Limits</h4>
+        <p>Use as much as you need</p>
+      </div>
+    </div>
+    <div class="feat-item">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+      <div class="feat-text">
+        <h4>Works on Any Device</h4>
+        <p>Chrome, Edge, Firefox</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Featured Tool -->
+  <section class="featured-tool">
+    <div class="ft-content">
+      <div class="badge-pill yellow-pill"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg> FEATURED TOOL</div>
+      <h2>Mask sensitive data <br/>in <span class="font-serif-italic">seconds.</span></h2>
+      <p>Our JSON PII Masker helps you remove sensitive information from JSON before sharing it. Runs entirely in your browser with no uploads and no logs.</p>
+      <a href="/developers/json-pii-masker" class="btn-primary cta-yellow">Try JSON PII Masker &rarr;</a>
+      
+      <ul class="ft-checks">
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="var(--color-accent-green)" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M9 12l2 2 4-4"/></svg> Mask by key name</li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="var(--color-accent-green)" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M9 12l2 2 4-4"/></svg> Keep JSON structure</li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="var(--color-accent-green)" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M9 12l2 2 4-4"/></svg> Detect by pattern</li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="var(--color-accent-green)" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M9 12l2 2 4-4"/></svg> Get a summary of changes</li>
+      </ul>
+    </div>
+    <div class="ft-visual">
+      <div class="organic-blob-dark"></div>
+      <div class="css-window small-win">
+        <div class="window-header">JSON PII Masker</div>
+        <div class="window-body">
+          <div class="line"><span class="c-val">&#123;"email": "MASKED"&#125;</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. How it Works -->
+  <section id="how-it-works" class="how-it-works">
+    <div class="hiw-left">
+      <span class="eyebrow">HOW IT WORKS</span>
+      <h2>Simple. Fast. <span class="font-serif-italic">Private.</span></h2>
+      <p>No uploads, no accounts, no unnecessary steps.</p>
+    </div>
+    <div class="hiw-right">
+      <div class="step">
+        <div class="step-num">1</div>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+        <h4>Paste your data</h4>
+      </div>
+      <div class="step-arr"></div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        <h4>Convert or process</h4>
+      </div>
+      <div class="step-arr"></div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+        <h4>Get your result</h4>
+      </div>
+    </div>
+  <!-- 6. Pricing -->
+  <section class="pricing-section">
+    <div class="pricing-header">
+      <div class="pricing-header-left">
+        <div class="badge-pill yellow-pill">PLANNED FOR PHASE 4</div>
+        <h2>Store your history. Do more.</h2>
+        <p>All tools stay free for everyone in Phases 1–3. Paid plans are a later addition for storage, saved history and extra features.</p>
+        <a href="#plans" class="btn-ghost">Learn About Plans &rarr;</a>
+      </div>
+      <div class="pricing-cards">
+        <div class="p-card">
+          <h4>Free</h4>
+          <div class="price">₹0</div>
+          <p class="p-desc">All tools included</p>
+          <ul class="p-features">
+            <li class="disabled"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> No storage</li>
+            <li class="disabled"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> No history</li>
+            <li class="disabled"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> No account</li>
+          </ul>
+          <div class="p-btn-area"><span class="btn-outline current-plan">Current Plan</span></div>
+        </div>
+        
+        <div class="p-card">
+          <h4>Basic</h4>
+          <div class="price">₹29<span class="p-period">/month<br/>or ₹89/year<br/>(unconfirmed)</span></div>
+          <ul class="p-features">
+            <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Storage (TBD)</li>
+            <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Saved history</li>
+            <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> More features (TBD)</li>
+          </ul>
+          <div class="p-btn-area"><span class="btn-outline disabled-plan">Coming Soon</span></div>
+        </div>
+
+        <div class="p-card">
+          <h4>Plus</h4>
+          <div class="price">₹129<br/><span class="p-period">(period unconfirmed)</span></div>
+          <ul class="p-features">
+            <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Storage (TBD)</li>
+            <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Saved history</li>
+            <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> More features (TBD)</li>
+          </ul>
+          <div class="p-btn-area"><span class="btn-outline disabled-plan">Coming Soon</span></div>
+        </div>
+
+        <div class="p-card">
+          <h4>Premium</h4>
+          <div class="price">₹429<br/><span class="p-period">(period unconfirmed)</span></div>
+          <ul class="p-features">
+            <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Storage (TBD)</li>
+            <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Saved history</li>
+            <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> More features (TBD)</li>
+          </ul>
+          <div class="p-btn-area"><span class="btn-outline disabled-plan">Coming Soon</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="pricing-disclaimer">
+      Final pricing, features and plan structure are still being decided. See PRD section 10 for details.
+    </div>
+  </section>
+
+  <!-- 7. Why People Use -->
+  <section class="why-use">
+    <div class="section-head">
+      <h2>Why people use <span class="font-serif-italic">idoconverter</span></h2>
+    </div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="w-icon green"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <div class="w-text">
+          <h4>Keep your data private</h4>
+          <p>Everything runs locally in your browser.</p>
+        </div>
+      </div>
+      <div class="why-card">
+        <div class="w-icon yellow"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></div>
+        <div class="w-text">
+          <h4>Get real work done</h4>
+          <p>Tools built for actual tasks, not just demos.</p>
+        </div>
+      </div>
+      <div class="why-card">
+        <div class="w-icon dark"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg></div>
+        <div class="w-text">
+          <h4>Simple and focused</h4>
+          <p>No sign-up, no limits, no unnecessary clutter.</p>
+        </div>
+      </div>
+      <div class="why-card">
+        <div class="w-icon blue"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></div>
+        <div class="w-text">
+          <h4>Made for professionals</h4>
+          <p>Tools that fit real daily work.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. Testimonials -->
+  <section class="testimonials">
+    <div class="test-header">
+      <div class="test-title">
+        <span class="eyebrow">WHAT USERS SAY</span>
+        <h2>Built for real people, real work.</h2>
+      </div>
+      <div class="test-nav">
+        <button class="round-btn">&larr;</button>
+        <button class="round-btn">&rarr;</button>
+      </div>
+    </div>
+    <div class="test-grid">
+      <div class="test-card">
+        <p class="quote">"The JSON PII Masker saved me so much time. I can share logs with my team without worrying about sensitive data."</p>
+        <div class="author">
+          <div class="avatar bg-1">AK</div>
+          <div class="a-info">
+            <strong>Arjun K.</strong>
+            <span>Developer</span>
+          </div>
+        </div>
+      </div>
+      <div class="test-card">
+        <p class="quote">"Simple, fast and works perfectly on my phone. No uploads, no accounts. Exactly what is needed."</p>
+        <div class="author">
+          <div class="avatar bg-2">PS</div>
+          <div class="a-info">
+            <strong>Priya S.</strong>
+            <span>Online Seller</span>
+          </div>
+        </div>
+      </div>
+      <div class="test-card">
+        <p class="quote">"Clean tools, no unnecessary features. Finally a site that respects user privacy."</p>
+        <div class="author">
+          <div class="avatar bg-3">RM</div>
+          <div class="a-info">
+            <strong>Rohit M.</strong>
+            <span>Job Seeker</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. FAQ -->
+  <section class="faq-section">
+    <div class="faq-top">
+      <div>
+        <span class="eyebrow">FREQUENTLY ASKED QUESTIONS</span>
+        <h2>Quick answers.</h2>
+      </div>
+      <a href="/faq" class="btn-primary">View All FAQs &rarr;</a>
+    </div>
+    <div class="faq-grid">
+      <details class="faq-item">
+        <summary>Do you upload or store my data? <span class="plus">+</span></summary>
+        <p>No. Everything runs locally in your browser. We never see your data.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Are these tools really free to use? <span class="plus">+</span></summary>
+        <p>Yes, all basic professional tools will remain free forever.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Do I need to create an account? <span class="plus">+</span></summary>
+        <p>No sign-up is required to use any of our free tools.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Which devices and browsers are supported? <span class="plus">+</span></summary>
+        <p>We support all modern browsers including Chrome, Edge, Firefox, and Safari.</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- 10. Final CTA -->
+  <section class="final-cta">
+    <div class="fcta-content">
+      <div class="badge-pill yellow-pill"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg> READY WHEN YOU ARE</div>
+      <h2>Get the right tool for <br/>your <span class="font-serif-italic">next task.</span></h2>
+      <p>Fast, private and free tools for your real work — all in your browser, no uploads, no accounts.</p>
+    </div>
+    <div class="fcta-visual">
+      <div class="fcta-mockup-group">
+        <div class="mock-card mock-code"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg></div>
+        <div class="mock-card mock-doc"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg></div>
+        <a href="/developers" class="btn-primary cta-yellow">Explore All Tools &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+</Layout>
+
+<style>
+  /* Common Elements */
+  .badge-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 9999px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .yellow-pill {
+    background-color: var(--color-accent-yellow);
+    color: var(--color-bg-dark);
+  }
+  .eyebrow {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-3);
+  }
+
+  /* 1. Hero Section */
+  .hero-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    padding: var(--space-5) 0 var(--space-7) 0;
+  }
+  @media (min-width: 900px) {
+    .hero-section {
+      flex-direction: row;
+      align-items: center;
+      padding: var(--space-6) 0 var(--space-7) 0;
+    }
+  }
+  
+  .hero-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-4);
+  }
+  .hero-content h1 {
+    font-size: 3.5rem;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    color: var(--color-bg-dark);
+    margin-bottom: 0;
+  }
+  @media (min-width: 900px) {
+    .hero-content h1 { font-size: 4.5rem; }
+  }
+  .hero-desc-main {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--color-bg-dark);
+    margin-bottom: 0;
+  }
+  .hero-desc-sub {
+    font-size: 1rem;
+    color: var(--color-text-muted);
+    max-width: 500px;
+    line-height: 1.6;
+    margin-bottom: 0;
+  }
+  .hero-actions {
+    display: flex;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    margin-top: var(--space-2);
+  }
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: transparent;
+    color: var(--color-bg-dark);
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    font-weight: 500;
+    text-decoration: none;
+    border: 1px solid var(--color-border);
+    transition: background-color 0.2s ease;
+  }
+  .btn-ghost:hover {
+    background-color: rgba(0,0,0,0.03);
+  }
+  .trust-marks {
+    display: flex;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+    margin-top: var(--space-3);
+  }
+  .trust-mark {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-text-muted);
+  }
+
+  .hero-visual {
+    flex: 1;
+    position: relative;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .organic-blob {
+    position: absolute;
+    width: 80%;
+    height: 80%;
+    background-color: rgba(47, 143, 82, 0.15); /* Soft accent green */
+    border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+    z-index: 0;
+    transform: rotate(-10deg);
+  }
+  .css-window {
+    position: relative;
+    z-index: 1;
+    background: var(--color-card-bg);
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+    border: 1px solid var(--color-border);
+    padding: 1.5rem;
+    width: 100%;
+    max-width: 500px;
+    transform: perspective(1000px) rotateY(-5deg) rotateX(2deg);
+  }
+  .window-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+  }
+  .mac-controls {
+    display: flex;
+    gap: 6px;
+    margin-right: var(--space-4);
+  }
+  .mac-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .mac-dot.red { background: #FF5F56; }
+  .mac-dot.yellow { background: #FFBD2E; }
+  .mac-dot.green { background: #27C93F; }
+
+  .window-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    color: var(--color-bg-dark);
+    flex: 1;
+  }
+  .window-badge {
+    background: #EAF3EC;
+    color: var(--color-accent-green-text);
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+  .window-body {
+    display: flex;
+    gap: 1rem;
+    align-items: stretch;
+  }
+  .code-panel {
+    flex: 1;
+    background: #FAFAFA;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 1rem;
+    font-family: monospace;
+    font-size: 0.75rem;
+  }
+  .panel-head {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--color-text-muted);
+  }
+  .arrow-divider {
+    display: flex;
+    align-items: center;
+    color: var(--color-accent-green-text);
+  }
+  .circle-arr {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--color-bg-dark);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 14px;
+  }
+  .c-key { color: #884400; }
+  .c-val { color: #005500; }
+  .c-mask { color: #0000FF; font-weight: bold; }
+
+  .window-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px dashed var(--color-border);
+  }
+  .security-text {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .copy-btn {
+    background: white;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--color-bg-dark);
+    cursor: pointer;
+  }
+
+  /* 2. Professions Section */
+  .professions-section {
+    padding: var(--space-6) 0;
+  }
+  .section-head {
+    text-align: center;
+    margin-bottom: var(--space-6);
+  }
+  .section-head h2 {
+    font-size: 2.5rem;
+    color: var(--color-bg-dark);
+    margin-bottom: var(--space-2);
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+  @media (min-width: 600px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 900px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+  
+  .prof-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: var(--color-card-bg);
+    padding: var(--space-5);
+    border-radius: 24px;
+    text-decoration: none;
+    color: inherit;
+    border: 1px solid rgba(0,0,0,0.05);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .prof-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+  }
+  .card-top h3 {
+    font-size: 1.25rem;
+    color: var(--color-bg-dark);
+    margin-bottom: var(--space-2);
+  }
+  .card-top p {
+    color: var(--color-text-muted);
+    font-size: 0.95rem;
+  }
+  .icon-box {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: var(--space-4);
+  }
+  .green-tint { background: rgba(47, 143, 82, 0.1); color: var(--color-accent-green-text); }
+  .yellow-tint { background: rgba(242, 201, 76, 0.2); color: #B38600; }
+  .blue-tint { background: rgba(59, 130, 246, 0.1); color: #2563EB; }
+  .gray-tint { background: rgba(107, 114, 143, 0.1); color: #475569; }
+  
+  .card-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: var(--space-4);
+  }
+  .pill-badge {
+    background: #F3F4F6;
+    color: var(--color-text-main);
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+  .pill-badge.yellow-pill {
+    background: rgba(242, 201, 76, 0.2);
+    color: #B38600;
+  }
+  .round-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: var(--color-text-muted);
+  }
+
+  /* 3. Features Bar */
+  .features-bar {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+    background-color: #EFECE1;
+    padding: var(--space-5);
+    border-radius: 24px;
+    margin: var(--space-6) 0;
+  }
+  @media (min-width: 600px) { .features-bar { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 900px) { .features-bar { grid-template-columns: repeat(4, 1fr); } }
+  
+  .feat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-3);
+    color: var(--color-bg-dark);
+  }
+  .feat-text h4 {
+    margin-bottom: 4px;
+    font-size: 1rem;
+  }
+  .feat-text p {
+    font-size: 0.85rem;
+    margin: 0;
+    color: var(--color-text-muted);
+  }
+
+  /* 4. Featured Tool */
+  .featured-tool {
+    background-color: var(--color-bg-dark);
+    border-radius: 32px;
+    padding: var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    overflow: hidden;
+    margin-bottom: var(--space-7);
+  }
+  @media (min-width: 900px) {
+    .featured-tool {
+      flex-direction: row;
+      align-items: center;
+      padding: var(--space-7);
+    }
+  }
+  .ft-content {
+    flex: 1;
+    color: white;
+  }
+  .ft-content h2 {
+    font-size: 2.5rem;
+    color: white;
+    margin: var(--space-4) 0;
+  }
+  .ft-content p {
+    color: #A7C5B8;
+    max-width: 400px;
+    margin-bottom: var(--space-5);
+  }
+  .ft-checks {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-5) 0 0 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  @media (min-width: 600px) {
+    .ft-checks {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .ft-checks li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: white;
+  }
+  .cta-yellow {
+    background-color: var(--color-accent-yellow);
+    color: var(--color-bg-dark);
+  }
+  .ft-visual {
+    flex: 1;
+    position: relative;
+    min-height: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .organic-blob-dark {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(47, 143, 82, 0.3);
+    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+  }
+  .small-win {
+    width: 80%;
+    max-width: 350px;
+    padding: 1rem;
+  }
+
+  /* 5. How it Works */
+  .how-it-works {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    padding: var(--space-5) 0 var(--space-7) 0;
+  }
+  @media (min-width: 900px) {
+    .how-it-works {
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+  .hiw-left {
+    flex: 1;
+  }
+  .hiw-left h2 {
+    font-size: 2.5rem;
+    color: var(--color-bg-dark);
+  }
+  .hiw-left p {
+    color: var(--color-text-muted);
+  }
+  .hiw-right {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: space-between;
+    gap: var(--space-4);
+  }
+  @media (min-width: 600px) {
+    .hiw-right {
+      flex-direction: row;
+      gap: 0;
+    }
+  }
+  .step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+    color: var(--color-bg-dark);
+    width: 120px;
+    z-index: 2;
+    background: var(--color-bg);
+  }
+  .step-num {
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: var(--color-bg-dark);
+    background: #EFECE1;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .step h4 {
+    font-size: 0.85rem;
+    margin: 0;
+  }
+  .step-arr {
+    display: none;
+  }
+  @media (min-width: 600px) {
+    .step-arr {
+      display: block;
+      flex: 1;
+      height: 1px;
+      border-top: 2px dashed rgba(18, 56, 42, 0.15);
+      margin-top: 12px;
+      position: relative;
+      z-index: 1;
+    }
+  }
+  /* 6. Pricing */
+  .pricing-section {
+    background-color: var(--color-bg-dark-light); /* Since we don't have this, wait, use #EFECE1 */
+    background-color: #EFECE1;
+    border-radius: 24px;
+    padding: var(--space-6);
+    margin-bottom: var(--space-7);
+  }
+  .pricing-header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    margin-bottom: var(--space-5);
+  }
+  @media (min-width: 900px) {
+    .pricing-header {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: var(--space-6);
+    }
+    .pricing-header-left { flex: 1; }
+    .pricing-cards { flex: 2.5; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  }
+  .pricing-header-left h2 {
+    font-size: 2rem;
+    color: var(--color-bg-dark);
+    margin: var(--space-3) 0;
+  }
+  .pricing-header-left p {
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-4);
+  }
+  .pricing-cards {
+    display: flex;
+    overflow-x: auto;
+    gap: 16px;
+    padding-bottom: 8px;
+  }
+  .p-card {
+    background: var(--color-card-bg);
+    border-radius: 16px;
+    padding: var(--space-4);
+    min-width: 220px;
+    border: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+  }
+  .p-card h4 {
+    margin: 0 0 8px 0;
+    font-size: 1.1rem;
+    color: var(--color-bg-dark);
+  }
+  .price {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-bg-dark);
+    margin-bottom: var(--space-2);
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+  }
+  .p-period {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    font-weight: 400;
+  }
+  .p-desc {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-3);
+  }
+  .p-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--space-4) 0;
+    flex: 1;
+  }
+  .p-features li {
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--color-bg-dark);
+  }
+  .p-features li.disabled {
+    color: var(--color-text-muted);
+    opacity: 0.5;
+  }
+  .p-btn-area {
+    margin-top: auto;
+  }
+  .btn-outline {
+    display: block;
+    text-align: center;
+    padding: 8px;
+    border-radius: 999px;
+    border: 1px solid var(--color-border);
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+  .current-plan {
+    border-color: var(--color-bg-dark);
+    color: var(--color-bg-dark);
+  }
+  .disabled-plan {
+    color: var(--color-text-muted);
+    background: #F9F9F9;
+  }
+  .pricing-disclaimer {
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    margin-top: var(--space-4);
+  }
+
+  /* 7. Why People Use */
+  .why-use {
+    margin-bottom: var(--space-7);
+  }
+  .why-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+  @media (min-width: 600px) { .why-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 900px) { .why-grid { grid-template-columns: repeat(4, 1fr); } }
+  
+  .why-card {
+    background: var(--color-card-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    padding: var(--space-4);
+    display: flex;
+    gap: var(--space-3);
+    align-items: flex-start;
+  }
+  .w-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .w-icon.green { background: rgba(47, 143, 82, 0.1); color: var(--color-accent-green-text); }
+  .w-icon.yellow { background: rgba(242, 201, 76, 0.2); color: #B38600; }
+  .w-icon.dark { background: rgba(18, 56, 42, 0.1); color: var(--color-bg-dark); }
+  .w-icon.blue { background: rgba(255, 100, 100, 0.1); color: #D63333; } /* Used red tint for blue icon as per mockup heart color */
+  .w-text h4 { margin: 0 0 4px 0; font-size: 0.95rem; }
+  .w-text p { margin: 0; font-size: 0.85rem; color: var(--color-text-muted); }
+
+  /* 8. Testimonials */
+  .testimonials {
+    background-color: #EFECE1;
+    padding: var(--space-6) var(--space-5);
+    border-radius: 24px;
+    margin-bottom: var(--space-7);
+  }
+  .test-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: var(--space-5);
+  }
+  .test-title h2 {
+    font-size: 2.5rem;
+    color: var(--color-bg-dark);
+    margin: var(--space-2) 0 0 0;
+  }
+  .test-nav {
+    display: none;
+  }
+  @media (min-width: 768px) {
+    .test-nav { display: flex; gap: 8px; }
+  }
+  .test-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+  @media (min-width: 768px) { .test-grid { grid-template-columns: repeat(3, 1fr); } }
+  
+  .test-card {
+    background: var(--color-card-bg);
+    padding: var(--space-4);
+    border-radius: 16px;
+    border: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .quote {
+    font-size: 0.95rem;
+    color: var(--color-bg-dark);
+    line-height: 1.5;
+    margin-bottom: var(--space-4);
+  }
+  .author {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 0.85rem;
+  }
+  .bg-1 { background: var(--color-bg-dark); }
+  .bg-2 { background: var(--color-accent-green); }
+  .bg-3 { background: #6B726F; }
+  .a-info {
+    display: flex;
+    flex-direction: column;
+  }
+  .a-info strong { font-size: 0.9rem; color: var(--color-bg-dark); }
+  .a-info span { font-size: 0.8rem; color: var(--color-text-muted); }
+
+  /* 9. FAQ */
+  .faq-section {
+    margin-bottom: var(--space-7);
+  }
+  .faq-top {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    margin-bottom: var(--space-5);
+  }
+  @media (min-width: 768px) {
+    .faq-top { flex-direction: row; justify-content: space-between; align-items: flex-end; }
+  }
+  .faq-top h2 { font-size: 2.5rem; margin: var(--space-2) 0 0 0; color: var(--color-bg-dark); }
+  
+  .faq-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+  @media (min-width: 768px) { .faq-grid { grid-template-columns: repeat(2, 1fr); } }
+  
+  .faq-item {
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: var(--space-3) var(--space-4);
+    background: var(--color-card-bg);
+  }
+  .faq-item summary {
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--color-bg-dark);
+  }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item p {
+    margin: var(--space-3) 0 0 0;
+    color: var(--color-text-muted);
+    font-size: 0.95rem;
+  }
+  .plus { font-size: 1.5rem; color: var(--color-text-muted); }
+
+  /* 10. Final CTA */
+  .final-cta {
+    background-color: var(--color-bg-dark);
+    border-radius: 32px;
+    padding: var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    overflow: hidden;
+    margin-bottom: var(--space-7);
+  }
+  @media (min-width: 900px) {
+    .final-cta { flex-direction: row; align-items: center; padding: var(--space-7); }
+  }
+  .fcta-content { flex: 1; color: white; }
+  .fcta-content h2 { font-size: 2.5rem; color: white; margin: var(--space-4) 0; }
+  .fcta-content p { color: #A7C5B8; max-width: 400px; }
+  .fcta-visual {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .fcta-mockup-group {
+    position: relative;
+    width: 300px;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .mock-card {
+    position: absolute;
+    width: 64px;
+    height: 64px;
+    background: var(--color-card-bg);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  }
+  .mock-code { color: var(--color-accent-green-text); top: 20px; left: 40px; transform: rotate(-10deg); }
+  .mock-doc { color: #2563EB; bottom: 20px; right: 40px; transform: rotate(10deg); }
+  .fcta-mockup-group .btn-primary {
+    position: relative;
+    z-index: 2;
+  }
+</style>
