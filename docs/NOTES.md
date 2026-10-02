@@ -10,7 +10,7 @@ The AI assistant reads this at the start of every session and updates it at the 
 
 | Item | Status |
 |---|---|
-| Current milestone | Milestone 4: Extension (Milestones 1–3 complete pending manual browser checks) |
+| Current milestone | Milestone 6: Launch prep (Milestones 1–5 built; manual browser checks and visa review pending) |
 | Current tool | JSON PII masker (task 1.4): logic, page and tests done; tool spec written; Definition of Done still needs the Edge/Firefox/Safari check and a search phrase in the tracker |
 | Blockers | Open questions below |
 | Next step | Task 1.5 (test deploy), then Milestone 2 |
@@ -349,3 +349,11 @@ Tests run and result: vitest 164/164 pass; build passes. Browser: 3000×4000 tes
 Definition of Done: 1 PASS · 2 PASS · 3 PASS (unsupported image message; large photo) · 4 PARTIAL (Chromium only) · 5 PARTIAL (no related tool yet) · 6 PASS (sliders keyboard-operable) · 7 PASS · 8 PARTIAL: sources and dates recorded and shown, disclaimer shown; **reviewedBy empty, so not published** (open question 20).
 Next: prompt 17 (Milestone 5 wrap-up).
 Suggested commit message: Add visa and passport photo sizer (unlisted pending review)
+
+### 2026-10-02 (prompt 17: Milestone 5 wrap-up)
+Milestone / tool: Milestone 5 wrap-up
+Check: all four Milestone 5 tools exist with core logic, fixtures, tests and pages: notice period buyout (/jobseekers), volumetric weight and return-loss (/sellers), visa photo sizer (/forms, unlisted until reviewed). Profession pages are linked from the home page cards, all using the same card and the shared `ProfessionLayout`. Home badges: Developers 6 tools, Online sellers 2, Job seekers 1, Exam & form "Coming soon" (visa tool pending review).
+Tests run and result: `npx vitest run`: 12 files, 164 tests, all pass. Every page loads with no console errors, no requests after load and no horizontal scroll at 360 px and 1280 px.
+Milestone 5: COMPLETE, except the visa preset review (open question 20) and manual cross-browser checks.
+Next: prompt 18 (legal pages).
+Suggested commit message: Wrap up Milestone 5

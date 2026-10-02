@@ -182,9 +182,9 @@ Full rules: `AGENTS.md`.
 
 *(Update this section as the project moves — treat it as the fastest way to see where things stand.)*
 
-- Milestone: 5 (Milestones 1–4 built; Milestone 5 half done; manual cross-browser checks pending)
-- Professions with any live pages: Developers (6 tools), Job seekers (1), Online sellers (1)
-- Tools with working logic: JSON PII masker, consistent pseudonymizer, log and secret scrubber, SQL output to JSON, JSON to TypeScript and Zod, JSON repair, notice period buyout, volumetric weight
+- Milestone: 6 (Milestones 1–5 built; visa preset review and manual cross-browser checks pending)
+- Professions with any live pages: Developers (6 tools), Job seekers (1), Online sellers (2); Exam and form page exists, its tool is unlisted until reviewed
+- Tools with working logic: JSON PII masker, consistent pseudonymizer, log and secret scrubber, SQL output to JSON, JSON to TypeScript and Zod, JSON repair, notice period buyout, volumetric weight, return-loss, visa photo sizer (unlisted)
 - Extension: built (JSON Privacy Masker, unpacked, not submitted)
 - Legal pages: not started
 - Live/deployed: no
