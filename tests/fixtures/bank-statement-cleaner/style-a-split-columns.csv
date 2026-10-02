@@ -1,0 +1,13 @@
+Account Statement
+Account Number: XXXXXXXX1234,,,,,,
+Statement Period: 01/04/2026 to 30/04/2026,,,,,,
+,,,,,,
+Date,Narration,Chq./Ref.No.,Value Dt,Withdrawal Amt.,Deposit Amt.,Closing Balance
+01/04/26,OPENING BALANCE,,,,,
+02/04/26,"UPI/ASHA VERMA/rent, April",0000412345,02/04/26,"15,000.00",,"35,000.00"
+05/04/26,NEFT CR-ACME PVT LTD-SALARY,N123456789,05/04/26,,"85,000.00","1,20,000.00"
+13/04/26,ATM WDL-PUNE MG ROAD,,13/04/26,"2,000.00",,"1,18,000.00"
+30/04/26,INT.PD:XXXX1234,,30/04/26,,412.50,"1,18,412.50"
+,,,,,,
+Total,,,,"17,000.00","85,412.50",
+** End of statement **

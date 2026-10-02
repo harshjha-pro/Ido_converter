@@ -82,7 +82,7 @@ Fill the search phrase and "who ranks" columns during Milestone 0 by googling th
 | Volumetric weight calculator | Online sellers | volumetric weight calculator | Many Indian logistics sites (Shipmozo, BigShip, SellerMitra, Shipybox) | High (checked 2026-10-02) | 1 | Built, DoD partly verified |
 | Return-loss calculator | Online sellers | return loss calculator for online sellers | RTO/return calculators from marginpanda, toolbaz, refundorreturn, hillteck | Medium (checked 2026-10-02) | 1 | Built, DoD partly verified |
 | GSTR-2B JSON to Excel (multi-month) | CAs | GSTR-2B JSON to Excel multiple months | GSTZen, Finexo, Conversiontools (from planning research) | High | 2 | Built, unlisted until CA review |
-| Bank statement CSV cleaner (Tally mapping) | CAs | | | Medium | 2 | Not started |
+| Bank statement CSV cleaner (Tally mapping) | CAs | bank statement CSV for Tally import | Parsify, AI Accountant, Suvit (paid, from planning research) | Medium | 2 | Built, unlisted until CA review |
 | GST inclusive and exclusive calculator | CAs | | | High | 2 | Not started |
 | GST late fee and interest calculator | CAs | | | Medium | 2 | Not started |
 | TDS rate and threshold lookup | CAs | | | Medium | 2 | Not started |
@@ -494,3 +494,10 @@ Decisions: Excel written without a library (no new dependency). JSON structure r
 Tests: vitest 177/177; build passes. Browser: two months merged, download opens in openpyxl, zero network requests, no horizontal scroll at 360 px; `/ca/` shows "coming soon".
 Next: P2.3 tool 2 (bank statement CSV cleaner).
 Suggested commit message: Add GSTR-2B JSON to Excel (Phase 2, unlisted pending CA review)
+
+### 2026-10-02 (P2.3 tool 2: bank statement CSV cleaner)
+Done: `core/ca/bank-statement-cleaner.ts` (delimiter/header/column detection, Indian amounts and dates, Dr/Cr handling, newest-first reversal, running-balance check, CSV and Excel output), page `/ca/bank-statement-csv-cleaner` with TallyPrime import steps, spec, 4 synthetic bank styles, 10 tests.
+Decisions: Output layout is generic (Date, Narration, Reference, Withdrawal, Deposit, Balance) because TallyPrime's own bank statement import maps columns; no Tally XML vouchers generated (Tally's reconciliation creates them). No tax rules involved.
+Tests: vitest 187/187; build passes. Browser: style A cleaned, balance check passed, CSV and Excel downloads (Excel opens in openpyxl), zero network requests, no horizontal scroll at 360 px.
+Next: P2.3 tool 3 (GST inclusive/exclusive calculator).
+Suggested commit message: Add bank statement CSV cleaner

@@ -1,0 +1,106 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import CaNotice from '../../components/CaNotice.astro';
+---
+
+<ToolLayout
+  slug="bank-statement-csv-cleaner"
+  howTo="Download the statement from net banking as CSV (or save the Excel export as CSV). Choose the file or paste it here and click Clean. Check the detected columns and the balance check, then download the clean CSV or Excel. In TallyPrime open the bank ledger's Bank Reconciliation, press Alt+O (Import) → Bank Statements, choose the file and map Date, Narration, Reference, Withdrawal, Deposit and Balance once; the same mapping then works for every bank you clean here."
+  faq={[
+    { q: "Is my bank statement uploaded?", a: "No. The file is read and cleaned in your browser. Nothing is sent to any server." },
+    { q: "Which banks does it work with?", a: "Any bank whose export has a header row with a date column and either separate withdrawal/deposit (debit/credit) columns or one amount column with Dr/Cr. If it guesses a column wrongly, set the date order or columns manually." },
+    { q: "What does the balance check mean?", a: "For every row it checks that the previous balance plus deposits minus withdrawals equals the balance shown. A mismatch usually means a missing row, a reversed sort or an amount it could not read, so check those rows before importing." },
+    { q: "Does it create vouchers in Tally?", a: "No. It prepares the statement file. TallyPrime's own bank statement import and reconciliation creates and matches vouchers." }
+  ]}
+>
+  <div class="tool-ui">
+    <CaNotice slug="bank-statement-csv-cleaner" sources={[{ title: 'TallyHelp: Bank reconciliation and importing bank statements in TallyPrime', url: 'https://help.tallysolutions.com/tally-prime/banking-utilities/bank-reconciliation-tally/', lastChecked: '2026-10-02' }]} />
+    <div class="panels two-col">
+      <div class="panel">
+        <label class="options-group" for="file"><strong>Bank statement CSV file</strong>
+          <input id="file" type="file" accept=".csv,.txt,text/csv" class="text-input" />
+        </label>
+        <label for="input-csv" class="panel-label">…or paste the CSV</label>
+        <textarea id="input-csv" class="io-area short" spellcheck="false" placeholder="Date,Narration,Withdrawal,Deposit,Balance"></textarea>
+        <div class="field-row">
+          <label class="field" for="opt-order">Date order
+            <select id="opt-order" class="style-select">
+              <option value="auto">Detect (day first unless proven)</option>
+              <option value="DMY">Day / month / year</option>
+              <option value="MDY">Month / day / year</option>
+              <option value="YMD">Year / month / day</option>
+            </select>
+          </label>
+        </div>
+        <label class="options-group-inline"><input type="checkbox" id="opt-oldest" checked /> Oldest transaction first</label>
+        <button id="btn-run" class="btn-primary btn-run">Clean statement &rarr;</button>
+        <div id="status-area" class="status-area" role="status"></div>
+      </div>
+      <div class="panel">
+        <div class="panel-header">
+          <label for="output-csv" class="panel-label">Clean CSV</label>
+          <span>
+            <button id="btn-xlsx" class="btn-secondary" hidden>Download Excel</button>
+            <button id="btn-csv" class="btn-secondary" hidden>Download CSV</button>
+          </span>
+        </div>
+        <textarea id="output-csv" class="io-area short" readonly spellcheck="false"></textarea>
+        <ul id="details" class="findings-list"></ul>
+      </div>
+    </div>
+  </div>
+</ToolLayout>
+
+<script>
+  import { clean, toCsv, toXlsx, type CleanerMeta, type CleanRow, type DateOrder } from '../../../../core/ca/bank-statement-cleaner';
+  import { byId, setStatus, downloadText } from '../../scripts/tool-ui';
+
+  const inputEl = byId<HTMLTextAreaElement>('input-csv');
+  const outputEl = byId<HTMLTextAreaElement>('output-csv');
+  const statusEl = byId<HTMLDivElement>('status-area');
+  const detailsEl = byId<HTMLUListElement>('details');
+  const csvBtn = byId<HTMLButtonElement>('btn-csv');
+  const xlsxBtn = byId<HTMLButtonElement>('btn-xlsx');
+  let rows: CleanRow[] = [];
+  const inr = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' });
+
+  byId<HTMLInputElement>('file').addEventListener('change', async (e) => {
+    const f = (e.target as HTMLInputElement).files?.[0];
+    if (f) inputEl.value = await f.text();
+  });
+
+  byId<HTMLButtonElement>('btn-run').addEventListener('click', () => {
+    const r = clean(inputEl.value, {
+      dateOrder: byId<HTMLSelectElement>('opt-order').value as DateOrder,
+      oldestFirst: byId<HTMLInputElement>('opt-oldest').checked,
+    });
+    detailsEl.replaceChildren();
+    csvBtn.hidden = xlsxBtn.hidden = true;
+    if (!r.ok || !r.output) {
+      outputEl.value = '';
+      setStatus(statusEl, `Error: ${r.error}`, 'error');
+      return;
+    }
+    rows = r.output;
+    const m = r.meta as unknown as CleanerMeta;
+    outputEl.value = toCsv(rows);
+    const lines = [
+      `Columns found: ${Object.entries(m.columns).map(([k, v]) => `${k} = "${v}"`).join(', ')}`,
+      `${m.totals.count} transactions · withdrawals ${inr.format(m.totals.withdrawals)} · deposits ${inr.format(m.totals.deposits)}`,
+      m.openingBalance !== null ? `Opening balance ${inr.format(m.openingBalance)} · closing balance ${inr.format(m.closingBalance ?? 0)}` : 'No balance column: balance check skipped.',
+      `Dates read as ${m.dateOrder}${m.reversed ? '; statement was newest first and has been reversed' : ''}. ${m.skippedLines} non-transaction line(s) skipped.`,
+    ];
+    if (m.balanceMismatches.length) lines.push(`Balance does not add up on row(s) ${m.balanceMismatches.slice(0, 20).join(', ')}${m.balanceMismatches.length > 20 ? '…' : ''}. Check these before importing.`);
+    detailsEl.replaceChildren(...lines.map(t => Object.assign(document.createElement('li'), { textContent: t })));
+    csvBtn.hidden = xlsxBtn.hidden = false;
+    setStatus(statusEl, m.balanceMismatches.length ? 'Cleaned, but the balance check found problems.' : 'Cleaned. Balance check passed.', m.balanceMismatches.length ? 'error' : 'success');
+  });
+
+  csvBtn.addEventListener('click', () => downloadText('bank-statement-clean.csv', outputEl.value, 'text/csv'));
+  xlsxBtn.addEventListener('click', () => {
+    const url = URL.createObjectURL(new Blob([toXlsx(rows)], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
+    const a = Object.assign(document.createElement('a'), { href: url, download: 'bank-statement-clean.xlsx' });
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+</script>

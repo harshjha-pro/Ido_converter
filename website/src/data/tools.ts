@@ -65,6 +65,10 @@ export const TOOLS: ToolEntry[] = [
     title: 'GSTR-2B JSON to Excel', description: 'Merge several months of GSTR-2B JSON into one Excel workbook, with a summary sheet. Files stay on your device.',
     searchPhrase: 'GSTR-2B JSON to Excel multiple months', seoTitle: 'GSTR-2B JSON to Excel: Merge Multiple Months',
     seoDescription: 'Convert GSTR-2B JSON files to Excel and merge several months into one workbook with B2B, CDNR, IMPG and a summary. Runs in your browser; nothing uploaded.' },
+  { profession: 'ca', slug: 'bank-statement-csv-cleaner', group: 'bank', live: caReviewed('bank-statement-csv-cleaner'),
+    title: 'Bank Statement CSV Cleaner', description: 'Clean any bank CSV export into one tidy layout for Tally import, with a running-balance check.',
+    searchPhrase: 'bank statement CSV for Tally import', seoTitle: 'Bank Statement CSV Cleaner for Tally Import',
+    seoDescription: 'Clean bank statement CSV exports for TallyPrime: removes header junk and totals, fixes dates and Dr/Cr amounts, checks running balances. Runs in your browser.' },
 ];
 
 export function toolUrl(tool: ToolEntry): string {
