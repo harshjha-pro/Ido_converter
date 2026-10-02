@@ -15,6 +15,9 @@ Every rate, divisor, threshold or official spec used by a tool must be listed he
 
 | GST rates from 22-09-2025 | Nil, 0.25%, 1.5%, 3%, 5%, 18%, 40% (tobacco items on a later notified date) | [PIB: 56th GST Council recommendations](https://www.pib.gov.in/PressReleasePage.aspx?PRID=2163555), [GST Council press release](https://gstcouncil.gov.in/sites/default/files/2025-09/press_release_press_information_bureau.pdf) | 2025-09-22 | 2026-10-02 | TODO (CA) |
 
+| GSTR-3B late fee (tax periods from June 2021) | ₹25/day per Act (₹10 nil); cap per Act: nil ₹250, AATO ≤1.5 cr ₹1,000, 1.5–5 cr ₹2,500, >5 cr ₹5,000 | [Notification 19/2021-CT (GST Council)](https://gstcouncil.gov.in/node/4305), [PIB 43rd GSTCM](https://www.pib.gov.in/PressReleasePage.aspx?PRID=1722578), [GST portal FAQ](https://tutorial.gst.gov.in/userguide/returns/GSTR3B.htm) | 2021-06-01 | 2026-10-02 | TODO (CA) |
+| GST interest on late payment (s.50(1)) | 18% p.a. on cash-paid current-period tax; from Jan 2026 periods less minimum ECL balance | [CGST Act s.50](https://taxinformation.cbic.gov.in/content/html/tax_repository/gst/acts/2017_CGST_act/active/chapter10/section50_v1.00.html), [GST portal advisory](https://tutorial.gst.gov.in/downloads/news/final_advisory_on_interest_calculator.pdf) | — | 2026-10-02 | TODO (CA) |
+
 ## Notes
 
 - **Volumetric weight calculator:** ships with no default divisor. The user enters their courier's divisor. A default can be added only with a courier rate-card source in the table above.

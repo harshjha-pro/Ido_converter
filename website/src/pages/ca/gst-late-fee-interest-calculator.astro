@@ -1,0 +1,97 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import CaNotice from '../../components/CaNotice.astro';
+import { LATE_FEE_RULES as R } from '../../../../core/ca/gst-late-fee';
+
+const sources = [...R.lateFee.sources, ...R.interest.sources].map(s => ({ ...s, lastChecked: R.lastChecked }));
+---
+
+<ToolLayout
+  slug="gst-late-fee-interest-calculator"
+  howTo="Choose the month the GSTR-3B is for, enter its due date and the date you filed (and paid), your turnover band for the previous year, and the tax you paid in cash. For January 2026 onwards you can also enter the lowest balance in your electronic cash ledger between the due date and payment. The result shows the late fee split by Act, the interest and how each was worked out."
+  faq={[
+    { q: "How is the GSTR-3B late fee worked out?", a: "₹25 per day under each of CGST and SGST (₹10 per day each for a nil return), from the day after the due date to the filing date, capped per return by turnover: ₹250 per Act for nil returns, ₹1,000 up to ₹1.5 crore, ₹2,500 from ₹1.5 to 5 crore and ₹5,000 above ₹5 crore (Notification 19/2021-CT)." },
+    { q: "On what amount is interest charged?", a: "For tax of the current period declared in a late return, interest at 18% a year applies only to the part paid in cash (Section 50(1) proviso), for the days of delay. From the January 2026 tax period the portal also deducts the lowest cash ledger balance held from the due date to payment." },
+    { q: "Does it cover IGST, GSTR-1 or annual returns?", a: "No. It covers GSTR-3B for tax periods from June 2021. Interest on tax of earlier periods paid now, or on wrongly used ITC, follows other rules." },
+    { q: "The portal shows a different amount", a: "The portal's figure is the one that counts. Check the dates and the cash amount, and ask your CA about waivers or special notifications for your period." }
+  ]}
+>
+  <div class="tool-ui">
+    <CaNotice slug="gst-late-fee-interest-calculator" sources={sources} />
+    <form id="calc" class="controls-panel" novalidate>
+      <div class="field-row">
+        <label class="field" for="period">Tax period (month)
+          <input id="period" class="text-input" type="month" min="2021-06" required />
+        </label>
+        <label class="field" for="due">Due date
+          <input id="due" class="text-input" type="date" required />
+        </label>
+        <label class="field" for="filed">Filing and payment date
+          <input id="filed" class="text-input" type="date" required />
+        </label>
+      </div>
+      <div class="field-row">
+        <label class="field" for="band">Turnover in previous year
+          <select id="band" class="style-select">
+            <option value="upTo1_5Cr">Up to ₹1.5 crore</option>
+            <option value="from1_5To5Cr">₹1.5 crore to ₹5 crore</option>
+            <option value="above5Cr">Above ₹5 crore</option>
+          </select>
+        </label>
+        <label class="field" for="cash">Tax paid in cash (₹)
+          <input id="cash" class="text-input" type="number" inputmode="decimal" min="0" step="any" value="0" />
+        </label>
+        <label class="field" for="ecl">Lowest cash ledger balance, Jan 2026 on (₹, optional)
+          <input id="ecl" class="text-input" type="number" inputmode="decimal" min="0" step="any" />
+        </label>
+      </div>
+      <label class="options-group-inline"><input type="checkbox" id="nil" /> Nil return (no tax liability)</label>
+      <button type="submit" class="btn-primary btn-run">Calculate &rarr;</button>
+      <div id="status-area" class="status-area" role="status"></div>
+    </form>
+    <section class="result-box" aria-live="polite" aria-labelledby="result-title">
+      <h2 id="result-title" class="panel-label">Late fee + interest</h2>
+      <p id="total" class="big-number">—</p>
+      <dl id="results" class="result-list"></dl>
+      <ul id="explain" class="findings-list"></ul>
+    </section>
+  </div>
+</ToolLayout>
+
+<script>
+  import { calculate, type TurnoverBand } from '../../../../core/ca/gst-late-fee';
+  import { byId, setStatus } from '../../scripts/tool-ui';
+
+  const inr = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 2 });
+  const val = (id: string) => byId<HTMLInputElement>(id).value;
+  const num = (id: string) => (val(id).trim() === '' ? Number.NaN : Number(val(id)));
+
+  byId<HTMLFormElement>('calc').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const ecl = val('ecl').trim() === '' ? undefined : num('ecl');
+    const r = calculate({
+      taxPeriod: val('period'), dueDate: val('due'), filingDate: val('filed'), nilReturn: byId<HTMLInputElement>('nil').checked,
+      turnoverBand: byId<HTMLSelectElement>('band').value as TurnoverBand, cashLiability: num('cash'), minCashLedgerBalance: ecl,
+    });
+    const list = byId<HTMLDListElement>('results');
+    const explain = byId<HTMLUListElement>('explain');
+    list.replaceChildren(); explain.replaceChildren();
+    if (!r.ok || !r.output) {
+      byId('total').textContent = '—';
+      setStatus(byId('status-area'), `Error: ${r.error}`, 'error');
+      return;
+    }
+    const o = r.output;
+    byId('total').textContent = inr.format(o.lateFeeTotal + o.interest);
+    const rows: [string, string][] = [
+      ['Days late', String(o.daysLate)],
+      ['Late fee: CGST', inr.format(o.lateFeePerAct)],
+      ['Late fee: SGST/UTGST', inr.format(o.lateFeePerAct)],
+      ['Late fee total', inr.format(o.lateFeeTotal) + (o.lateFeeCapped ? ' (capped)' : '')],
+      ['Interest (18% a year)', inr.format(o.interest)],
+    ];
+    for (const [k, v] of rows) list.append(Object.assign(document.createElement('dt'), { textContent: k }), Object.assign(document.createElement('dd'), { textContent: v }));
+    explain.replaceChildren(...o.explanation.map(t => Object.assign(document.createElement('li'), { textContent: t })));
+    setStatus(byId('status-area'), 'Calculated.', 'success');
+  });
+</script>

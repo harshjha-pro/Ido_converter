@@ -1,0 +1,25 @@
+{
+  "_readme": "GSTR-3B late fee and interest rules as data (AGENTS.md rule 4). Tax periods before appliesFromPeriod are refused because their rules are not recorded here.",
+  "lastChecked": "2026-10-02",
+  "reviewedBy": "",
+  "lateFee": {
+    "appliesFromPeriod": "2021-06",
+    "perDayPerAct": { "withLiability": 25, "nil": 10 },
+    "capPerAct": { "nil": 250, "upTo1_5Cr": 1000, "from1_5To5Cr": 2500, "above5Cr": 5000 },
+    "acts": ["CGST", "SGST/UTGST"],
+    "sources": [
+      { "title": "Notification 19/2021-Central Tax dated 01.06.2021 (GST Council)", "url": "https://gstcouncil.gov.in/node/4305" },
+      { "title": "PIB: Recommendations of the 43rd GST Council meeting", "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=1722578" },
+      { "title": "GST portal FAQ: Form GSTR-3B (late fee per day)", "url": "https://tutorial.gst.gov.in/userguide/returns/GSTR3B.htm" }
+    ]
+  },
+  "interest": {
+    "ratePercentPerYear": 18,
+    "dayCountBasis": 365,
+    "cashLedgerBenefitFromPeriod": "2026-01",
+    "sources": [
+      { "title": "CGST Act section 50 (CBIC tax information portal)", "url": "https://taxinformation.cbic.gov.in/content/html/tax_repository/gst/acts/2017_CGST_act/active/chapter10/section50_v1.00.html" },
+      { "title": "GST portal: Advisory on interest collection and related enhancements in GSTR-3B", "url": "https://tutorial.gst.gov.in/downloads/news/final_advisory_on_interest_calculator.pdf" }
+    ]
+  }
+}

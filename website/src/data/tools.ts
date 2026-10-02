@@ -73,6 +73,10 @@ export const TOOLS: ToolEntry[] = [
     title: 'GST Calculator (Inclusive and Exclusive)', description: 'Add or remove GST at the new 2025 rates, with CGST/SGST or IGST split.',
     searchPhrase: 'GST calculator new rates 2025 inclusive exclusive', seoTitle: 'GST Calculator with New 2025 Rates: Inclusive and Exclusive',
     seoDescription: 'GST calculator with the rates effective 22 September 2025 (5%, 18%, 40% and special rates). Add or remove GST, split CGST/SGST or IGST. Source shown.' },
+  { profession: 'ca', slug: 'gst-late-fee-interest-calculator', group: 'gst-calc', live: caReviewed('gst-late-fee-interest-calculator'),
+    title: 'GST Late Fee and Interest Calculator', description: 'GSTR-3B late fee with turnover caps and Section 50 interest, including the 2026 cash ledger rule.',
+    searchPhrase: 'GSTR-3B late fee and interest calculator', seoTitle: 'GSTR-3B Late Fee and Interest Calculator (2026)',
+    seoDescription: 'Calculate GSTR-3B late fee with turnover-based caps and 18% interest on cash liability, including the January 2026 cash ledger benefit. Sources shown.' },
 ];
 
 export function toolUrl(tool: ToolEntry): string {

@@ -84,7 +84,7 @@ Fill the search phrase and "who ranks" columns during Milestone 0 by googling th
 | GSTR-2B JSON to Excel (multi-month) | CAs | GSTR-2B JSON to Excel multiple months | GSTZen, Finexo, Conversiontools (from planning research) | High | 2 | Built, unlisted until CA review |
 | Bank statement CSV cleaner (Tally mapping) | CAs | bank statement CSV for Tally import | Parsify, AI Accountant, Suvit (paid, from planning research) | Medium | 2 | Built, unlisted until CA review |
 | GST inclusive and exclusive calculator | CAs | GST calculator new rates 2025 inclusive exclusive | ClearTax, Groww and many others (from planning research) | High | 2 | Built, unlisted until CA review |
-| GST late fee and interest calculator | CAs | | | Medium | 2 | Not started |
+| GST late fee and interest calculator | CAs | GSTR-3B late fee and interest calculator | ClearTax and other tax sites (from planning research) | Medium | 2 | Built, unlisted until CA review |
 | TDS rate and threshold lookup | CAs | | | Medium | 2 | Not started |
 | Compliance due-date calendar | CAs | | | Medium | 2 | Not started |
 | JSON formatter and validator, JWT decoder | Developers | | | High | 3 | Not started |
@@ -508,3 +508,10 @@ Decisions: Custom rate allowed because rates depend on HSN/SAC; the tool never c
 Tests: vitest 202/202; build passes. Browser: ₹1,180 incl. 18% → ₹1,000 + ₹90 + ₹90; custom 12% inter-state works; zero network requests; no horizontal scroll at 360 px.
 Next: P2.3 tool 4 (GST late fee and interest).
 Suggested commit message: Add GST calculator with 2025 rates
+
+### 2026-10-02 (P2.3 tool 4: GST late fee and interest)
+Done: `core/ca/gst-late-fee-rules.json` (Notification 19/2021-CT caps, per-day amounts, 18% interest, January 2026 cash ledger benefit, with official sources), `core/ca/gst-late-fee.ts`, page `/ca/gst-late-fee-interest-calculator` with step-by-step explanation, spec, 8-case fixture (values worked by hand), 18 tests.
+Decisions: Due date is entered by the user (varies by filer type/state and by extension notifications). Periods before June 2021 are refused. Only current-period cash liability is covered.
+Tests: vitest 220/220; build passes. Browser: Jan 2026 example gives ₹500 + ₹295.89 with explanation; May 2021 refused; zero network requests; no horizontal scroll.
+Next: P2.3 tool 5 (TDS rate lookup).
+Suggested commit message: Add GSTR-3B late fee and interest calculator
