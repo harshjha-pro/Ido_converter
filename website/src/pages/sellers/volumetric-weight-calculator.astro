@@ -1,0 +1,99 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import { relatedTools } from '../../data/tools';
+import { FORMULA_TEXT } from '../../../../core/sellers/volumetric-weight';
+---
+
+<ToolLayout
+  title="Volumetric Weight Calculator"
+  howTo="Measure the packed box. Choose cm or inches, enter length, width and height, and your courier's volumetric divisor from their rate card. Add the actual weight if you know it to see which one is higher."
+  faq={[
+    { q: "Is anything I enter sent to a server?", a: "No. The calculation runs in your browser." },
+    { q: "Which divisor should I use?", a: "Use the divisor on your courier's rate card for your service and unit. It differs between couriers and services, so the calculator does not assume one." },
+    { q: "Which weight will I be charged for?", a: "Couriers usually charge the higher of actual and volumetric weight, but rules vary (rounding up, minimum weights, surcharges). Check your courier's terms." },
+    { q: "Why kilograms for cm and pounds for inches?", a: "Courier divisors are normally quoted that way: centimetres give kilograms and inches give pounds. Enter the actual weight in the same unit shown." }
+  ]}
+  relatedTools={relatedTools('volumetric-weight-calculator')}
+>
+  <div class="tool-ui">
+    <form id="calc" class="controls-panel" novalidate>
+      <fieldset class="options-group">
+        <legend>Box measured in</legend>
+        <div class="field-row">
+          <label class="options-group-inline"><input type="radio" name="unit" value="cm" checked /> Centimetres (weight in kg)</label>
+          <label class="options-group-inline"><input type="radio" name="unit" value="in" /> Inches (weight in lb)</label>
+        </div>
+      </fieldset>
+      <div class="field-row">
+        <label class="field" for="length">Length <span class="unit-label">(cm)</span>
+          <input id="length" class="text-input" type="number" inputmode="decimal" min="0" step="any" required />
+        </label>
+        <label class="field" for="width">Width <span class="unit-label">(cm)</span>
+          <input id="width" class="text-input" type="number" inputmode="decimal" min="0" step="any" required />
+        </label>
+        <label class="field" for="height">Height <span class="unit-label">(cm)</span>
+          <input id="height" class="text-input" type="number" inputmode="decimal" min="0" step="any" required />
+        </label>
+      </div>
+      <div class="field-row">
+        <label class="field" for="divisor">Divisor: check your courier's divisor
+          <input id="divisor" class="text-input" type="number" inputmode="decimal" min="0" step="any" placeholder="From your courier's rate card" required />
+        </label>
+        <label class="field" for="actual">Actual weight, optional <span class="weight-label">(kg)</span>
+          <input id="actual" class="text-input" type="number" inputmode="decimal" min="0" step="any" />
+        </label>
+      </div>
+      <button type="submit" class="btn-primary btn-run">Calculate &rarr;</button>
+      <div id="status-area" class="status-area" role="status"></div>
+    </form>
+
+    <section class="result-box" aria-live="polite" aria-labelledby="result-title">
+      <h2 id="result-title" class="panel-label">Volumetric weight</h2>
+      <p id="volumetric" class="big-number">—</p>
+      <p id="detail" class="result-detail"></p>
+      <p class="formula">{FORMULA_TEXT}</p>
+      <p class="result-detail">The higher of actual and volumetric weight is usually what is charged, but this varies by courier.</p>
+    </section>
+  </div>
+</ToolLayout>
+
+<script>
+  import { calculate, type DimensionUnit } from '../../../../core/sellers/volumetric-weight';
+  import { byId, setStatus } from '../../scripts/tool-ui';
+
+  const fmt = new Intl.NumberFormat('en-IN', { maximumFractionDigits: 3 });
+  const num = (id: string) => {
+    const raw = byId<HTMLInputElement>(id).value.trim();
+    return raw === '' ? Number.NaN : Number(raw);
+  };
+  const unit = () => (document.querySelector<HTMLInputElement>('input[name="unit"]:checked')?.value ?? 'cm') as DimensionUnit;
+
+  function syncUnitLabels() {
+    const u = unit();
+    document.querySelectorAll('.unit-label').forEach(el => { el.textContent = `(${u})`; });
+    document.querySelectorAll('.weight-label').forEach(el => { el.textContent = u === 'cm' ? '(kg)' : '(lb)'; });
+  }
+  document.querySelectorAll('input[name="unit"]').forEach(r => r.addEventListener('change', syncUnitLabels));
+
+  byId<HTMLFormElement>('calc').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const volEl = byId<HTMLParagraphElement>('volumetric');
+    const detailEl = byId<HTMLParagraphElement>('detail');
+    const statusEl = byId<HTMLDivElement>('status-area');
+    const r = calculate({ length: num('length'), width: num('width'), height: num('height'), unit: unit(), divisor: num('divisor'), actualWeight: num('actual') });
+    if (!r.ok || !r.output) {
+      volEl.textContent = '—';
+      detailEl.textContent = '';
+      setStatus(statusEl, `Error: ${r.error}`, 'error');
+      return;
+    }
+    const o = r.output;
+    volEl.textContent = `${fmt.format(o.volumetricWeight)} ${o.weightUnit}`;
+    const volume = `Box volume ${fmt.format(o.volume)} ${o.volumeUnit}.`;
+    const compare = o.higher === null ? ' Enter the actual weight to compare.'
+      : o.higher === 'equal' ? ` Actual and volumetric weight are the same (${fmt.format(o.higherWeight)} ${o.weightUnit}).`
+      : ` ${o.higher === 'volumetric' ? 'Volumetric' : 'Actual'} weight is higher: ${fmt.format(o.higherWeight)} ${o.weightUnit} (actual ${fmt.format(o.actualWeight!)} ${o.weightUnit}).`;
+    detailEl.textContent = volume + compare;
+    setStatus(statusEl, 'Calculated.', 'success');
+  });
+</script>

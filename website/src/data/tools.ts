@@ -25,6 +25,8 @@ export const TOOLS: ToolEntry[] = [
     title: 'JSON Repair', description: 'Fix broken JSON from AI output or hand edits, and see exactly what changed.' },
   { profession: 'jobseekers', slug: 'notice-period-buyout-calculator', group: 'offer', live: true,
     title: 'Notice Period Buyout Calculator', description: 'Estimate what it costs to buy out the rest of your notice period, with the formula shown.' },
+  { profession: 'sellers', slug: 'volumetric-weight-calculator', group: 'shipping', live: true,
+    title: 'Volumetric Weight Calculator', description: 'Work out volumetric weight from box size with your courier\'s divisor, and see which weight is higher.' },
 ];
 
 export function toolUrl(tool: ToolEntry): string {

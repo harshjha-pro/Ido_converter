@@ -33,6 +33,8 @@ The AI assistant reads this at the start of every session and updates it at the 
 | 13 | Docs live in `Docs/` but every doc refers to `docs/`, and AGENTS.md/CLAUDE.md expect to sit at the repo root. Rename `Docs/` → `docs/` and move AGENTS.md/CLAUDE.md to the root? (Renames need approval per AGENTS.md.) | | Yes, done 2026-10-02. `Design.md` also renamed to `DESIGN.md` to match the references. |
 | 14 | `public/footer-art.png` is outside Astro's configured `website/public/`, so it is not served. Move it, or delete it if unused? | | Moved to `website/public/` 2026-10-02. |
 | 15 | `tsc --noEmit` fails on the tests because `@types/node` is missing (it is not in CI). Add `@types/node` as a dev dependency (MIT, types only)? | | Yes, added 2026-10-02. |
+| 18 | Volumetric weight calculator ships with no default divisor (rule 4). Do you want a default? If yes, which courier and service, with a rate-card link for `rules-and-sources.md`? | | |
+| 19 | Return-loss calculator (prompt 15): confirm the proposed formula (see session log 2026-10-02, prompt 15). | | |
 | 17 | Muted text fails contrast. The site uses `--color-text-muted: #6B726F` (4.32:1 on cream, below 4.5:1); DESIGN.md says `#88928A` (2.82:1, worse). Proposal: `#5F6662` (5.17:1 on cream, 5.89:1 on white), and update DESIGN.md to match. | | Yes. Applied 2026-10-02 in Layout.astro and DESIGN.md. |
 | 16 | `.claude/skills/idoconverter-design/SKILL.md` does not exist; the skill file is at `Docs/SKILL.md`. Move it? | | Moved 2026-10-02. |
 | 12 | What exactly is the "motion" need — a few subtle CSS transitions on the home page, or real animated marketing sections (which would mean adding React just for that)? | | |
@@ -75,7 +77,7 @@ Fill the search phrase and "who ranks" columns during Milestone 0 by googling th
 | JSON repair | Developers | | | Low to medium | 1 | Built, DoD partly verified |
 | Visa and passport photo sizer | Exam and form | | | Medium | 1 | Not started |
 | Notice period buyout calculator | Job seekers | | | Low | 1 | Built, DoD partly verified |
-| Volumetric weight calculator | Online sellers | | | Medium | 1 | Not started |
+| Volumetric weight calculator | Online sellers | | | Medium | 1 | Built, DoD partly verified |
 | Return-loss calculator | Online sellers | | | Low (unverified) | 1 | Not started |
 | GSTR-2B JSON to Excel (multi-month) | CAs | | | High | 2 | Not started |
 | Bank statement CSV cleaner (Tally mapping) | CAs | | | Medium | 2 | Not started |
@@ -121,7 +123,7 @@ These findings came from web searches during planning. Re-check anything that af
 
 ## 6. Rules and sources
 
-Kept in `docs/rules-and-sources.md`. Columns: rule, value, source, effectiveFrom, lastChecked, reviewedBy. Nothing is filled in yet.
+Kept in `docs/rules-and-sources.md` (created 2026-10-02). Columns: rule, value, source, effectiveFrom, lastChecked, reviewedBy. Only TODO rows so far: volumetric divisor default and visa photo specs.
 
 ## 7. Legal and launch checklist
 
@@ -309,3 +311,13 @@ Tests run and result: vitest 115/115 pass; build passes. Browser: ₹1,20,000 fo
 Definition of Done: 1 PASS · 2 PASS · 3 PASS · 4 PARTIAL (Chromium only) · 5 PARTIAL (no related tools yet: only job seekers tool) · 6 PASS (form fields labelled, Enter submits) · 7 PASS · 8 N/A (not a CA/tax/visa/pricing tool; formula and assumption shown anyway).
 Next: prompt 14 (volumetric weight calculator).
 Suggested commit message: Add notice period buyout calculator and job seekers page
+
+### 2026-10-02 (prompt 14: volumetric weight calculator)
+Milestone / tool: Milestone 5 / Task 5.2: Volumetric weight calculator
+Done: `core/sellers/volumetric-weight.ts`, `/sellers/` profession page, tool page `/sellers/volumetric-weight-calculator` (cm/kg or in/lb, optional actual weight, higher weight named, formula on page), spec, 5-case fixture, 16 tests. Created `docs/rules-and-sources.md` (Milestone 0 task 0.5) with TODO rows.
+Decisions: No default divisor (AGENTS.md rule 4: courier divisors need a source). The field is required and labelled "check your courier's divisor". See open question 18.
+New dependencies (name, size, license): None.
+Tests run and result: vitest 131/131 pass; build passes. Browser: 40×30×20 cm ÷ 5000 = 4.8 kg vs 2 kg actual → volumetric higher; inch labels switch to in/lb; missing divisor gives a clear error; zero network requests; no horizontal scroll at 360 px.
+Definition of Done: 1 PASS · 2 PASS · 3 PASS · 4 PARTIAL (Chromium only) · 5 PARTIAL (no related seller tool yet) · 6 PASS · 7 PASS · 8 PARTIAL: courier divisor has no sourced default by design; no rule value is hard-coded.
+Next: STOP for team input. Prompt 12 needs the extension tested; prompt 15 needs the formula confirmed; prompt 16 needs countries and official specs.
+Suggested commit message: Add volumetric weight calculator and sellers page

@@ -1,0 +1,12 @@
+[
+  { "name": "cm box, volumetric higher", "input": { "length": 40, "width": 30, "height": 20, "unit": "cm", "divisor": 5000, "actualWeight": 2 },
+    "expected": { "volume": 24000, "volumeUnit": "cm³", "volumetricWeight": 4.8, "weightUnit": "kg", "actualWeight": 2, "higher": "volumetric", "higherWeight": 4.8 } },
+  { "name": "cm box, actual higher", "input": { "length": 20, "width": 15, "height": 10, "unit": "cm", "divisor": 4000, "actualWeight": 3.2 },
+    "expected": { "volumetricWeight": 0.75, "higher": "actual", "higherWeight": 3.2 } },
+  { "name": "inch box", "input": { "length": 16, "width": 12, "height": 8, "unit": "in", "divisor": 139 },
+    "expected": { "volume": 1536, "volumeUnit": "in³", "volumetricWeight": 11.05, "weightUnit": "lb", "actualWeight": null, "higher": null, "higherWeight": 11.05 } },
+  { "name": "equal weights", "input": { "length": 10, "width": 10, "height": 10, "unit": "cm", "divisor": 1000, "actualWeight": 1 },
+    "expected": { "volumetricWeight": 1, "higher": "equal" } },
+  { "name": "decimal dimensions", "input": { "length": 32.5, "width": 22.2, "height": 11.4, "unit": "cm", "divisor": 5000 },
+    "expected": { "volume": 8225.1, "volumetricWeight": 1.645 } }
+]
