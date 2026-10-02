@@ -204,13 +204,3 @@ Tests run and result: vitest 22/22 pass; `tsc --noEmit` clean; `npm run build` p
 Problems / open questions: none new.
 Next: Edge/Firefox/Safari check of the masker page, fill its search phrase in the tracker, then task 1.5 (test deploy).
 Suggested commit message: Align repo layout with docs and add JSON PII masker tool spec
-
-### 2026-10-02 (prompt folder)
-Milestone / tool: Milestone 1 (housekeeping)
-Done: Added `prompts/00-README.md` (how to run the numbered prompt files one at a time). Corrected its open-question reference to NOTES.md questions 7–12. The prompt files `01`–`28` themselves are not in the repo yet.
-Decisions: none.
-New dependencies (name, size, license): None.
-Tests run and result: not needed (docs only).
-Problems / open questions: none.
-Next: add the prompt files `01`–`28` when available.
-Suggested commit message: Add prompt folder README
