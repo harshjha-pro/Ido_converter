@@ -15,7 +15,7 @@ export const TOOLS: ToolEntry[] = [
     title: 'JSON PII Masker', description: 'Mask sensitive values by key name and by pattern while keeping valid JSON structure.' },
   { profession: 'developers', slug: 'consistent-pseudonymizer', group: 'privacy', live: true,
     title: 'Consistent Pseudonymizer', description: 'Replace real values with realistic fakes. The same input always gets the same fake, so relationships survive.' },
-  { profession: 'developers', slug: 'log-secret-scrubber', group: 'privacy', live: false,
+  { profession: 'developers', slug: 'log-secret-scrubber', group: 'privacy', live: true,
     title: 'Log and Secret Scrubber', description: 'Find and redact API keys, tokens, JWTs, passwords and private keys in logs, with a findings list.' },
   { profession: 'developers', slug: 'sql-output-to-json', group: 'data', live: false,
     title: 'SQL Output to JSON', description: 'Paste psql, mysql or tab-separated console output and get typed JSON.' },

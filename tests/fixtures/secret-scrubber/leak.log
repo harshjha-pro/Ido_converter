@@ -1,0 +1,29 @@
+2026-10-01T09:14:02.118Z INFO  api  Booting service orders-api v2.3.1 (pid 4121)
+2026-10-01T09:14:02.120Z DEBUG env  AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE
+2026-10-01T09:14:02.120Z DEBUG env  AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+2026-10-01T09:14:02.121Z DEBUG env  DATABASE_URL=postgres://orders_admin:Pg-Sup3r$ecret!@db.internal:5432/orders
+2026-10-01T09:14:02.121Z DEBUG env  MONGO_URI=mongodb+srv://svc_reader:m0ng0FakePass99@cluster0.abcd.mongodb.net/app
+2026-10-01T09:14:02.122Z DEBUG env  REDIS_URL=redis://:redisFakeSecret42@cache.internal:6379
+2026-10-01T09:14:02.122Z DEBUG env  DB_PASSWORD=hunter2-but-longer
+2026-10-01T09:14:02.122Z DEBUG env  STRIPE_SECRET=__STRIPE_KEY__
+2026-10-01T09:14:02.123Z DEBUG env  GITHUB_TOKEN=ghp_FAKEaBcDeFgHiJkLmNoPqRsTuVwXyZ012345
+2026-10-01T09:14:02.123Z DEBUG env  SLACK_BOT_TOKEN=__SLACK_TOKEN__
+2026-10-01T09:14:02.123Z DEBUG env  GOOGLE_MAPS_KEY=AIzaSyFAKE-1234567890abcdefghijklmnopqr
+2026-10-01T09:14:02.124Z DEBUG env  OPENAI_API_KEY=sk-proj-FAKEabcdefghijklmnopqrstuvwx1234
+2026-10-01T09:14:03.551Z INFO  http POST /v1/orders 201 38ms headers={"Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c3JfOTgyMSIsInJvbGUiOiJhZG1pbiJ9.FAKEsignatureFAKEsignatureFAKE0","X-Request-Id":"req_7f3a"}
+2026-10-01T09:14:04.002Z WARN  http GET /internal/health 401 Authorization: Basic YWRtaW46Q2hhbmdlTWUxMjM=
+2026-10-01T09:14:04.990Z ERROR auth login failed body={"username":"asha","password":"Asha@2026!","remember":true}
+2026-10-01T09:14:05.010Z ERROR auth retry url=https://sso.example.in/login?user=asha&password=Asha%402026%21&next=/home
+2026-10-01T09:14:05.400Z DEBUG cfg  client_secret: 'cs_FAKE_9f8e7d6c5b4a'
+2026-10-01T09:14:05.401Z DEBUG cfg  api_key = "AK-FAKE-1122334455"
+2026-10-01T09:14:06.000Z FATAL tls  failed to load key:
+-----BEGIN RSA PRIVATE KEY-----
+MIIEowIBAAKCAQEAFAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKE
+FAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKE
+-----END RSA PRIVATE KEY-----
+2026-10-01T09:14:06.100Z FATAL ssh  deploy key dump:
+-----BEGIN OPENSSH PRIVATE KEY-----
+b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
+FAKEtruncatedFAKEtruncatedFAKEtruncated
+
+2026-10-01T09:14:07.000Z INFO  api  shutting down, token_count=0 password=*** api_key=${API_KEY}

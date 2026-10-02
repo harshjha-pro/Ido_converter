@@ -69,7 +69,7 @@ Fill the search phrase and "who ranks" columns during Milestone 0 by googling th
 |---|---|---|---|---|---|---|
 | JSON PII masker | Developers | | | Low | 1 | Built, DoD partly verified |
 | Consistent pseudonymizer | Developers | | | Low | 1 | Built, DoD partly verified |
-| Log and secret scrubber | Developers | | | Medium | 1 | Not started |
+| Log and secret scrubber | Developers | | | Medium | 1 | Built, DoD partly verified |
 | SQL console output to JSON | Developers | | | Low to medium | 1 | Not started |
 | JSON to TypeScript and Zod | Developers | | | Medium | 1 | Not started |
 | JSON repair | Developers | | | Low to medium | 1 | Not started |
@@ -235,3 +235,14 @@ Definition of Done: 1 PASS (spec samples in tests) · 2 PASS (zero requests whil
 Problems / open questions: none.
 Next: prompt 06 (log and secret scrubber).
 Suggested commit message: Add consistent pseudonymizer
+
+### 2026-10-02 (prompt 06: log and secret scrubber)
+Milestone / tool: Milestone 2 / Task 2.2: Log and secret scrubber
+Done: `core/developers/secret-scrubber.ts`, page `/developers/log-secret-scrubber` with the required review warning and a findings list, spec `docs/tools/log-secret-scrubber.md`, realistic leak fixture and 11 tests.
+Decisions: Spans are found on the original text and overlaps resolved by detector priority, so line numbers stay correct and nothing is double-redacted. Only the password part of a connection string is redacted. Findings show type, count and line numbers, never the secret. Placeholders (`***`, `${VAR}`) are not counted.
+New dependencies (name, size, license): None.
+Tests run and result: vitest 45/45 pass; build passes.
+Definition of Done: 1 PASS · 2 PASS (zero requests while scrubbing) · 3 PASS (empty, 20,000-line log) · 4 PARTIAL (360/1280 px PASS in Chromium; other browsers untested) · 5 PASS · 6 PASS · 7 PASS · 8 N/A.
+Problems / open questions: none.
+Next: prompt 07 (link the three privacy tools, Milestone 2 wrap-up).
+Suggested commit message: Add log and secret scrubber
