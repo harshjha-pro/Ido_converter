@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "JSON Privacy Masker",
+  "short_name": "Privacy Masker",
+  "version": "0.1.0",
+  "description": "Select JSON or text on a web page, mask sensitive values locally, and copy the safe version.",
+  "permissions": ["contextMenus"],
+  "background": {
+    "service_worker": "js/extension/json-privacy-masker/src/background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_title": "JSON Privacy Masker",
+    "default_popup": "popup.html",
+    "default_icon": { "16": "icons/icon-16.png", "32": "icons/icon-32.png", "48": "icons/icon-48.png", "128": "icons/icon-128.png" }
+  },
+  "icons": { "16": "icons/icon-16.png", "32": "icons/icon-32.png", "48": "icons/icon-48.png", "128": "icons/icon-128.png" },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'none'; connect-src 'none'"
+  }
+}

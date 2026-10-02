@@ -287,3 +287,15 @@ All six developer tools: zero network requests while running, no horizontal scro
 Milestone 3: COMPLETE (manual Edge/Firefox/Safari check and search phrases still pending for all six).
 Next: prompt 11 (extension build).
 Suggested commit message: Add JSON repair and complete developer tools
+
+### 2026-10-02 (prompt 11: extension build)
+Milestone / tool: Milestone 4 / Extension 1: JSON Privacy Masker
+Done: `extension/json-privacy-masker/` (Manifest V3): right-click menu on selected text with three modes (mask, pseudonymize, scrub secrets) plus a popup for pasted text, all calling the shared `core/` code. Popup styled with the site tokens (system fonts). Original shield icon at 16/32/48/128 px. `npm run build:extension` builds `dist/` with the project's own `tsc` and fails if network-capable code is found. Load-unpacked steps in `extension/json-privacy-masker/README.md`.
+Permissions: `contextMenus` only. `activeTab` turned out unnecessary (the click passes the selected text) so it is not requested. No storage, scripting, clipboardWrite or host permissions. CSP `connect-src 'none'`.
+Decisions: Right-click result kept in service-worker memory only, handed to the popup once, then cleared. Popup opens automatically where Chrome allows `action.openPopup()`, otherwise a "1" badge. Hand-written Chrome typings instead of `@types/chrome` (no new dependency). Not submitted to any store.
+New dependencies (name, size, license): None.
+Tests run and result: vitest 99/99 pass (4 new for extension modes). Loaded unpacked in headless Chromium: service worker starts, all three modes work in the popup, invalid JSON points to "Scrub secrets", zero non-extension network requests, no console errors.
+Not verified here: the right-click menu itself (cannot be clicked in headless automation). Needs a manual check.
+Problems / open questions: Firefox needs `background.scripts`; handle in task 4.5.
+Next: prompt 12 needs the team to test the extension first. Then prompts 13–14.
+Suggested commit message: Add JSON Privacy Masker extension

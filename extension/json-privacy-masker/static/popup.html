@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JSON Privacy Masker</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <header class="head">
+    <h1>JSON Privacy <em>Masker</em></h1>
+    <p class="badge">Runs locally. Nothing is uploaded.</p>
+  </header>
+  <main>
+    <label class="label" for="mode">What to do</label>
+    <select id="mode" class="field"></select>
+
+    <label class="label" for="input">Paste JSON or text</label>
+    <textarea id="input" class="field io" spellcheck="false" placeholder='{"email": "asha@example.in"}'></textarea>
+
+    <button id="run" class="btn-primary">Make it safe &rarr;</button>
+    <p id="status" class="status" role="status"></p>
+
+    <div class="row">
+      <label class="label" for="output">Safe version</label>
+      <button id="copy" class="btn-secondary" disabled>Copy safe version</button>
+    </div>
+    <textarea id="output" class="field io" readonly spellcheck="false"></textarea>
+    <p class="note">Pattern-based: review the result before sharing.</p>
+  </main>
+  <script type="module" src="js/extension/json-privacy-masker/src/popup.js"></script>
+</body>
+</html>

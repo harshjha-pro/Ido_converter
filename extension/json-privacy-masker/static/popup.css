@@ -1,0 +1,52 @@
+/* Same tokens as the website (docs/DESIGN.md), simplified for a 380px popup. System fonts: no font files shipped. */
+:root {
+  --color-bg-cream: #F4F0E4;
+  --color-bg-dark: #12382A;
+  --color-text-main: #111111;
+  --color-text-muted: #5F6662;
+  --color-accent-green-text: #236E3F;
+  --color-accent-yellow: #F2C94C;
+  --color-error: #B42318;
+  --color-border: #D1CDBC;
+  --color-card-bg: #FFFFFF;
+  --space-1: 4px; --space-2: 8px; --space-3: 16px; --space-4: 24px;
+}
+* { box-sizing: border-box; }
+body {
+  width: 380px;
+  margin: 0;
+  padding: var(--space-3);
+  font: 14px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: var(--color-text-main);
+  background: var(--color-bg-cream);
+}
+.head { margin-bottom: var(--space-3); }
+h1 { margin: 0 0 var(--space-2); font-size: 18px; font-weight: 600; color: var(--color-bg-dark); }
+h1 em { font-family: Georgia, serif; font-weight: 400; }
+.badge {
+  display: inline-block; margin: 0; padding: var(--space-1) var(--space-2);
+  border-radius: 9999px; background: var(--color-accent-yellow); color: var(--color-bg-dark);
+  font-size: 12px; font-weight: 600;
+}
+main { display: flex; flex-direction: column; gap: var(--space-2); }
+.label { font-size: 12px; font-weight: 600; color: var(--color-bg-dark); }
+.field {
+  width: 100%; padding: var(--space-2); border: 1px solid var(--color-border); border-radius: 8px;
+  background: var(--color-card-bg); color: var(--color-text-main); font: inherit;
+}
+.io { height: 120px; resize: vertical; font: 12px/1.4 ui-monospace, Menlo, Consolas, monospace; }
+.row { display: flex; justify-content: space-between; align-items: center; }
+.btn-primary {
+  padding: var(--space-2) var(--space-3); border: 0; border-radius: 9999px;
+  background: var(--color-text-main); color: #FFFFFF; font: inherit; font-weight: 500; cursor: pointer;
+}
+.btn-secondary {
+  padding: var(--space-1) var(--space-2); border: 1px solid var(--color-text-main); border-radius: 9999px;
+  background: transparent; color: var(--color-text-main); font: inherit; font-size: 12px; cursor: pointer;
+}
+.btn-secondary:disabled { opacity: 0.5; cursor: default; }
+button:focus-visible, .field:focus-visible { outline: 2px solid var(--color-text-main); outline-offset: 2px; }
+.status { margin: 0; min-height: 1.5em; font-size: 12px; font-weight: 600; }
+.status.success { color: var(--color-accent-green-text); }
+.status.error { color: var(--color-error); }
+.note { margin: 0; font-size: 12px; color: var(--color-text-muted); }
