@@ -1,5 +1,12 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { TOOLS, type Profession } from '../data/tools';
+
+// Badges show live tools only, so the home page never promises tools that do not exist yet.
+function badge(p: Profession): string {
+  const n = TOOLS.filter(t => t.profession === p && t.live).length;
+  return n === 0 ? 'Coming soon' : `${n} tool${n === 1 ? '' : 's'}`;
+}
 ---
 
 <Layout title="Home">
@@ -103,7 +110,7 @@ import Layout from '../layouts/Layout.astro';
           <p>Transform, clean and safely share data (JSON, SQL, logs and more).</p>
         </div>
         <div class="card-bottom">
-          <span class="pill-badge">4 tools</span>
+          <span class="pill-badge">{badge('developers')}</span>
           <span class="round-btn">&rarr;</span>
         </div>
       </a>
@@ -117,7 +124,7 @@ import Layout from '../layouts/Layout.astro';
           <p>Calculate costs, check weights and prepare images for marketplaces.</p>
         </div>
         <div class="card-bottom">
-          <span class="pill-badge">2 tools</span>
+          <span class="pill-badge">{badge('sellers')}</span>
           <span class="round-btn">&rarr;</span>
         </div>
       </a>
@@ -131,7 +138,7 @@ import Layout from '../layouts/Layout.astro';
           <p>Get help with resumes, offers and salary calculations.</p>
         </div>
         <div class="card-bottom">
-          <span class="pill-badge">1 tool</span>
+          <span class="pill-badge">{badge('jobseekers')}</span>
           <span class="round-btn">&rarr;</span>
         </div>
       </a>
@@ -145,7 +152,7 @@ import Layout from '../layouts/Layout.astro';
           <p>Create photos and documents that meet portal size rules.</p>
         </div>
         <div class="card-bottom">
-          <span class="pill-badge">1 tool</span>
+          <span class="pill-badge">{badge('forms')}</span>
           <span class="round-btn">&rarr;</span>
         </div>
       </a>
@@ -173,7 +180,7 @@ import Layout from '../layouts/Layout.astro';
           <p>Quick CSS, color and unit conversions.</p>
         </div>
         <div class="card-bottom">
-          <span class="pill-badge yellow-pill">Planned Phase 2</span>
+          <span class="pill-badge yellow-pill">Planned Phase 3</span>
           <span class="round-btn">&rarr;</span>
         </div>
       </a>
@@ -264,6 +271,8 @@ import Layout from '../layouts/Layout.astro';
         <h4>Get your result</h4>
       </div>
     </div>
+  </section>
+
   <!-- 6. Pricing -->
   <section class="pricing-section">
     <div class="pricing-header">
@@ -633,6 +642,8 @@ import Layout from '../layouts/Layout.astro';
   }
   .code-panel {
     flex: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
     background: #FAFAFA;
     border: 1px solid var(--color-border);
     border-radius: 8px;
@@ -1010,6 +1021,8 @@ import Layout from '../layouts/Layout.astro';
     overflow-x: auto;
     gap: 16px;
     padding-bottom: 8px;
+    /* Without this the flex item grows to fit all cards and widens the whole page instead of scrolling */
+    min-width: 0;
   }
   .p-card {
     background: var(--color-card-bg);

@@ -40,4 +40,6 @@ Generic high-entropy strings with no telling key or prefix are not detected. Per
 
 ## Samples (fixture `tests/fixtures/secret-scrubber/leak.log`)
 
+The fake Stripe and Slack tokens are `__STRIPE_KEY__` / `__SLACK_TOKEN__` placeholders filled in by the test at runtime, because GitHub push protection blocks token-shaped strings even when fake.
+
 A realistic service log with fake AWS keys, three connection strings, `DB_PASSWORD`, Stripe, GitHub, Slack, Google and `sk-proj-` keys, a Bearer JWT, Basic auth, JSON and query-string passwords, YAML-style secrets, an RSA key block and a truncated OpenSSH key block. None survive; the log lines stay readable.

@@ -10,7 +10,7 @@ The AI assistant reads this at the start of every session and updates it at the 
 
 | Item | Status |
 |---|---|
-| Current milestone | Milestone 1: Skeleton and first tool |
+| Current milestone | Milestone 3: Data-to-code tools (Milestone 2 complete pending manual browser checks) |
 | Current tool | JSON PII masker (task 1.4): logic, page and tests done; tool spec written; Definition of Done still needs the Edge/Firefox/Safari check and a search phrase in the tracker |
 | Blockers | Open questions below |
 | Next step | Task 1.5 (test deploy), then Milestone 2 |
@@ -246,3 +246,12 @@ Definition of Done: 1 PASS · 2 PASS (zero requests while scrubbing) · 3 PASS (
 Problems / open questions: none.
 Next: prompt 07 (link the three privacy tools, Milestone 2 wrap-up).
 Suggested commit message: Add log and secret scrubber
+
+### 2026-10-02 (prompt 07: link privacy tools, Milestone 2 wrap-up)
+Milestone / tool: Milestone 2 / Task 2.3
+Done: The three privacy tools link to each other (related tools come from `website/src/data/tools.ts`); `/developers/` lists all three with the same card. Home page badges now count live tools from the same list (were hardcoded "4 tools", "2 tools"…); Frontend badge corrected to "Planned Phase 3". Fixed a home page bug that made it scroll sideways at every width: the "How it works" section was missing its closing tag, and the pricing card scroller and hero code panels had no `min-width: 0`.
+Network check: masker, pseudonymizer and scrubber pages each run with zero network requests after load (headless Chromium, 360 px and 1280 px). No tool sends input anywhere.
+Tests run and result: vitest 45/45 pass (4 files); build passes.
+Milestone 2: COMPLETE, except the manual Edge/Firefox/Safari check (DoD item 4) and search phrases, which need a person.
+Next: prompt 08 (SQL output to JSON).
+Suggested commit message: Link privacy tools and fix home page overflow

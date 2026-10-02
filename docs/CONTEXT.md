@@ -182,9 +182,9 @@ Full rules: `AGENTS.md`.
 
 *(Update this section as the project moves — treat it as the fastest way to see where things stand.)*
 
-- Milestone: 1 (skeleton built, design system being applied)
-- Professions with any live pages: Developers (one tool)
-- Tools with working logic: JSON PII masker (tests and build passing, tool spec written; cross-browser check pending)
+- Milestone: 3 (Milestones 1 and 2 built; manual cross-browser checks pending)
+- Professions with any live pages: Developers (three privacy tools)
+- Tools with working logic: JSON PII masker, consistent pseudonymizer, log and secret scrubber
 - Extension: not started
 - Legal pages: not started
 - Live/deployed: no
