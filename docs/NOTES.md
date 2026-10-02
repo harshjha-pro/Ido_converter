@@ -33,6 +33,7 @@ The AI assistant reads this at the start of every session and updates it at the 
 | 13 | Docs live in `Docs/` but every doc refers to `docs/`, and AGENTS.md/CLAUDE.md expect to sit at the repo root. Rename `Docs/` → `docs/` and move AGENTS.md/CLAUDE.md to the root? (Renames need approval per AGENTS.md.) | | Yes, done 2026-10-02. `Design.md` also renamed to `DESIGN.md` to match the references. |
 | 14 | `public/footer-art.png` is outside Astro's configured `website/public/`, so it is not served. Move it, or delete it if unused? | | Moved to `website/public/` 2026-10-02. |
 | 15 | `tsc --noEmit` fails on the tests because `@types/node` is missing (it is not in CI). Add `@types/node` as a dev dependency (MIT, types only)? | | Yes, added 2026-10-02. |
+| 17 | Muted text fails contrast. The site uses `--color-text-muted: #6B726F` (4.32:1 on cream, below 4.5:1); DESIGN.md says `#88928A` (2.82:1, worse). Proposal: `#5F6662` (5.17:1 on cream, 5.89:1 on white), and update DESIGN.md to match. | | |
 | 16 | `.claude/skills/idoconverter-design/SKILL.md` does not exist; the skill file is at `Docs/SKILL.md`. Move it? | | Moved 2026-10-02. |
 | 12 | What exactly is the "motion" need — a few subtle CSS transitions on the home page, or real animated marketing sections (which would mean adding React just for that)? | | |
 
@@ -204,3 +205,22 @@ Tests run and result: vitest 22/22 pass; `tsc --noEmit` clean; `npm run build` p
 Problems / open questions: none new.
 Next: Edge/Firefox/Safari check of the masker page, fill its search phrase in the tracker, then task 1.5 (test deploy).
 Suggested commit message: Align repo layout with docs and add JSON PII masker tool spec
+
+### 2026-10-02 (Definition of Done check, prompt 04)
+Milestone / tool: Milestone 1 / Task 1.4: JSON PII Masker
+Done: Merged `main` (adds `prompts/`). Checked the masker against PRD section 5.
+Definition of Done:
+1. Works on every tool-spec sample: PASS (5 samples run as fixtures).
+2. No network request carries input: PASS (headless Chromium, zero requests while masking). Chrome DevTools MCP not available in the cloud session; recheck locally.
+3. Empty, invalid, very large input give clear messages: PASS (tests; >5 MB note in UI).
+4. 360 px and Chrome/Edge/Firefox/Safari: PARTIAL (360 px PASS in Chromium; Edge, Firefox, Safari not tested).
+5. Standard template (title, tool, how-to, privacy line, FAQ, related tools): PASS.
+6. Keyboard usable and readable contrast: PARTIAL (keyboard PASS: every control reachable by Tab, masking works with Enter. Contrast FAIL: muted text 4.32:1, see open question 17. Other pairs 4.79–18.88:1).
+7. No console errors, unit tests pass: PASS (22/22; only the browser's own `/favicon.ico` 404).
+8. CA/tax/visa/pricing rules: N/A.
+Decisions: none.
+New dependencies (name, size, license): None.
+Tests run and result: vitest 22/22 pass; build passes.
+Problems / open questions: open question 17 (muted text colour).
+Next: answer question 17, test Edge/Firefox/Safari, fill the search phrase, then prompt 05 / task 1.5.
+Suggested commit message: Record Definition of Done check for JSON PII masker
