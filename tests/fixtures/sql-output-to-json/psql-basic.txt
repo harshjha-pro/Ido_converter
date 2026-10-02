@@ -1,0 +1,9 @@
+orders=# SELECT id, customer, city, total, paid, shipped_at FROM orders ORDER BY id LIMIT 4;
+ id |    customer     |   city    |  total  | paid |     shipped_at
+----+-----------------+-----------+---------+------+---------------------
+  1 | Asha Verma      | Pune      | 1499.00 | t    | 2026-09-28 10:15:00
+  2 | Rahul Sharma    | Bengaluru |  250.50 | f    |
+  3 | राहुल शर्मा      | दिल्ली      |   99.99 | t    | 2026-09-29 18:02:11
+  4 | O'Brien | Ltd   | Dublin    |    0.00 | f    |
+(4 rows)
+

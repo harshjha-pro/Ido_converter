@@ -1,0 +1,4 @@
+id	name	city	score	verified
+1	Asha Verma	Pune	9.5	true
+2	Ravi Kumar	NULL	7	false
+3	मीरा	Jaipur	NULL	true

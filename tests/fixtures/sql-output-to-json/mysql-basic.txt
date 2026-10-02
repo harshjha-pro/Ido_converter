@@ -1,0 +1,14 @@
+mysql> SELECT id, sku, name, stock, price, discontinued FROM products WHERE id < 5;
++----+-----------+---------------------+-------+--------+--------------+
+| id | sku       | name                | stock | price  | discontinued |
++----+-----------+---------------------+-------+--------+--------------+
+|  1 | 007-A     | Steel bottle 750ml  |   120 |  499.0 |            0 |
+|  2 | 008-B     | NULL                |     0 |  89.50 |            1 |
+|  3 | 009-C     | Café mug ☕          |    42 |    250 |            0 |
+|  4 | 010-D     | Bamboo | brush      |  NULL |   NULL |            0 |
++----+-----------+---------------------+-------+--------+--------------+
+4 rows in set (0.01 sec)
+
+mysql> SELECT * FROM products WHERE id = 999;
+Empty set (0.00 sec)
+

@@ -1,0 +1,23 @@
+mysql> SELECT * FROM users WHERE id IN (7, 8)\G
+*************************** 1. row ***************************
+        id: 7
+     email: meera@example.in
+last_login: NULL
+*************************** 2. row ***************************
+        id: 8
+     email: kabir@example.com
+last_login: 2026-09-30 08:00:00
+2 rows in set (0.00 sec)
+
+app=> \x
+Expanded display is on.
+app=> SELECT id, name, active FROM teams LIMIT 2;
+-[ RECORD 1 ]-------
+id     | 1
+name   | Platform
+active | t
+-[ RECORD 2 ]-------
+id     | 2
+name   | Payments
+active | f
+

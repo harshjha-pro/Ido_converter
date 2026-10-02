@@ -70,7 +70,7 @@ Fill the search phrase and "who ranks" columns during Milestone 0 by googling th
 | JSON PII masker | Developers | | | Low | 1 | Built, DoD partly verified |
 | Consistent pseudonymizer | Developers | | | Low | 1 | Built, DoD partly verified |
 | Log and secret scrubber | Developers | | | Medium | 1 | Built, DoD partly verified |
-| SQL console output to JSON | Developers | | | Low to medium | 1 | Not started |
+| SQL console output to JSON | Developers | | | Low to medium | 1 | Built, DoD partly verified |
 | JSON to TypeScript and Zod | Developers | | | Medium | 1 | Not started |
 | JSON repair | Developers | | | Low to medium | 1 | Not started |
 | Visa and passport photo sizer | Exam and form | | | Medium | 1 | Not started |
@@ -255,3 +255,13 @@ Tests run and result: vitest 45/45 pass (4 files); build passes.
 Milestone 2: COMPLETE, except the manual Edge/Firefox/Safari check (DoD item 4) and search phrases, which need a person.
 Next: prompt 08 (SQL output to JSON).
 Suggested commit message: Link privacy tools and fix home page overflow
+
+### 2026-10-02 (prompt 08: SQL output to JSON)
+Milestone / tool: Milestone 3 / Task 3.1: SQL console output to JSON
+Done: `core/developers/sql-output-to-json.ts` (psql aligned and expanded, mysql grid and vertical, Empty set, TSV, multiple result sets, prompts and footers skipped), page `/developers/sql-output-to-json`, spec, 5 hand-written fixtures, 15 tests.
+Decisions: Types inferred per column, not per cell. Leading-zero values, unsafe integers and >15-digit decimals stay strings. psql empty cells default to null (psql's NULL display), with an option to keep "". Multiple result sets → array of arrays.
+New dependencies (name, size, license): None.
+Tests run and result: vitest 60/60 pass; build passes.
+Definition of Done: 1 PASS · 2 PASS (zero requests) · 3 PASS (empty, no-table message, 10,000 rows) · 4 PARTIAL (Chromium only) · 5 PASS · 6 PASS · 7 PASS · 8 N/A.
+Next: prompt 09 (JSON to TypeScript and Zod).
+Suggested commit message: Add SQL output to JSON

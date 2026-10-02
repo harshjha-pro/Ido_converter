@@ -1,0 +1,78 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import { relatedTools } from '../../data/tools';
+---
+
+<ToolLayout
+  title="SQL Output to JSON"
+  howTo="Copy the result table from your psql or mysql terminal (or tab-separated output) and paste it, prompts and footers included. Several result sets in one paste are fine. Numbers, booleans and NULL are detected per column. Copy the JSON."
+  faq={[
+    { q: "Is my query output uploaded?", a: "No. Parsing happens in your browser. Nothing is sent or stored." },
+    { q: "Which formats are supported?", a: "psql aligned output and expanded (\\x) output, mysql table output and vertical (\\G) output, and tab-separated text such as mysql -B or copied spreadsheet rows." },
+    { q: "How is NULL handled?", a: "The word NULL becomes null. psql shows NULL as an empty cell by default, so empty psql cells become null unless you choose to keep them as empty strings." },
+    { q: "Why did a number stay a string?", a: "Types are chosen per column. A column stays text if any value is not a number, if a value has leading zeros (like 007), or if it is too large or precise for JavaScript numbers." }
+  ]}
+  relatedTools={relatedTools('sql-output-to-json')}
+>
+  <div class="tool-ui">
+    <div class="panels">
+      <div class="panel">
+        <label for="input-sql" class="panel-label">psql / mysql / tab-separated output</label>
+        <textarea id="input-sql" class="io-area" spellcheck="false" placeholder={" id | name\n----+------\n  1 | Asha\n(1 row)"}></textarea>
+      </div>
+      <div class="controls-panel">
+        <label class="options-group-inline"><input type="checkbox" id="opt-types" checked /> Detect numbers and booleans</label>
+        <label class="options-group" for="opt-empty">
+          <strong>Empty psql cells</strong>
+          <select id="opt-empty" class="style-select">
+            <option value="null">null (psql default for NULL)</option>
+            <option value="empty">"" (empty string)</option>
+          </select>
+        </label>
+        <button id="btn-run" class="btn-primary btn-run">Convert to JSON &rarr;</button>
+        <div id="status-area" class="status-area" role="status"></div>
+      </div>
+      <div class="panel">
+        <div class="panel-header">
+          <label for="output-json" class="panel-label">JSON</label>
+          <button id="btn-copy" class="btn-secondary">Copy JSON</button>
+        </div>
+        <textarea id="output-json" class="io-area" readonly spellcheck="false"></textarea>
+      </div>
+    </div>
+  </div>
+</ToolLayout>
+
+<script>
+  import { run, type ResultSetInfo } from '../../../../core/developers/sql-output-to-json';
+  import { byId, setStatus, setupCopy, isLargeInput } from '../../scripts/tool-ui';
+
+  const inputEl = byId<HTMLTextAreaElement>('input-sql');
+  const outputEl = byId<HTMLTextAreaElement>('output-json');
+  const statusEl = byId<HTMLDivElement>('status-area');
+
+  byId<HTMLButtonElement>('btn-run').addEventListener('click', () => {
+    const input = inputEl.value;
+    const result = run(input, {
+      detectTypes: byId<HTMLInputElement>('opt-types').checked,
+      psqlEmptyAs: byId<HTMLSelectElement>('opt-empty').value as 'null' | 'empty',
+    });
+    if (!result.ok) {
+      outputEl.value = '';
+      setStatus(statusEl, `Error: ${result.error}`, 'error');
+      return;
+    }
+    outputEl.value = result.output ?? '';
+    const sets = result.meta?.resultSets as ResultSetInfo[];
+    const skipped = (result.meta?.skippedLines as number[]).length;
+    const summary = sets.length === 1
+      ? `${sets[0].rowCount} rows, ${sets[0].columns.length} columns (${sets[0].format}).`
+      : `${sets.length} result sets: ${sets.map(s => s.rowCount).join(', ')} rows.`;
+    setStatus(statusEl,
+      summary + (skipped ? ` ${skipped} unrecognised line(s) skipped.` : '')
+        + (isLargeInput(input) ? ' Large input: processing may be slow on some devices.' : ''),
+      'success');
+  });
+
+  setupCopy(byId<HTMLButtonElement>('btn-copy'), outputEl);
+</script>

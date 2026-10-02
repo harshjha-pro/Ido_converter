@@ -1,0 +1,18 @@
+app=> SELECT count(*) AS users FROM users;
+ users
+-------
+  1842
+(1 row)
+
+app=> SELECT email, plan FROM users WHERE plan IS NOT NULL LIMIT 2;
+      email       |  plan
+------------------+---------
+ asha@example.in  | basic
+ ravi@example.com | premium
+(2 rows)
+
+app=> SELECT id FROM users WHERE false;
+ id
+----
+(0 rows)
+

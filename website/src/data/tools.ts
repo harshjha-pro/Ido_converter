@@ -17,7 +17,7 @@ export const TOOLS: ToolEntry[] = [
     title: 'Consistent Pseudonymizer', description: 'Replace real values with realistic fakes. The same input always gets the same fake, so relationships survive.' },
   { profession: 'developers', slug: 'log-secret-scrubber', group: 'privacy', live: true,
     title: 'Log and Secret Scrubber', description: 'Find and redact API keys, tokens, JWTs, passwords and private keys in logs, with a findings list.' },
-  { profession: 'developers', slug: 'sql-output-to-json', group: 'data', live: false,
+  { profession: 'developers', slug: 'sql-output-to-json', group: 'data', live: true,
     title: 'SQL Output to JSON', description: 'Paste psql, mysql or tab-separated console output and get typed JSON.' },
   { profession: 'developers', slug: 'json-to-typescript-zod', group: 'data', live: false,
     title: 'JSON to TypeScript and Zod', description: 'Paste JSON and get TypeScript interfaces and a Zod schema, with optional fields detected.' },
