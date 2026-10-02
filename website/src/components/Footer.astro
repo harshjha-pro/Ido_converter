@@ -1,4 +1,6 @@
 ---
+import { TOOLS, toolUrl } from '../data/tools';
+const popular = TOOLS.filter(t => t.profession === 'developers');
 ---
 <footer class="footer">
   <div class="container footer-inner">
@@ -37,12 +39,9 @@
       <div class="footer-col">
         <h3 class="col-title">Popular tools</h3>
         <ul class="col-links">
-          <li><a href="/developers/json-pii-masker">JSON PII Masker</a></li>
-          <li><a href="#">Consistent Pseudonymizer</a></li>
-          <li><a href="#">Log and Secret Scrubber</a></li>
-          <li><a href="#">SQL Output to JSON</a></li>
-          <li><a href="#">JSON to TypeScript & Zod</a></li>
-          <li><a href="#">JSON Repair</a></li>
+          {popular.map((t) => (
+            <li>{t.live ? <a href={toolUrl(t)}>{t.title}</a> : <span class="soon-link">{t.title}</span>}</li>
+          ))}
         </ul>
       </div>
 
@@ -214,6 +213,12 @@
     opacity: 0.6;
   }
   
+  /* Unbuilt tools stay listed but not clickable, so there are no dead links */
+  .soon-link {
+    color: #A7C5B8;
+    font-size: 0.85rem;
+  }
+
   .col-links a.disabled {
     opacity: 0.5;
     pointer-events: none;

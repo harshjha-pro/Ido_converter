@@ -82,6 +82,7 @@ The privacy promise is a product feature and should be visible throughout the si
 | Link Green | `#236E3F` | Text links and accessible green text |
 | Highlight Yellow | `#F2C94C` | Small badges, featured accents, dark-section CTA |
 | Muted | `#5F6662` | Muted text, borders, secondary UI |
+| Error Red | `#B42318` | Error messages only (5.77:1 on cream, 6.57:1 on white) |
 
 ## 3.2 CSS tokens
 
@@ -96,6 +97,7 @@ The privacy promise is a product feature and should be visible throughout the si
   --color-link: #236E3F;
   --color-yellow: #F2C94C;
   --color-muted: #5F6662;
+  --color-error: #B42318;
 
   --color-card-bg: #FFFFFF;
 

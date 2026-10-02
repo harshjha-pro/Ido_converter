@@ -1,6 +1,7 @@
 ---
 import ToolLayout from '../../layouts/ToolLayout.astro';
 import { DEFAULT_KEYS } from '../../../../core/developers/json-pii-masker';
+import { relatedTools } from '../../data/tools';
 ---
 
 <ToolLayout 
@@ -12,10 +13,7 @@ import { DEFAULT_KEYS } from '../../../../core/developers/json-pii-masker';
     { q: "How are key names matched?", a: "Case and separators are ignored, and keys are matched by whole words, so accessToken, user-password and API_KEY all match token, password and apikey." },
     { q: "What happens if a pattern detection is wrong?", a: "Pattern-based scrubbing can miss secrets or over-mask. Always review the output before sharing." }
   ]}
-  relatedTools={[
-    { title: "Consistent Pseudonymizer" },
-    { title: "Log and Secret Scrubber" }
-  ]}
+  relatedTools={relatedTools('json-pii-masker')}
 >
   <div class="tool-ui">
     <div class="panels">
@@ -45,7 +43,7 @@ import { DEFAULT_KEYS } from '../../../../core/developers/json-pii-masker';
           </select>
         </div>
         
-        <button id="btn-mask" class="btn-primary" style="margin-top: 1rem; width: 100%;">Mask Data &rarr;</button>
+        <button id="btn-mask" class="btn-primary btn-run">Mask Data &rarr;</button>
         <div id="status-area" class="status-area"></div>
       </div>
       <div class="panel">
@@ -59,141 +57,39 @@ import { DEFAULT_KEYS } from '../../../../core/developers/json-pii-masker';
   </div>
 </ToolLayout>
 
-<style>
-  .tool-ui {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
-  }
-  .panels {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-4);
-  }
-  @media (min-width: 900px) {
-    .panels {
-      grid-template-columns: 2fr 1fr 2fr;
-    }
-  }
-  .panel {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-  }
-  .panel-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .panel-label {
-    font-weight: 600;
-    color: var(--color-bg-dark);
-    font-size: 0.95rem;
-  }
-  .io-area {
-    width: 100%;
-    height: 400px;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-card);
-    padding: var(--space-3);
-    font-family: monospace;
-    font-size: 0.85rem;
-    resize: vertical;
-    background: var(--color-card-bg);
-    color: var(--color-bg-dark);
-  }
-  .controls-panel {
-    background: var(--color-card-bg);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-card);
-    padding: var(--space-4);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
-  }
-  .options-group {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    font-size: 0.85rem;
-  }
-  .options-group strong {
-    color: var(--color-bg-dark);
-    margin-bottom: 4px;
-    font-size: 0.9rem;
-  }
-  .keys-input, .style-select {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid var(--color-border);
-    border-radius: 8px;
-    font-family: var(--font-primary);
-  }
-  .status-area {
-    margin-top: 1rem;
-    font-size: 0.85rem;
-    text-align: center;
-    font-weight: 600;
-  }
-  .success { color: var(--color-accent-green-text); }
-  .error { color: #D63333; }
-</style>
-
 <script>
-  import { run, DEFAULT_KEYS, type MaskerOptions } from '../../../../core/developers/json-pii-masker';
+  import { run, type MaskerOptions } from '../../../../core/developers/json-pii-masker';
+  import { byId, setStatus, setupCopy, isLargeInput } from '../../scripts/tool-ui';
 
-  // Above this size parsing can freeze the tab on low-end phones (TECHNICAL_SPEC section 7).
-  const LARGE_INPUT_BYTES = 5 * 1024 * 1024;
+  const inputEl = byId<HTMLTextAreaElement>('input-json');
+  const outputEl = byId<HTMLTextAreaElement>('output-json');
+  const statusEl = byId<HTMLDivElement>('status-area');
+  const checked = (id: string) => byId<HTMLInputElement>(id).checked;
 
-  const btnMask = document.getElementById('btn-mask') as HTMLButtonElement;
-  const btnCopy = document.getElementById('btn-copy') as HTMLButtonElement;
-  const inputEl = document.getElementById('input-json') as HTMLTextAreaElement;
-  const outputEl = document.getElementById('output-json') as HTMLTextAreaElement;
-  const statusEl = document.getElementById('status-area') as HTMLDivElement;
-
-  btnMask.addEventListener('click', () => {
+  byId<HTMLButtonElement>('btn-mask').addEventListener('click', () => {
     const input = inputEl.value;
-    statusEl.textContent = '';
-    statusEl.className = 'status-area';
-
-    const keysStr = (document.getElementById('opt-keys') as HTMLInputElement).value;
-    const keysToMask = keysStr.split(',').map(s => s.trim()).filter(Boolean);
-
-    const maskStyle = (document.getElementById('opt-style') as HTMLSelectElement).value as MaskerOptions['maskStyle'];
-
     const options: MaskerOptions = {
-      keysToMask,
-      maskEmail: (document.getElementById('opt-email') as HTMLInputElement).checked,
-      maskPhone: (document.getElementById('opt-phone') as HTMLInputElement).checked,
-      maskJWT: (document.getElementById('opt-jwt') as HTMLInputElement).checked,
-      maskAadhaar: (document.getElementById('opt-aadhaar') as HTMLInputElement).checked,
-      maskPAN: (document.getElementById('opt-pan') as HTMLInputElement).checked,
-      maskStyle
+      keysToMask: byId<HTMLInputElement>('opt-keys').value.split(',').map(s => s.trim()).filter(Boolean),
+      maskEmail: checked('opt-email'),
+      maskPhone: checked('opt-phone'),
+      maskJWT: checked('opt-jwt'),
+      maskAadhaar: checked('opt-aadhaar'),
+      maskPAN: checked('opt-pan'),
+      maskStyle: byId<HTMLSelectElement>('opt-style').value as MaskerOptions['maskStyle'],
     };
 
-    const isLarge = new Blob([input]).size > LARGE_INPUT_BYTES;
     const result = run(input, options);
-
     if (result.ok) {
       outputEl.value = result.output || '';
-      statusEl.textContent = `Masked ${result.meta?.replacementCount || 0} values. Review the output before sharing.`
-        + (isLarge ? ' Large input: processing may be slow on some devices.' : '');
-      statusEl.classList.add('success');
+      setStatus(statusEl,
+        `Masked ${result.meta?.replacementCount || 0} values. Review the output before sharing.`
+          + (isLargeInput(input) ? ' Large input: processing may be slow on some devices.' : ''),
+        'success');
     } else {
       outputEl.value = '';
-      statusEl.textContent = `Error: ${result.error}`;
-      statusEl.classList.add('error');
+      setStatus(statusEl, `Error: ${result.error}`, 'error');
     }
   });
 
-  btnCopy.addEventListener('click', () => {
-    if (outputEl.value) {
-      navigator.clipboard.writeText(outputEl.value);
-      const originalText = btnCopy.textContent;
-      btnCopy.textContent = 'Copied!';
-      setTimeout(() => {
-        btnCopy.textContent = originalText;
-      }, 2000);
-    }
-  });
+  setupCopy(byId<HTMLButtonElement>('btn-copy'), outputEl);
 </script>

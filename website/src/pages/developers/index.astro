@@ -1,5 +1,8 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { toolsFor, toolUrl } from '../../data/tools';
+
+const tools = toolsFor('developers').filter(t => t.live);
 ---
 
 <Layout title="Tools for Developers">
@@ -9,17 +12,17 @@ import Layout from '../../layouts/Layout.astro';
   </div>
   
   <div class="tool-list">
-    <div class="tool-card">
-      <div class="tool-info">
-        <h2>JSON PII Masker</h2>
-        <p>Mask sensitive values by key name and by pattern while keeping valid JSON structure.</p>
+    {tools.map((tool) => (
+      <div class="tool-card">
+        <div class="tool-info">
+          <h2>{tool.title}</h2>
+          <p>{tool.description}</p>
+        </div>
+        <div class="tool-action">
+          <a href={toolUrl(tool)} class="btn-primary">Open Tool</a>
+        </div>
       </div>
-      <div class="tool-action">
-        <a href="/developers/json-pii-masker" class="btn-primary">Open Tool</a>
-      </div>
-    </div>
-    
-    <!-- Future tools go here, matching the identical card layout above -->
+    ))}
   </div>
 </Layout>
 

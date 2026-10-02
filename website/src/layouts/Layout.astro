@@ -33,6 +33,7 @@ const { title } = Astro.props;
         --color-accent-green: #2F8F52;
         --color-accent-green-text: #236E3F; /* WCAG AA accessible on cream */
         --color-accent-yellow: #F2C94C;
+        --color-error: #B42318; /* 5.77:1 on cream, 6.57:1 on white */
         
         --color-btn-bg: #111111;
         --color-btn-text: #FFFFFF;
@@ -59,6 +60,8 @@ const { title } = Astro.props;
         --text-body: 1rem;
         --text-small: 0.875rem;
         
+        --radius-card: 16px;
+
         --line-height-body: 1.6;
         --line-height-heading: 1.2;
       }
@@ -159,6 +162,26 @@ const { title } = Astro.props;
         opacity: 0.9;
         transform: translateY(-1px);
         color: var(--color-btn-text);
+      }
+
+      /* Secondary actions are outlined, never a second solid button */
+      .btn-secondary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: transparent;
+        color: var(--color-text-main);
+        padding: var(--space-1) var(--space-3);
+        border: 1px solid var(--color-text-main);
+        border-radius: 9999px;
+        font-family: inherit;
+        font-size: var(--text-small);
+        font-weight: 500;
+        cursor: pointer;
+      }
+      .btn-secondary:hover, .btn-secondary:focus-visible {
+        background: var(--color-text-main);
+        color: var(--color-text-light);
       }
     </style>
   </head>

@@ -227,3 +227,133 @@ const firstPart = titleParts.join(' ');
     border-color: var(--color-bg-dark);
   }
 </style>
+
+<style is:global>
+  /* Shared tool UI: every tool page uses these so all tools look the same */
+  .tool-ui {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+  .panels {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+  @media (min-width: 900px) {
+    .panels { grid-template-columns: 2fr 1fr 2fr; }
+    .panels.two-col { grid-template-columns: 1fr 1fr; }
+  }
+  .panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    min-width: 0;
+  }
+  .panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-2);
+  }
+  .panel-label {
+    font-weight: 600;
+    color: var(--color-bg-dark);
+    font-size: var(--text-small);
+  }
+  .io-area {
+    width: 100%;
+    height: 400px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    padding: var(--space-3);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: var(--text-small);
+    resize: vertical;
+    background: var(--color-card-bg);
+    color: var(--color-bg-dark);
+  }
+  .io-area.short { height: 200px; }
+  .controls-panel {
+    background: var(--color-card-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    padding: var(--space-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+  .options-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    font-size: var(--text-small);
+    border: 0;
+    margin: 0;
+    padding: 0;
+  }
+  .options-group > strong, .options-group > legend {
+    color: var(--color-bg-dark);
+    font-weight: 600;
+    padding: 0;
+  }
+  .text-input, .keys-input, .style-select {
+    width: 100%;
+    padding: var(--space-2);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: var(--text-body);
+    background: var(--color-card-bg);
+    color: var(--color-text-main);
+  }
+  .field-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: var(--space-3);
+  }
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    font-size: var(--text-small);
+    font-weight: 600;
+    color: var(--color-bg-dark);
+  }
+  .btn-run { width: 100%; }
+  .status-area {
+    font-size: var(--text-small);
+    text-align: center;
+    font-weight: 600;
+    min-height: 1.5em;
+  }
+  .status-area.success { color: var(--color-accent-green-text); }
+  .status-area.error { color: var(--color-error); }
+  .tool-warning {
+    margin: 0;
+    padding: var(--space-2) var(--space-3);
+    border-left: 4px solid var(--color-accent-yellow);
+    background: var(--color-bg-cream);
+    font-size: var(--text-small);
+    color: var(--color-text-main);
+  }
+  .findings-list {
+    margin: 0;
+    padding-left: var(--space-4);
+    font-size: var(--text-small);
+  }
+  .result-box {
+    background: var(--color-card-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    padding: var(--space-3);
+  }
+  .formula {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: var(--text-small);
+    background: var(--color-bg-cream);
+    padding: var(--space-2) var(--space-3);
+    border-radius: 8px;
+    overflow-x: auto;
+  }
+</style>
