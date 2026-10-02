@@ -457,3 +457,32 @@ Tests: 10 payment tests with a fake Razorpay transport and signatures computed f
 8. Razorpay Checkout loads Razorpay's script and iframe on `/checkout.php` only; no other account page and no tool page loads third-party code.
 Next: prompt 28 (security review).
 Suggested commit message: Add Razorpay payments with server-side verification
+
+### 2026-10-02 (prompt 28: security review before launch)
+First-pass review, tested on **Apache 2.4 + PHP 8.3 + MariaDB 10.11** (the Hostinger stack) installed in the build container, with a production-style config. **Not a substitute for a review by someone with real security experience before taking real payments.**
+
+| # | Check | Result | How it was verified |
+|---|---|---|---|
+| 1 | All SQL uses prepared statements, no string concatenation | **PASS** | All 28+ statements go through PDO prepared statements with bound values (`ATTR_EMULATE_PREPARES=false`). A grep finds no SQL built from input. The only interpolation is a constant `WHERE` fragment in the admin search (`$where`), whose value is bound; LIMIT/OFFSET bound as integers. |
+| 2 | Passwords hashed with `password_hash()`, never stored plain | **PASS** | Test asserts the stored row never contains the password and `password_verify` succeeds; rehash on login when the algorithm changes. |
+| 3 | Session cookies httponly, secure, samesite | **PASS** | Apache over HTTPS returned `Set-Cookie: ido_account=…; path=/; secure; HttpOnly; SameSite=Lax`. Session id regenerated at login; strict mode; 2-hour idle timeout (added in this review). |
+| 4 | Admin routes unreachable by non-admins (re-tested) | **PASS** | On Apache: anonymous `/admin/` → 404; logged-in user `/admin/` → 403; user POST to `/admin/subscription.php` with a valid CSRF token → 403 and no row created. Earlier: demoted admin → 403 on next request. |
+| 5 | Payment confirmed server-side, not trusted from the frontend | **PASS** | Activation only via signature + Razorpay API check, or signed webhook. Tests cover forged/tampered signatures, wrong amount, other user's order, replays. A forged browser callback changed nothing. |
+| 6 | API keys and DB credentials not in the repo, incl. history | **PASS** | `git log --all -p` scan: no `rzp_live`/real `rzp_test` keys, `backend/config/config.php` never committed and git-ignored. Hits are only intentional fakes: two `FAKE…` private-key blocks in the scrubber test fixture and the test-only secrets in `backend/tests/config.test.php` (`test_secret_123`, a throwaway local DB password). |
+| 7 | A user can fully delete their account and data | **PASS** | Hard deletes of history, subscription and user (tests and browser). Payment rows kept for accounting with `user_id = NULL`, no email. |
+| 8 | Free static tools work with the backend turned off | **PASS** | Account app stopped (connection refused); static site served alone on Apache; tools ran normally earlier with no backend; `grep` finds **0** references from the static site to the account app. |
+| 9 | HTTPS enforced on login and payment pages | **PASS** | Apache: `http://…/login.php` and `/checkout.php` → 301 to `https://`; HSTS header present; cookie `secure`. Needs the SSL certificate installed in hPanel. |
+| 10 | Error messages don't leak stack traces or internals | **PASS** | With the DB password wrong (production config), a POST to `/login.php` returned HTTP 500 "Something went wrong. Please try again later." with 0 mentions of PDO/SQLSTATE/paths/DB name; the details went to the Apache error log only. |
+
+Also checked on Apache for the **static site**: CSP `connect-src 'none'` and the other security headers are sent from `.htaccess`, HTTP→HTTPS redirect works, custom 404 page served, directory listing blocked (403). Source, config, schema, tests and CLI scripts of the account app are not reachable from the web (404/400).
+
+Known gaps (not failures of the checklist, but real-world risks to decide on):
+- **No email verification or password reset.** Anyone can sign up with someone else's email, and a user who forgets their password cannot recover the account without admin help. Needs outgoing email on the account subdomain.
+- **Registration reveals whether an email has an account** ("already exists"). Low risk for this site, but it lets someone test whether a person uses it.
+- **No CAPTCHA.** Login is throttled, but bots can still create many accounts.
+- **Proxy assumption:** login throttling uses `REMOTE_ADDR`. If Cloudflare or another proxy is put in front, every request appears to come from the proxy and the per-IP limit would lock out everyone; switch to the proxy's trusted header then.
+- **Business decisions still placeholders** (prices, features, retention: open questions 6–11). Do not take real payments until confirmed.
+
+Tests at the end of this review: backend 36/36, site + extension 164/164, `tsc` clean, site and extension builds pass.
+Next: team actions (domain, legal review, visa preset review, extension manual test, Razorpay keys and confirmed plans, external security review).
+Suggested commit message: Security review before launch; add session idle timeout

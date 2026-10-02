@@ -82,3 +82,12 @@ test('safe_path blocks open redirects', function () {
     same('/dashboard.php', safe_path('/\\evil.example'));
     same('/admin/', safe_path('/admin/'));
 });
+
+test('session: logged out after 2 hours of inactivity', function () {
+    register_user('a@example.com', 'longenoughpw');
+    attempt_login('a@example.com', 'longenoughpw', '1.2.3.4');
+    check(current_user() !== null);
+    $_SESSION['last_seen'] = time() - SESSION_IDLE_SECONDS - 1;
+    same(null, current_user());
+    check(!isset($_SESSION['user_id']));
+});

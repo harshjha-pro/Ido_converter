@@ -188,5 +188,6 @@ Full rules: `AGENTS.md`.
 - Extension: built (JSON Privacy Masker, unpacked, not submitted)
 - Legal pages: drafted (privacy, terms, disclaimer need lawyer/CA review); about and contact done
 - Live/deployed: no (build ready; steps in docs/DEPLOY.md; domain to confirm)
+- Phase 4 (accounts/payments): code built in `backend/` with placeholder plans and Razorpay; first-pass security review passed; needs confirmed plans, real keys and an external security review before real payments
 
 For the detailed, dated log, see `NOTES.md` section 9 (session log) and section 1 (current status table).

@@ -75,6 +75,7 @@ function attempt_login(string $email, string $password, string $ip): array
         session_regenerate_id(true);   // new session id at login: defeats session fixation
     }
     $_SESSION['user_id'] = (int)$user['id'];
+    $_SESSION['last_seen'] = time();
     $_SESSION['csrf'] = bin2hex(random_bytes(32));
     return ['ok' => true, 'user' => $user];
 }
@@ -89,10 +90,18 @@ function logout(): void
     }
 }
 
+const SESSION_IDLE_SECONDS = 7200;   // log out after 2 hours without activity (shared or forgotten computers)
+
 function current_user(): ?array
 {
     $id = $_SESSION['user_id'] ?? null;
     if (!$id) return null;
+    $lastSeen = (int)($_SESSION['last_seen'] ?? time());
+    if (time() - $lastSeen > SESSION_IDLE_SECONDS) {
+        logout();
+        return null;
+    }
+    $_SESSION['last_seen'] = time();
     $user = q('SELECT id, email, role, created_at, last_login_at FROM users WHERE id = ?', [$id])->fetch();
     if (!$user) {
         unset($_SESSION['user_id']);   // account was deleted
