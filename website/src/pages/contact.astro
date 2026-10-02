@@ -1,0 +1,89 @@
+---
+import LegalLayout from '../layouts/LegalLayout.astro';
+---
+
+<LegalLayout title="Contact" draft={false}>
+  <p>Have a tool idea, found a bug or have a privacy question? Send us a message and we will reply by email.</p>
+  <p class="contact-warning"><strong>Do not paste tool data, passwords or secrets here.</strong> This form, unlike the tools, does send what you type to us by email.</p>
+
+  <p id="contact-status" class="contact-status" role="status" hidden></p>
+
+  <form id="contact-form" class="contact-form" method="post" action="/contact.php">
+    <label class="field" for="name">Your name
+      <input id="name" name="name" class="text-input" type="text" maxlength="100" autocomplete="name" required />
+    </label>
+    <label class="field" for="email">Your email
+      <input id="email" name="email" class="text-input" type="email" maxlength="200" autocomplete="email" required />
+    </label>
+    <label class="field" for="message">Message
+      <textarea id="message" name="message" class="text-input" rows="6" maxlength="5000" required></textarea>
+    </label>
+    <!-- Spam traps: hidden from people, filled by bots -->
+    <div class="hp" aria-hidden="true">
+      <label for="website">Leave this empty</label>
+      <input id="website" name="website" type="text" tabindex="-1" autocomplete="off" />
+    </div>
+    <input type="hidden" name="started" id="started" value="0" />
+    <button type="submit" class="btn-primary">Send message &rarr;</button>
+  </form>
+  <p class="contact-note">Your name, email and message are emailed to us and not stored in a database. See the <a href="/privacy">Privacy Policy</a>.</p>
+</LegalLayout>
+
+<style>
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    background: var(--color-card-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    padding: var(--space-4);
+    margin-bottom: var(--space-3);
+  }
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    font-size: var(--text-small);
+    font-weight: 600;
+    color: var(--color-bg-dark);
+  }
+  .text-input {
+    width: 100%;
+    padding: var(--space-2);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    font: inherit;
+    font-weight: 400;
+    font-size: var(--text-body);
+  }
+  .contact-form .btn-primary { align-self: flex-start; }
+  .hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+  .contact-warning, .contact-status {
+    border-left: 4px solid var(--color-accent-yellow);
+    background: var(--color-card-bg);
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--text-small);
+  }
+  .contact-status.success { border-left-color: var(--color-accent-green); color: var(--color-accent-green-text); }
+  .contact-status.error { border-left-color: var(--color-error); color: var(--color-error); }
+  .contact-note { font-size: var(--text-small); color: var(--color-text-muted); }
+</style>
+
+<script>
+  // The PHP handler rejects forms submitted within a few seconds of loading (bots).
+  (document.getElementById('started') as HTMLInputElement).value = String(Date.now());
+
+  const status = new URLSearchParams(location.search).get('status');
+  const messages: Record<string, [string, string]> = {
+    sent: ['Thanks, your message was sent. We will reply by email.', 'success'],
+    invalid: ['Please fill in your name, a valid email and a message (up to 5000 characters).', 'error'],
+    error: ['Sorry, the message could not be sent. Please try again in a minute.', 'error'],
+  };
+  if (status && messages[status]) {
+    const el = document.getElementById('contact-status')!;
+    el.textContent = messages[status][0];
+    el.className = `contact-status ${messages[status][1]}`;
+    el.hidden = false;
+  }
+</script>

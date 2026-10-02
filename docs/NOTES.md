@@ -128,13 +128,13 @@ Kept in `docs/rules-and-sources.md` (created 2026-10-02). Columns: rule, value, 
 
 ## 7. Legal and launch checklist
 
-- [ ] Privacy policy
-- [ ] Terms
-- [ ] About
-- [ ] Contact
-- [ ] Disclaimer for CA, tax, visa and pricing tools
+- [x] Privacy policy (draft)
+- [x] Terms (draft)
+- [x] About
+- [x] Contact (PHP mail form)
+- [x] Disclaimer for CA, tax, visa and pricing tools (draft)
 - [ ] Legal pages reviewed by a lawyer or CA
-- [ ] Extension privacy policy URL and permission justifications
+- [x] Extension privacy policy URL (`/privacy#extension`) and permission justifications
 - [ ] Sitemap, canonical tags, titles and descriptions
 - [ ] Lighthouse scores recorded
 - [ ] Mobile and four-browser test done
@@ -357,3 +357,13 @@ Tests run and result: `npx vitest run`: 12 files, 164 tests, all pass. Every pag
 Milestone 5: COMPLETE, except the visa preset review (open question 20) and manual cross-browser checks.
 Next: prompt 18 (legal pages).
 Suggested commit message: Wrap up Milestone 5
+
+### 2026-10-02 (prompt 18: legal pages)
+Milestone / tool: Milestone 6 / Task 6.1: Legal pages
+Done: `/privacy` (tool input never sent; hosting access logs; contact form emails only; no cookies/analytics; extension section at `#extension`), `/terms`, `/disclaimer` (visa/CA/tax/pricing not professional advice; pattern-based tools), `/about`, `/contact` with `website/public/contact.php`. Privacy, terms and disclaimer show a **Draft, not yet reviewed by a lawyer or CA** banner (`LegalLayout.astro`). Header: removed fake dropdown arrows and a search button that did nothing; "Professionals" now links to the home page professions section (was a 404). Footer: replaced a fake newsletter form (it discarded the email) with a link to the contact page.
+Contact form: PHP emails name, email and message to myselfhkjha@gmail.com, stores nothing, never receives tool input. Spam/abuse guards: honeypot field, minimum 3 s on page, length limits, `FILTER_VALIDATE_EMAIL`, CR/LF stripped from header fields (header injection), POST only. Tested with PHP 8.3 built-in server and a captured sendmail: valid message delivered with Reply-To; too-fast, invalid and honeypot submissions rejected; an injected `Bcc:` stays inside the body text.
+Decisions: No newsletter (not in PRD; parking-lot idea). Governing law "India" in terms marked for the legal reviewer.
+Hosting note: the contact form needs PHP `mail()`, which Hostinger shared hosting provides. On Cloudflare Pages it would need a different form handler.
+Legal review: still required before launch (open question 6).
+Next: prompt 19 (SEO basics).
+Suggested commit message: Add legal pages and contact form

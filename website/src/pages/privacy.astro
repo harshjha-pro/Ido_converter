@@ -1,0 +1,45 @@
+---
+import LegalLayout from '../layouts/LegalLayout.astro';
+---
+
+<LegalLayout title="Privacy Policy">
+  <p>idoconverter is built so that the data you work with stays on your device. This page explains exactly what is and is not collected.</p>
+
+  <h2>Tool input never leaves your browser</h2>
+  <ul>
+    <li>Every tool on this site runs entirely in your browser. Text you paste, numbers you enter and files or photos you choose are processed on your device.</li>
+    <li>Tool input, files and results are <strong>never uploaded</strong> to our server or any third party, never stored by us and never logged.</li>
+    <li>Results you download are created on your device; nothing is kept after you close the page.</li>
+  </ul>
+
+  <h2>What our hosting provider records</h2>
+  <p>Like almost every website, the server that delivers our pages keeps standard access logs (for example IP address, browser type, the page requested and the time). These logs are kept by our hosting provider for security and reliability. They never contain anything you type into a tool, because tool input is never sent to the server.</p>
+
+  <h2>Contact form</h2>
+  <p>If you use the <a href="/contact">contact form</a>, the name, email address and message you enter are sent to us by email so we can reply. They are not stored in a database. We keep the email only as long as needed to answer you and do not use it for marketing. Never paste tool data or secrets into the contact form.</p>
+
+  <h2>Cookies, analytics and third parties</h2>
+  <ul>
+    <li>We do not set cookies.</li>
+    <li>We do not currently use analytics, advertising or tracking scripts.</li>
+    <li>Fonts and all scripts are served from our own site; no third-party code runs on tool pages.</li>
+  </ul>
+  <p>If we add privacy-friendly page-level analytics or advertising in future, we will update this policy first. Any such service will never receive tool input.</p>
+
+  <h2 id="extension">JSON Privacy Masker browser extension</h2>
+  <ul>
+    <li>The extension collects <strong>nothing</strong>. It does not collect, store, transmit or sell any data.</li>
+    <li>When you right-click selected text and choose a JSON Privacy Masker option, the browser passes the selected text to the extension, which processes it on your device and shows the result in its popup. The text and result are kept only in the extension's memory until shown, then cleared; they are never written to storage.</li>
+    <li>The extension makes no network requests (its security policy blocks them) and loads no remote code.</li>
+    <li>It requests one permission, <code>contextMenus</code>, to add the right-click menu. It cannot read web pages on its own and has no access to your history, tabs or cookies.</li>
+  </ul>
+
+  <h2>Children</h2>
+  <p>The site is not directed at children and does not knowingly collect information from anyone.</p>
+
+  <h2>Changes</h2>
+  <p>If this policy changes, we will update this page and the date at the top.</p>
+
+  <h2>Contact</h2>
+  <p>Questions about privacy: use the <a href="/contact">contact form</a>.</p>
+</LegalLayout>

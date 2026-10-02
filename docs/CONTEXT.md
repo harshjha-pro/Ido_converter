@@ -186,7 +186,7 @@ Full rules: `AGENTS.md`.
 - Professions with any live pages: Developers (6 tools), Job seekers (1), Online sellers (2); Exam and form page exists, its tool is unlisted until reviewed
 - Tools with working logic: JSON PII masker, consistent pseudonymizer, log and secret scrubber, SQL output to JSON, JSON to TypeScript and Zod, JSON repair, notice period buyout, volumetric weight, return-loss, visa photo sizer (unlisted)
 - Extension: built (JSON Privacy Masker, unpacked, not submitted)
-- Legal pages: not started
+- Legal pages: drafted (privacy, terms, disclaimer need lawyer/CA review); about and contact done
 - Live/deployed: no
 
 For the detailed, dated log, see `NOTES.md` section 9 (session log) and section 1 (current status table).
