@@ -3,15 +3,16 @@ import Layout from './Layout.astro';
 
 interface Props {
   title: string;
+  description?: string;
   /** Legal pages are drafts until a lawyer or CA reviews them (NOTES.md open question 6). */
   draft?: boolean;
   updated?: string;
 }
 
-const { title, draft = true, updated = '2026-10-02' } = Astro.props;
+const { title, description, draft = true, updated = '2026-10-02' } = Astro.props;
 ---
 
-<Layout title={title}>
+<Layout title={title} description={description}>
   <article class="legal">
     <h1>{title}</h1>
     <p class="legal-meta">Last updated {updated}</p>

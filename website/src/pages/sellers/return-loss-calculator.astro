@@ -1,6 +1,5 @@
 ---
 import ToolLayout from '../../layouts/ToolLayout.astro';
-import { relatedTools } from '../../data/tools';
 import { FORMULAS } from '../../../../core/sellers/return-loss';
 
 const money = [
@@ -15,7 +14,7 @@ const money = [
 ---
 
 <ToolLayout
-  title="Return-Loss Calculator"
+  slug="return-loss-calculator"
   howTo="Enter your per-order numbers from your marketplace payout statement, your return rate and how many returned items you can sell again. The calculator shows the loss on each returned order, your expected profit per order, your margin after returns and the return rate at which you stop making money."
   faq={[
     { q: "Are my numbers sent anywhere?", a: "No. Everything is calculated in your browser." },
@@ -23,7 +22,6 @@ const money = [
     { q: "What does resellable share mean?", a: "The percentage of returned items you can sell again at full price. The rest of the product cost is counted as lost." },
     { q: "What is the break-even return rate?", a: "The return rate at which expected profit per order falls to zero. Above it, every order loses money on average." }
   ]}
-  relatedTools={relatedTools('return-loss-calculator')}
 >
   <div class="tool-ui">
     <form id="calc" class="controls-panel" novalidate>

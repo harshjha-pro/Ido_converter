@@ -1,11 +1,10 @@
 ---
 import ToolLayout from '../../layouts/ToolLayout.astro';
 import { DEFAULT_KEYS } from '../../../../core/developers/json-pii-masker';
-import { relatedTools } from '../../data/tools';
 ---
 
 <ToolLayout 
-  title="JSON PII Masker"
+  slug="json-pii-masker"
   howTo="Paste your JSON in the input area. Configure your masking options (by keys or patterns). Get your masked JSON safely."
   faq={[
     { q: "Is my data sent anywhere?", a: "No, all processing happens locally in your browser. We do not upload your data." },
@@ -13,7 +12,6 @@ import { relatedTools } from '../../data/tools';
     { q: "How are key names matched?", a: "Case and separators are ignored, and keys are matched by whole words, so accessToken, user-password and API_KEY all match token, password and apikey." },
     { q: "What happens if a pattern detection is wrong?", a: "Pattern-based scrubbing can miss secrets or over-mask. Always review the output before sharing." }
   ]}
-  relatedTools={relatedTools('json-pii-masker')}
 >
   <div class="tool-ui">
     <div class="panels">

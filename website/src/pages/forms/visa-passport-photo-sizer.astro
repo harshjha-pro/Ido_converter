@@ -1,6 +1,5 @@
 ---
 import ToolLayout from '../../layouts/ToolLayout.astro';
-import { relatedTools } from '../../data/tools';
 import { PRESETS, allPresetsReviewed } from '../../../../core/forms/visa-photo-sizer';
 
 const countries = [...new Set(PRESETS.map(p => p.country))];
@@ -8,7 +7,7 @@ const reviewed = allPresetsReviewed();
 ---
 
 <ToolLayout
-  title="Visa and Passport Photo Sizer"
+  slug="visa-passport-photo-sizer"
   howTo="Choose the country and document, then pick a photo from your device. Use the zoom and position sliders until your face is centred as the rules describe. Click Create photo to get a JPEG at the exact size, compressed to fit any file-size limit, and download it."
   faq={[
     { q: "Is my photo uploaded?", a: "No. The photo is cropped and resized in your browser using the canvas. It never leaves your device." },
@@ -16,7 +15,6 @@ const reviewed = allPresetsReviewed();
     { q: "Does it remove or change the background?", a: "No. Take the photo against the plain background the rules require; this tool only crops, resizes and compresses." },
     { q: "Why is the print size in pixels?", a: "For printed photos we output 300 DPI, a standard print resolution. That number is our choice, not part of the official rules; the physical size in millimetres is the official part." }
   ]}
-  relatedTools={relatedTools('visa-passport-photo-sizer')}
 >
   <div class="tool-ui">
     <p class="tool-warning"><strong>Not official advice.</strong> Verify the requirements with the official portal before you submit. This tool does not check face position, lighting or background.</p>

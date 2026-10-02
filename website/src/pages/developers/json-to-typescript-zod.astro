@@ -1,10 +1,9 @@
 ---
 import ToolLayout from '../../layouts/ToolLayout.astro';
-import { relatedTools } from '../../data/tools';
 ---
 
 <ToolLayout
-  title="JSON to TypeScript and Zod"
+  slug="json-to-typescript-zod"
   howTo="Paste a JSON sample, ideally one with several array items so optional fields can be detected. Choose a root type name. You get TypeScript interfaces and a matching Zod schema; copy either one."
   faq={[
     { q: "Is my JSON uploaded?", a: "No. Types are generated in your browser. Nothing is sent or stored." },
@@ -12,7 +11,6 @@ import { relatedTools } from '../../data/tools';
     { q: "What happens with mixed types or null?", a: "Mixed types become a union (string | number). null makes a field nullable (string | null, .nullable() in Zod). An empty array becomes unknown[] because there is nothing to infer from." },
     { q: "Do I need Zod installed?", a: "Only in your own project to use the schema (npm install zod). The generated code imports z from \"zod\". The TypeScript interfaces need nothing extra." }
   ]}
-  relatedTools={relatedTools('json-to-typescript-zod')}
 >
   <div class="tool-ui">
     <div class="panels two-col">

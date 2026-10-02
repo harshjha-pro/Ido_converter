@@ -9,16 +9,34 @@ import '@fontsource/playfair-display/400-italic.css';
 
 interface Props {
   title: string;
+  description?: string;
+  /** Keep unlisted pages (unreviewed tools, empty profession pages) out of search results. */
+  noindex?: boolean;
 }
 
-const { title } = Astro.props;
+const DEFAULT_DESCRIPTION = 'Small, private tools for developers, online sellers, job seekers and applicants. Everything runs in your browser; nothing you paste or upload leaves your device.';
+const { title, description = DEFAULT_DESCRIPTION, noindex = false } = Astro.props;
+const fullTitle = title === 'Home' ? 'idoconverter: Private Tools Made to Fit Your Task' : `${title} | idoconverter`;
+// Directory-style URLs (Astro's default build) are served with a trailing slash; canonical matches that.
+const path = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`;
+const canonical = new URL(path, Astro.site).href;
 ---
 
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
-    <title>{title} | idoconverter</title>
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="idoconverter" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <style is:global>
       :root {
         /* Colors */

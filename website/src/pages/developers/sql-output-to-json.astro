@@ -1,10 +1,9 @@
 ---
 import ToolLayout from '../../layouts/ToolLayout.astro';
-import { relatedTools } from '../../data/tools';
 ---
 
 <ToolLayout
-  title="SQL Output to JSON"
+  slug="sql-output-to-json"
   howTo="Copy the result table from your psql or mysql terminal (or tab-separated output) and paste it, prompts and footers included. Several result sets in one paste are fine. Numbers, booleans and NULL are detected per column. Copy the JSON."
   faq={[
     { q: "Is my query output uploaded?", a: "No. Parsing happens in your browser. Nothing is sent or stored." },
@@ -12,7 +11,6 @@ import { relatedTools } from '../../data/tools';
     { q: "How is NULL handled?", a: "The word NULL becomes null. psql shows NULL as an empty cell by default, so empty psql cells become null unless you choose to keep them as empty strings." },
     { q: "Why did a number stay a string?", a: "Types are chosen per column. A column stays text if any value is not a number, if a value has leading zeros (like 007), or if it is too large or precise for JavaScript numbers." }
   ]}
-  relatedTools={relatedTools('sql-output-to-json')}
 >
   <div class="tool-ui">
     <div class="panels">

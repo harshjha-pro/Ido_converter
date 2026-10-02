@@ -36,6 +36,7 @@ The AI assistant reads this at the start of every session and updates it at the 
 | 18 | Volumetric weight calculator ships with no default divisor (rule 4). Do you want a default? If yes, which courier and service, with a rate-card link for `rules-and-sources.md`? | | |
 | 19 | Return-loss calculator (prompt 15): confirm the proposed formula. | | Confirmed by the team 2026-10-02. |
 | 20 | Visa photo presets need a named reviewer: open each official source in docs/rules-and-sources.md, confirm the values, and fill `reviewedBy`. The tool goes live automatically once all five are filled. | | |
+| 21 | Confirm the real domain (with TLD). Canonical links, sitemap.xml and robots.txt use `https://idoconverter.com` from `astro.config.mjs`; change it there or build with `SITE_URL=...`. | | |
 | 17 | Muted text fails contrast. The site uses `--color-text-muted: #6B726F` (4.32:1 on cream, below 4.5:1); DESIGN.md says `#88928A` (2.82:1, worse). Proposal: `#5F6662` (5.17:1 on cream, 5.89:1 on white), and update DESIGN.md to match. | | Yes. Applied 2026-10-02 in Layout.astro and DESIGN.md. |
 | 16 | `.claude/skills/idoconverter-design/SKILL.md` does not exist; the skill file is at `Docs/SKILL.md`. Move it? | | Moved 2026-10-02. |
 | 12 | What exactly is the "motion" need — a few subtle CSS transitions on the home page, or real animated marketing sections (which would mean adding React just for that)? | | |
@@ -70,16 +71,16 @@ Fill the search phrase and "who ranks" columns during Milestone 0 by googling th
 
 | Tool | Profession | Search phrase | Who ranks now | Crowding (est.) | Phase | Status |
 |---|---|---|---|---|---|---|
-| JSON PII masker | Developers | | | Low | 1 | Built, DoD partly verified |
-| Consistent pseudonymizer | Developers | | | Low | 1 | Built, DoD partly verified |
-| Log and secret scrubber | Developers | | | Medium | 1 | Built, DoD partly verified |
-| SQL console output to JSON | Developers | | | Low to medium | 1 | Built, DoD partly verified |
-| JSON to TypeScript and Zod | Developers | | | Medium | 1 | Built, DoD partly verified |
-| JSON repair | Developers | | | Low to medium | 1 | Built, DoD partly verified |
-| Visa and passport photo sizer | Exam and form | | | Medium | 1 | Built, unlisted until reviewedBy filled |
-| Notice period buyout calculator | Job seekers | | | Low | 1 | Built, DoD partly verified |
-| Volumetric weight calculator | Online sellers | | | Medium | 1 | Built, DoD partly verified |
-| Return-loss calculator | Online sellers | | | Low (unverified) | 1 | Built, DoD partly verified |
+| JSON PII masker | Developers | mask PII in JSON online | maskjson.com, maskpayload.com (small single-purpose tools), GitHub/PyPI libraries | Low–medium (checked 2026-10-02) | 1 | Built, DoD partly verified |
+| Consistent pseudonymizer | Developers | pseudonymize JSON online | No direct online tool; boltai anonymizer, PyPI libraries, vendor blogs | Low (checked 2026-10-02) | 1 | Built, DoD partly verified |
+| Log and secret scrubber | Developers | redact API keys from logs | Many client-side log sanitizers (redacted.to, LogScrub, devtoolsdaily, digitalcoding) | Medium–high (checked 2026-10-02) | 1 | Built, DoD partly verified |
+| SQL console output to JSON | Developers | psql output to JSON | Only PostgreSQL docs/mailing lists and Neon docs; no online converter | Low (checked 2026-10-02) | 1 | Built, DoD partly verified |
+| JSON to TypeScript and Zod | Developers | JSON to TypeScript and Zod | transform.tools, jsonic.io, jsonbeautify and several other generators (for 'json to zod') | High (checked 2026-10-02) | 1 | Built, DoD partly verified |
+| JSON repair | Developers | fix broken JSON from AI | Many: mangiucugna json_repair, jsonic, jsonbeam, devwithtools and others | High (checked 2026-10-02) | 1 | Built, DoD partly verified |
+| Visa and passport photo sizer | Exam and form | visa and passport photo resizer | Very crowded: photogov, imresizer, 123passportphoto, readytosubmit and many more | High (checked 2026-10-02) | 1 | Built, unlisted until reviewedBy filled |
+| Notice period buyout calculator | Job seekers | notice period buyout calculator | HR glossaries (Keka, greytHR, Plum), Hyring and ContractShield calculators | Medium (checked 2026-10-02) | 1 | Built, DoD partly verified |
+| Volumetric weight calculator | Online sellers | volumetric weight calculator | Many Indian logistics sites (Shipmozo, BigShip, SellerMitra, Shipybox) | High (checked 2026-10-02) | 1 | Built, DoD partly verified |
+| Return-loss calculator | Online sellers | return loss calculator for online sellers | RTO/return calculators from marginpanda, toolbaz, refundorreturn, hillteck | Medium (checked 2026-10-02) | 1 | Built, DoD partly verified |
 | GSTR-2B JSON to Excel (multi-month) | CAs | | | High | 2 | Not started |
 | Bank statement CSV cleaner (Tally mapping) | CAs | | | Medium | 2 | Not started |
 | GST inclusive and exclusive calculator | CAs | | | High | 2 | Not started |
@@ -135,7 +136,7 @@ Kept in `docs/rules-and-sources.md` (created 2026-10-02). Columns: rule, value, 
 - [x] Disclaimer for CA, tax, visa and pricing tools (draft)
 - [ ] Legal pages reviewed by a lawyer or CA
 - [x] Extension privacy policy URL (`/privacy#extension`) and permission justifications
-- [ ] Sitemap, canonical tags, titles and descriptions
+- [x] Sitemap, canonical tags, titles and descriptions (domain to confirm: open question 21)
 - [ ] Lighthouse scores recorded
 - [ ] Mobile and four-browser test done
 - [ ] Analytics confirmed to capture no tool input
@@ -367,3 +368,12 @@ Hosting note: the contact form needs PHP `mail()`, which Hostinger shared hostin
 Legal review: still required before launch (open question 6).
 Next: prompt 19 (SEO basics).
 Suggested commit message: Add legal pages and contact form
+
+### 2026-10-02 (prompt 19: SEO basics)
+Milestone / tool: Milestone 6 / Task 6.2
+Done: Search phrases chosen (team asked Claude to decide) and checked with web search; tracker filled with phrase, who ranks and crowding. Every page has a `<title>` and meta description (tool titles and descriptions live in `website/src/data/tools.ts`, written for the phrase), a canonical link, Open Graph tags and a favicon (fixes the old favicon 404). `sitemap.xml` and `robots.txt` are generated from one page list (`website/src/data/pages.ts`); there is also an HTML `/sitemap` page (footer link was a 404). Unlisted pages (visa tool pending review, `/forms/` with no live tool) are `noindex` and left out of the sitemap. Tool pages now pass only a `slug` to `ToolLayout`.
+Decisions: Phrases favour less crowded angles where the head term is crowded ("fix broken JSON from AI", "JSON to TypeScript and Zod"). Canonicals use a trailing slash to match how directory-style pages are served.
+Open: real domain (open question 21).
+Tests run and result: vitest 164/164; build passes; pages load with no console errors (favicon present).
+Next: prompt 20 (testing and performance).
+Suggested commit message: Add SEO basics: titles, descriptions, canonicals, sitemap

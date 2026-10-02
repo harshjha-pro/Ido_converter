@@ -1,11 +1,10 @@
 ---
 import ToolLayout from '../../layouts/ToolLayout.astro';
-import { relatedTools } from '../../data/tools';
 import { FORMULA_TEXT } from '../../../../core/sellers/volumetric-weight';
 ---
 
 <ToolLayout
-  title="Volumetric Weight Calculator"
+  slug="volumetric-weight-calculator"
   howTo="Measure the packed box. Choose cm or inches, enter length, width and height, and your courier's volumetric divisor from their rate card. Add the actual weight if you know it to see which one is higher."
   faq={[
     { q: "Is anything I enter sent to a server?", a: "No. The calculation runs in your browser." },
@@ -13,7 +12,6 @@ import { FORMULA_TEXT } from '../../../../core/sellers/volumetric-weight';
     { q: "Which weight will I be charged for?", a: "Couriers usually charge the higher of actual and volumetric weight, but rules vary (rounding up, minimum weights, surcharges). Check your courier's terms." },
     { q: "Why kilograms for cm and pounds for inches?", a: "Courier divisors are normally quoted that way: centimetres give kilograms and inches give pounds. Enter the actual weight in the same unit shown." }
   ]}
-  relatedTools={relatedTools('volumetric-weight-calculator')}
 >
   <div class="tool-ui">
     <form id="calc" class="controls-panel" novalidate>

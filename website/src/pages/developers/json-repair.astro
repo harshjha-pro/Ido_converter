@@ -1,10 +1,9 @@
 ---
 import ToolLayout from '../../layouts/ToolLayout.astro';
-import { relatedTools } from '../../data/tools';
 ---
 
 <ToolLayout
-  title="JSON Repair"
+  slug="json-repair"
   howTo="Paste broken JSON: AI chat output with code fences, hand-edited config, or a truncated response. Click Repair. You get valid JSON plus a list of every change with its line number. If something cannot be fixed safely, the tool tells you where and why."
   faq={[
     { q: "Is my JSON uploaded?", a: "No. Repair runs in your browser. Nothing is sent or stored." },
@@ -12,7 +11,6 @@ import { relatedTools } from '../../data/tools';
     { q: "How does it handle truncated JSON?", a: "It closes open strings, arrays and objects, drops a key that has no value, and completes a cut-off true, false or null. The data that was cut off cannot be recovered, so check the end of the result." },
     { q: "Why did it refuse to repair my input?", a: "When fixing would mean guessing the structure, for example a double colon or mismatched brackets, it stops and shows the line and column instead of inventing data." }
   ]}
-  relatedTools={relatedTools('json-repair')}
 >
   <div class="tool-ui">
     <div class="panels two-col">

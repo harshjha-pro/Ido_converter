@@ -1,14 +1,19 @@
 ---
 import Layout from './Layout.astro';
+import { TOOLS, relatedTools as findRelated } from '../data/tools';
 
 interface Props {
-  title: string;
+  /** Tool slug in website/src/data/tools.ts: title, SEO text, listing state and related tools come from there. */
+  slug: string;
   howTo: string;
   faq: { q: string; a: string }[];
-  relatedTools: { title: string; url?: string }[];
 }
 
-const { title, howTo, faq, relatedTools } = Astro.props;
+const { slug, howTo, faq } = Astro.props;
+const tool = TOOLS.find(t => t.slug === slug);
+if (!tool) throw new Error(`Unknown tool slug "${slug}" (add it to website/src/data/tools.ts)`);
+const title = tool.title;
+const relatedTools = findRelated(slug);
 
 // Helper to wrap the last word of the title in the serif font for stylistic emphasis
 const titleParts = title.split(' ');
@@ -16,7 +21,7 @@ const lastWord = titleParts.pop();
 const firstPart = titleParts.join(' ');
 ---
 
-<Layout title={title}>
+<Layout title={tool.seoTitle} description={tool.seoDescription} noindex={!tool.live}>
   <div class="tool-header">
     <div class="title-lockup">
       <h1>{firstPart} <span class="font-serif-italic">{lastWord}</span></h1>

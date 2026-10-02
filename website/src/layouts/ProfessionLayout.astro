@@ -14,7 +14,7 @@ const { profession, title, emphasis, subtitle } = Astro.props;
 const tools = toolsFor(profession).filter(t => t.live);
 ---
 
-<Layout title={`${title} ${emphasis}`}>
+<Layout title={`${title} ${emphasis}`} description={subtitle} noindex={tools.length === 0}>
   <div class="page-header">
     <h1>{title} <span class="font-serif-italic">{emphasis}</span></h1>
     <p class="subtitle">{subtitle}</p>

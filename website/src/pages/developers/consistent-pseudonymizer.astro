@@ -1,11 +1,10 @@
 ---
 import ToolLayout from '../../layouts/ToolLayout.astro';
 import { DEFAULT_SENSITIVE_KEYS } from '../../../../core/shared/pii';
-import { relatedTools } from '../../data/tools';
 ---
 
 <ToolLayout
-  title="Consistent Pseudonymizer"
+  slug="consistent-pseudonymizer"
   howTo="Paste your JSON. Sensitive keys and detected emails, phones, Aadhaar and PAN numbers are replaced with realistic fakes. The same real value always gets the same fake within one run, so joins and relationships still work. Enter a seed if you need the same fakes again later."
   faq={[
     { q: "Is my data sent anywhere?", a: "No. Everything runs in your browser. The mapping between real and fake values is never stored or sent; you can download it only if you choose to." },
@@ -13,7 +12,6 @@ import { relatedTools } from '../../data/tools';
     { q: "Why is an empty seed random instead of fixed?", a: "With a fixed seed, anyone who guesses a real value could recompute its fake and match them up. A random seed per run prevents that. Treat any seed you enter like a password." },
     { q: "Is this the same as masking?", a: "No. Masking hides values. Pseudonymizing swaps them for realistic fakes in the same format, which is better for test data and demos. Always review the output before sharing." }
   ]}
-  relatedTools={relatedTools('consistent-pseudonymizer')}
 >
   <div class="tool-ui">
     <div class="panels">

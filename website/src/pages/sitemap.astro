@@ -1,0 +1,18 @@
+---
+import LegalLayout from '../layouts/LegalLayout.astro';
+import { sitePages } from '../data/pages';
+
+const pages = sitePages();
+const sections = ['Main', 'Tools', 'Company'] as const;
+---
+
+<LegalLayout title="Sitemap" description="Every page and tool on idoconverter." draft={false}>
+  {sections.map((section) => (
+    <section>
+      <h2>{section}</h2>
+      <ul>
+        {pages.filter(p => p.section === section).map((p) => <li><a href={p.path}>{p.title}</a></li>)}
+      </ul>
+    </section>
+  ))}
+</LegalLayout>

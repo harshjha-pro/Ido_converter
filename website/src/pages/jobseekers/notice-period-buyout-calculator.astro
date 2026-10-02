@@ -1,11 +1,10 @@
 ---
 import ToolLayout from '../../layouts/ToolLayout.astro';
-import { relatedTools } from '../../data/tools';
 import { FORMULA_TEXT, DEFAULT_DAY_BASIS } from '../../../../core/jobseekers/notice-period-buyout';
 ---
 
 <ToolLayout
-  title="Notice Period Buyout Calculator"
+  slug="notice-period-buyout-calculator"
   howTo="Enter the monthly salary your employer uses for notice recovery, your notice period in days, and the days you have already served. The calculator shows the daily rate, the days left and the estimated buyout amount, using the formula shown below the result."
   faq={[
     { q: "Is my salary sent anywhere?", a: "No. The calculation runs in your browser. Nothing is uploaded or stored." },
@@ -13,7 +12,6 @@ import { FORMULA_TEXT, DEFAULT_DAY_BASIS } from '../../../../core/jobseekers/not
     { q: "Why can I change the day basis?", a: "Employers turn a monthly salary into a daily rate differently: 30 days is common, some use 26 working days or the calendar days in the month. This is an assumption, so set it to match your employer." },
     { q: "Is this the final amount I will pay?", a: "No, it is an estimate. Your employer's policy, any leave adjustment and deductions decide the final amount. Confirm with HR." }
   ]}
-  relatedTools={relatedTools('notice-period-buyout-calculator')}
 >
   <div class="tool-ui">
     <form id="calc" class="controls-panel" novalidate>
