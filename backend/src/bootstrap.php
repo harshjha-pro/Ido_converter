@@ -39,6 +39,7 @@ require __DIR__ . '/plans.php';
 require __DIR__ . '/history.php';
 require __DIR__ . '/subscriptions.php';
 require __DIR__ . '/razorpay.php';
+require __DIR__ . '/admin.php';
 
 function start_session(): void
 {

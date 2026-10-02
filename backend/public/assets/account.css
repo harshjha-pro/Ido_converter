@@ -41,3 +41,4 @@ th, td { text-align: left; padding: var(--space-2); border-bottom: 1px solid var
 pre.saved { white-space: pre-wrap; word-break: break-word; background: var(--color-bg-cream); padding: var(--space-3); border-radius: 8px; font-size: 13px; max-height: 480px; overflow: auto; }
 button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid var(--color-text-main); outline-offset: 2px; }
 .spaced { margin-top: var(--space-3); }
+.form .btn-secondary, .form .btn-danger { align-self: flex-start; }

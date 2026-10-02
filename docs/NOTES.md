@@ -434,3 +434,10 @@ Can a user fully delete their own data? **Yes**: single entries, all entries and
 Tests: 20/20 backend tests pass (incl. cross-user access, plan limit, oversize, retention timing, renewal stacking). Browser run on the PHP server + MariaDB: register → dashboard → logout → bad login → login → save → view (HTML shown escaped) → forged POST without CSRF refused (400) → delete → wrong-password account deletion refused → account deleted with all rows gone; no horizontal scroll at 360 px.
 Next: prompt 26 (admin panel).
 Suggested commit message: Add account backend: auth and user panel
+
+### 2026-10-02 (prompt 26: admin panel)
+Done: `/admin/` (gated by `users.role = 'admin'`, read from the database on every request): totals, saved results per tool (**aggregate counts only, no content view at all**, so no content-access logging is needed), user list with email search (LIKE wildcards escaped) and pagination (LIMIT/OFFSET bound as integers), per-user actions grant/extend, cancel at period end, cancel now (refund), all CSRF-protected and written to `admin_audit_log` (shown on the page). `backend/bin/make-admin.php` grants or revokes admin from the server command line (no web route can make an admin).
+Security check, tested over HTTP against the running app (not assumed): anonymous GET `/admin/`, `/admin/index.php`, `/admin` and POST `/admin/subscription.php` → 404; files outside the web root → 404; logged-in non-admin GET `/admin/` → 403; non-admin POST trying to give themselves Premium **with a valid CSRF token** → 403 and no subscription created; admin → 200 and the change works and is audited; after revoking admin, the next request → 403.
+Tests: 25/25 backend tests pass (5 admin tests).
+Next: prompt 27 (payment gateway).
+Suggested commit message: Add admin panel
