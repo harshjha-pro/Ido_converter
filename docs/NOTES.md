@@ -78,7 +78,7 @@ Fill the search phrase and "who ranks" columns during Milestone 0 by googling th
 | Visa and passport photo sizer | Exam and form | | | Medium | 1 | Not started |
 | Notice period buyout calculator | Job seekers | | | Low | 1 | Built, DoD partly verified |
 | Volumetric weight calculator | Online sellers | | | Medium | 1 | Built, DoD partly verified |
-| Return-loss calculator | Online sellers | | | Low (unverified) | 1 | Not started |
+| Return-loss calculator | Online sellers | | | Low (unverified) | 1 | Built, DoD partly verified |
 | GSTR-2B JSON to Excel (multi-month) | CAs | | | High | 2 | Not started |
 | Bank statement CSV cleaner (Tally mapping) | CAs | | | Medium | 2 | Not started |
 | GST inclusive and exclusive calculator | CAs | | | High | 2 | Not started |
@@ -329,3 +329,12 @@ Team instructions (2026-10-02): Claude to self-check the extension; return-loss 
 Still manual: right-click menu test by a person, Chrome Web Store developer account and fee, zip and upload, Edge/Firefox.
 Next: prompt 15 (return-loss calculator).
 Suggested commit message: Prepare extension store listing documents
+
+### 2026-10-02 (prompt 15: return-loss calculator)
+Milestone / tool: Milestone 5 / Task 5.3: Return-loss calculator
+Done: `core/sellers/return-loss.ts` with the team-approved formula, page `/sellers/return-loss-calculator` (results list, formulas in a details block, estimate note), spec, 5-case fixture (expected values worked by hand), 13 tests incl. a check that expected profit is 0 at the break-even rate.
+New dependencies (name, size, license): None.
+Tests run and result: vitest 144/144 pass; build passes. Browser: ₹292.50 expected profit for the sample; return rate 150% → clear error; zero network requests; no horizontal scroll at 360 px.
+Definition of Done: 1 PASS · 2 PASS · 3 PASS · 4 PARTIAL (Chromium only) · 5 PASS (related: volumetric weight) · 6 PASS · 7 PASS · 8 N/A (no rule values; estimate note shown).
+Next: prompt 16 (visa photo sizer).
+Suggested commit message: Add return-loss calculator

@@ -1,0 +1,105 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import { relatedTools } from '../../data/tools';
+import { FORMULAS } from '../../../../core/sellers/return-loss';
+
+const money = [
+  { id: 'price', label: 'Selling price', hint: 'What the customer pays' },
+  { id: 'cost', label: 'Product cost', hint: 'Your cost per item' },
+  { id: 'ship', label: 'Shipping cost', hint: 'Forward shipping per order' },
+  { id: 'fee', label: 'Marketplace fee', hint: 'Commission and fees per sale' },
+  { id: 'rship', label: 'Return shipping cost', hint: 'Per returned order' },
+  { id: 'restock', label: 'Restock / repack cost', hint: 'Inspection, repacking, refurbishing' },
+  { id: 'nonref', label: 'Non-refundable fees', hint: 'Fees the marketplace keeps on a return' },
+];
+---
+
+<ToolLayout
+  title="Return-Loss Calculator"
+  howTo="Enter your per-order numbers from your marketplace payout statement, your return rate and how many returned items you can sell again. The calculator shows the loss on each returned order, your expected profit per order, your margin after returns and the return rate at which you stop making money."
+  faq={[
+    { q: "Are my numbers sent anywhere?", a: "No. Everything is calculated in your browser." },
+    { q: "Why is shipping counted in the loss on a return?", a: "On a returned order you have already paid forward shipping, then pay return shipping, and the sale brings in nothing." },
+    { q: "What does resellable share mean?", a: "The percentage of returned items you can sell again at full price. The rest of the product cost is counted as lost." },
+    { q: "What is the break-even return rate?", a: "The return rate at which expected profit per order falls to zero. Above it, every order loses money on average." }
+  ]}
+  relatedTools={relatedTools('return-loss-calculator')}
+>
+  <div class="tool-ui">
+    <form id="calc" class="controls-panel" novalidate>
+      <div class="field-row">
+        {money.map((f) => (
+          <label class="field" for={f.id}>{f.label} (₹)
+            <input id={f.id} class="text-input" type="number" inputmode="decimal" min="0" step="any" aria-describedby={`${f.id}-hint`} required />
+            <span id={`${f.id}-hint`} class="field-hint">{f.hint}</span>
+          </label>
+        ))}
+        <label class="field" for="resell">Resellable share of returns (%)
+          <input id="resell" class="text-input" type="number" inputmode="decimal" min="0" max="100" step="any" value="100" required />
+        </label>
+        <label class="field" for="rate">Return rate (%)
+          <input id="rate" class="text-input" type="number" inputmode="decimal" min="0" max="100" step="any" required />
+        </label>
+      </div>
+      <button type="submit" class="btn-primary btn-run">Calculate &rarr;</button>
+      <div id="status-area" class="status-area" role="status"></div>
+    </form>
+
+    <section class="result-box" aria-live="polite" aria-labelledby="result-title">
+      <h2 id="result-title" class="panel-label">Expected profit per order</h2>
+      <p id="expected" class="big-number">—</p>
+      <dl id="results" class="result-list"></dl>
+      <details class="formula-details">
+        <summary>Formulas used</summary>
+        <ul class="findings-list">{FORMULAS.map((f) => <li class="formula">{f}</li>)}</ul>
+      </details>
+      <p class="result-detail">An estimate from the numbers you enter, not financial advice. Marketplace fee and refund rules vary; check your payout statement.</p>
+    </section>
+  </div>
+</ToolLayout>
+
+<script>
+  import { calculate } from '../../../../core/sellers/return-loss';
+  import { byId, setStatus } from '../../scripts/tool-ui';
+
+  const inr = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 2 });
+  const pct = (n: number) => `${(n * 100).toFixed(1)}%`;
+  const num = (id: string) => {
+    const raw = byId<HTMLInputElement>(id).value.trim();
+    return raw === '' ? Number.NaN : Number(raw);
+  };
+
+  byId<HTMLFormElement>('calc').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const statusEl = byId<HTMLDivElement>('status-area');
+    const expectedEl = byId<HTMLParagraphElement>('expected');
+    const list = byId<HTMLDListElement>('results');
+    const r = calculate({
+      sellingPrice: num('price'), productCost: num('cost'), shippingCost: num('ship'), marketplaceFee: num('fee'),
+      returnShippingCost: num('rship'), restockCost: num('restock'), nonRefundableFees: num('nonref'),
+      resellablePercent: num('resell'), returnRatePercent: num('rate'),
+    });
+    list.replaceChildren();
+    if (!r.ok || !r.output) {
+      expectedEl.textContent = '—';
+      setStatus(statusEl, `Error: ${r.error}`, 'error');
+      return;
+    }
+    const o = r.output;
+    expectedEl.textContent = inr.format(o.expectedProfitPerOrder);
+    const rows: [string, string][] = [
+      ['Profit per kept order', inr.format(o.profitPerKeptOrder)],
+      ['Loss per returned order', inr.format(o.lossPerReturnedOrder)],
+      ['Profit per 100 orders', inr.format(o.profitPer100Orders)],
+      ['Margin without returns', pct(o.marginWithoutReturns)],
+      ['Margin after returns', o.marginAfterReturns === null ? 'n/a (every order returned)' : pct(o.marginAfterReturns)],
+      ['Break-even return rate', r.meta?.lossEvenWithoutReturns ? 'None: orders lose money even with no returns' : pct(o.breakEvenReturnRate)],
+    ];
+    for (const [k, v] of rows) {
+      const dt = document.createElement('dt'); dt.textContent = k;
+      const dd = document.createElement('dd'); dd.textContent = v;
+      list.append(dt, dd);
+    }
+    setStatus(statusEl, 'Calculated.', 'success');
+  });
+</script>

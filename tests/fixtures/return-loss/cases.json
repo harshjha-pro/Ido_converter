@@ -1,0 +1,17 @@
+[
+  { "name": "normal: 15% returns, 80% resellable",
+    "input": { "sellingPrice": 1000, "productCost": 400, "shippingCost": 60, "marketplaceFee": 150, "returnShippingCost": 70, "restockCost": 20, "nonRefundableFees": 30, "resellablePercent": 80, "returnRatePercent": 15 },
+    "expected": { "profitPerKeptOrder": 390, "lossPerReturnedOrder": 260, "expectedProfitPerOrder": 292.5, "profitPer100Orders": 29250, "marginWithoutReturns": 0.39, "marginAfterReturns": 0.3441, "breakEvenReturnRate": 0.6 } },
+  { "name": "zero returns",
+    "input": { "sellingPrice": 500, "productCost": 200, "shippingCost": 50, "marketplaceFee": 50, "returnShippingCost": 50, "restockCost": 10, "nonRefundableFees": 0, "resellablePercent": 100, "returnRatePercent": 0 },
+    "expected": { "profitPerKeptOrder": 200, "lossPerReturnedOrder": 110, "expectedProfitPerOrder": 200, "marginWithoutReturns": 0.4, "marginAfterReturns": 0.4 } },
+  { "name": "100% return rate",
+    "input": { "sellingPrice": 500, "productCost": 200, "shippingCost": 50, "marketplaceFee": 50, "returnShippingCost": 50, "restockCost": 10, "nonRefundableFees": 20, "resellablePercent": 50, "returnRatePercent": 100 },
+    "expected": { "profitPerKeptOrder": 200, "lossPerReturnedOrder": 230, "expectedProfitPerOrder": -230, "profitPer100Orders": -23000, "marginAfterReturns": null } },
+  { "name": "nothing resellable: whole product cost lost",
+    "input": { "sellingPrice": 800, "productCost": 300, "shippingCost": 40, "marketplaceFee": 80, "returnShippingCost": 40, "restockCost": 0, "nonRefundableFees": 0, "resellablePercent": 0, "returnRatePercent": 10 },
+    "expected": { "profitPerKeptOrder": 380, "lossPerReturnedOrder": 380, "expectedProfitPerOrder": 304, "breakEvenReturnRate": 0.5 } },
+  { "name": "loss-making even without returns",
+    "input": { "sellingPrice": 300, "productCost": 250, "shippingCost": 60, "marketplaceFee": 40, "returnShippingCost": 60, "restockCost": 0, "nonRefundableFees": 0, "resellablePercent": 100, "returnRatePercent": 5 },
+    "expected": { "profitPerKeptOrder": -50, "breakEvenReturnRate": 0 } }
+]
