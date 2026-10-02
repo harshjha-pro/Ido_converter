@@ -1,3 +1,5 @@
+import { allPresetsReviewed } from '../../../core/forms/visa-photo-sizer';
+
 // Single list of tools so profession pages, related-tool links and the footer never drift apart.
 export type Profession = 'developers' | 'sellers' | 'jobseekers' | 'forms' | 'ca' | 'frontend';
 
@@ -29,6 +31,9 @@ export const TOOLS: ToolEntry[] = [
     title: 'Volumetric Weight Calculator', description: 'Work out volumetric weight from box size with your courier\'s divisor, and see which weight is higher.' },
   { profession: 'sellers', slug: 'return-loss-calculator', group: 'shipping', live: true,
     title: 'Return-Loss Calculator', description: 'See what each returned order costs you and your real margin after returns, with the break-even return rate.' },
+  // AGENTS.md rule 5: listed only once every country preset has a named reviewer in visa-photo-presets.json.
+  { profession: 'forms', slug: 'visa-passport-photo-sizer', group: 'photo', live: allPresetsReviewed(),
+    title: 'Visa and Passport Photo Sizer', description: 'Crop and resize a photo to India, USA or UK passport and visa photo specs, in your browser.' },
 ];
 
 export function toolUrl(tool: ToolEntry): string {

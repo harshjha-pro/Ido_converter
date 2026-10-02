@@ -1,0 +1,122 @@
+{
+  "_readme": "Official photo specs. Every preset needs source, lastChecked and (before publishing) reviewedBy, per AGENTS.md rules 4-5 and docs/rules-and-sources.md. Pixel sizes marked 'derived' are idoconverter's choices, not official figures.",
+  "presets": [
+    {
+      "id": "in-passport-print",
+      "country": "India",
+      "document": "Passport: printed photo for the application form",
+      "widthMm": 35,
+      "heightMm": 45,
+      "outputWidth": 413,
+      "outputHeight": 531,
+      "outputNote": "35 × 45 mm at 300 DPI print resolution (derived: print resolution chosen by idoconverter, not an official figure)",
+      "minBytes": null,
+      "maxBytes": null,
+      "rules": [
+        "Size 4.5 cm high × 3.5 cm wide",
+        "Colour photo",
+        "Plain white background; dark-coloured clothing",
+        "Frontal view of the full face"
+      ],
+      "source": {
+        "title": "Passport Seva: Application form instruction booklet (V3.0)",
+        "url": "https://www.passportindia.gov.in/AppOnlineProject/pdf/ApplicationformInstructionBooklet-V3.0.pdf"
+      },
+      "lastChecked": "2026-10-02",
+      "reviewedBy": ""
+    },
+    {
+      "id": "us-visa-digital",
+      "country": "USA",
+      "document": "Visa application digital photo (DS-160 / Diversity Visa)",
+      "widthMm": null,
+      "heightMm": null,
+      "outputWidth": 600,
+      "outputHeight": 600,
+      "outputNote": "Square, 600 × 600 px (official range 600–1200 px square)",
+      "minBytes": null,
+      "maxBytes": 240000,
+      "rules": [
+        "Square: height must equal width, 600 × 600 to 1200 × 1200 pixels",
+        "JPEG, 240 kB or less",
+        "Colour photo",
+        "Head (chin to top of head) 50%–69% of the image height"
+      ],
+      "source": {
+        "title": "U.S. Department of State: Photo Requirements (visas)",
+        "url": "https://travel.state.gov/content/travel/en/us-visas/visa-information-resources/photos.html"
+      },
+      "lastChecked": "2026-10-02",
+      "reviewedBy": ""
+    },
+    {
+      "id": "us-passport-print",
+      "country": "USA",
+      "document": "Passport: printed photo",
+      "widthMm": 51,
+      "heightMm": 51,
+      "outputWidth": 600,
+      "outputHeight": 600,
+      "outputNote": "2 × 2 inches at 300 DPI print resolution (derived: print resolution chosen by idoconverter)",
+      "minBytes": null,
+      "maxBytes": null,
+      "rules": [
+        "2 × 2 inches (51 × 51 mm)",
+        "Head centred, 1 to 1.4 inches (25–35 mm) from chin to top of head",
+        "Sharp, in focus, not grainy or pixelated"
+      ],
+      "source": {
+        "title": "U.S. Department of State: Passport Photos",
+        "url": "https://travel.state.gov/content/travel/en/passports/requirements/photos.html"
+      },
+      "lastChecked": "2026-10-02",
+      "reviewedBy": ""
+    },
+    {
+      "id": "uk-passport-digital",
+      "country": "UK",
+      "document": "Passport: digital photo (online application)",
+      "widthMm": null,
+      "heightMm": null,
+      "outputWidth": 900,
+      "outputHeight": 1125,
+      "outputNote": "900 × 1125 px, above the official minimum of 600 × 750 (derived: 4:5 shape taken from the official minimum size)",
+      "minBytes": 50000,
+      "maxBytes": 10000000,
+      "rules": [
+        "At least 600 pixels wide and 750 pixels tall",
+        "At least 50 KB and no more than 10 MB",
+        "Clear, in focus, in colour, not altered by software"
+      ],
+      "source": {
+        "title": "GOV.UK: Get a passport photo (digital photos)",
+        "url": "https://www.gov.uk/photos-for-passports"
+      },
+      "lastChecked": "2026-10-02",
+      "reviewedBy": ""
+    },
+    {
+      "id": "uk-passport-print",
+      "country": "UK",
+      "document": "Passport: printed photo",
+      "widthMm": 35,
+      "heightMm": 45,
+      "outputWidth": 413,
+      "outputHeight": 531,
+      "outputNote": "35 × 45 mm at 300 DPI print resolution (derived: print resolution chosen by idoconverter)",
+      "minBytes": null,
+      "maxBytes": null,
+      "rules": [
+        "45 mm high × 35 mm wide",
+        "Head (chin to crown) 29–34 mm",
+        "Printed to high quality; taken within the last month"
+      ],
+      "source": {
+        "title": "GOV.UK: Get a passport photo (printed photos)",
+        "url": "https://www.gov.uk/photos-for-passports/photo-requirements"
+      },
+      "lastChecked": "2026-10-02",
+      "reviewedBy": ""
+    }
+  ]
+}

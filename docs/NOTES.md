@@ -23,7 +23,7 @@ The AI assistant reads this at the start of every session and updates it at the 
 | 2 | Is a CA available for review and task input? | | |
 | 3 | Is "idoconverter" the main brand or a sub-brand? | | |
 | 4 | Launch hosting: current Hostinger plan or Cloudflare Pages? | | Hostinger (stated by the team). Still to check in hPanel: PHP version, SSH on or off, Composer available. |
-| 5 | Which countries come first for the visa photo sizer? | | |
+| 5 | Which countries come first for the visa photo sizer? | | Team asked Claude to choose (2026-10-02): India, USA, UK. |
 | 6 | Who reviews the legal pages? | | |
 | 7 | Confirm the ₹89 yearly Basic price — is it correct, or should it be closer to ₹29×12=₹348 minus a normal discount? | | |
 | 8 | Is ₹89 the yearly price for Basic, or a separate 4th tier? Team said "4 tiers: 29, 89, 129, 429" but also "89 if paid yearly" | | |
@@ -35,6 +35,7 @@ The AI assistant reads this at the start of every session and updates it at the 
 | 15 | `tsc --noEmit` fails on the tests because `@types/node` is missing (it is not in CI). Add `@types/node` as a dev dependency (MIT, types only)? | | Yes, added 2026-10-02. |
 | 18 | Volumetric weight calculator ships with no default divisor (rule 4). Do you want a default? If yes, which courier and service, with a rate-card link for `rules-and-sources.md`? | | |
 | 19 | Return-loss calculator (prompt 15): confirm the proposed formula. | | Confirmed by the team 2026-10-02. |
+| 20 | Visa photo presets need a named reviewer: open each official source in docs/rules-and-sources.md, confirm the values, and fill `reviewedBy`. The tool goes live automatically once all five are filled. | | |
 | 17 | Muted text fails contrast. The site uses `--color-text-muted: #6B726F` (4.32:1 on cream, below 4.5:1); DESIGN.md says `#88928A` (2.82:1, worse). Proposal: `#5F6662` (5.17:1 on cream, 5.89:1 on white), and update DESIGN.md to match. | | Yes. Applied 2026-10-02 in Layout.astro and DESIGN.md. |
 | 16 | `.claude/skills/idoconverter-design/SKILL.md` does not exist; the skill file is at `Docs/SKILL.md`. Move it? | | Moved 2026-10-02. |
 | 12 | What exactly is the "motion" need — a few subtle CSS transitions on the home page, or real animated marketing sections (which would mean adding React just for that)? | | |
@@ -75,7 +76,7 @@ Fill the search phrase and "who ranks" columns during Milestone 0 by googling th
 | SQL console output to JSON | Developers | | | Low to medium | 1 | Built, DoD partly verified |
 | JSON to TypeScript and Zod | Developers | | | Medium | 1 | Built, DoD partly verified |
 | JSON repair | Developers | | | Low to medium | 1 | Built, DoD partly verified |
-| Visa and passport photo sizer | Exam and form | | | Medium | 1 | Not started |
+| Visa and passport photo sizer | Exam and form | | | Medium | 1 | Built, unlisted until reviewedBy filled |
 | Notice period buyout calculator | Job seekers | | | Low | 1 | Built, DoD partly verified |
 | Volumetric weight calculator | Online sellers | | | Medium | 1 | Built, DoD partly verified |
 | Return-loss calculator | Online sellers | | | Low (unverified) | 1 | Built, DoD partly verified |
@@ -338,3 +339,13 @@ Tests run and result: vitest 144/144 pass; build passes. Browser: ₹292.50 expe
 Definition of Done: 1 PASS · 2 PASS · 3 PASS · 4 PARTIAL (Chromium only) · 5 PASS (related: volumetric weight) · 6 PASS · 7 PASS · 8 N/A (no rule values; estimate note shown).
 Next: prompt 16 (visa photo sizer).
 Suggested commit message: Add return-loss calculator
+
+### 2026-10-02 (prompt 16: visa and passport photo sizer)
+Milestone / tool: Milestone 5 / Task 5.4: Visa and passport photo sizer
+Done: Presets as data (`core/forms/visa-photo-presets.json`, 5 presets for India, USA, UK with official source, lastChecked, empty reviewedBy), pure crop and file-size logic (`core/forms/visa-photo-sizer.ts`), `/forms/` profession page, tool page with canvas crop/resize/compress and download, disclaimer, source and date per preset. `docs/rules-and-sources.md` filled. Spec and 20 tests.
+Decisions: Countries chosen by Claude (team request). Official pages could not be opened from the build environment, so values were taken from search results on the official domains only; third-party figures (India 630×810 px/250 KB) not used. Tool is listed only when every preset has `reviewedBy` (computed in `tools.ts`). Print outputs use 300 DPI (labelled as our choice).
+New dependencies (name, size, license): None.
+Tests run and result: vitest 164/164 pass; build passes. Browser: 3000×4000 test photo → US visa 600×600 (86 KB ≤ 240 KB), UK digital 900×1125 (324 KB, ≥ 50 KB), India print 413×531; downloads work; zero network requests (image stays as a local blob); no horizontal scroll at 360 px; pending-review banner shown; `/forms/` shows "coming soon".
+Definition of Done: 1 PASS · 2 PASS · 3 PASS (unsupported image message; large photo) · 4 PARTIAL (Chromium only) · 5 PARTIAL (no related tool yet) · 6 PASS (sliders keyboard-operable) · 7 PASS · 8 PARTIAL: sources and dates recorded and shown, disclaimer shown; **reviewedBy empty, so not published** (open question 20).
+Next: prompt 17 (Milestone 5 wrap-up).
+Suggested commit message: Add visa and passport photo sizer (unlisted pending review)

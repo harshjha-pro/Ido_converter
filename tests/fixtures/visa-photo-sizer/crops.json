@@ -1,0 +1,6 @@
+[
+  { "name": "landscape photo, square crop, centred", "req": { "imageWidth": 4000, "imageHeight": 3000, "aspect": 1, "zoom": 1, "centerX": 0.5, "centerY": 0.5 }, "expected": { "sx": 500, "sy": 0, "sw": 3000, "sh": 3000 } },
+  { "name": "portrait photo, 35:45 crop fits width", "req": { "imageWidth": 3000, "imageHeight": 4000, "aspect": 0.7777777777777778, "zoom": 1, "centerX": 0.5, "centerY": 0.5 }, "expected": { "sx": 0, "sy": 71.42857142857156, "sw": 3000, "sh": 3857.142857142857 } },
+  { "name": "zoom 2 halves the crop", "req": { "imageWidth": 4000, "imageHeight": 3000, "aspect": 1, "zoom": 2, "centerX": 0.5, "centerY": 0.5 }, "expected": { "sx": 1250, "sy": 750, "sw": 1500, "sh": 1500 } },
+  { "name": "centre at the edge is clamped inside the image", "req": { "imageWidth": 4000, "imageHeight": 3000, "aspect": 1, "zoom": 2, "centerX": 0, "centerY": 1 }, "expected": { "sx": 0, "sy": 1500, "sw": 1500, "sh": 1500 } }
+]

@@ -1,0 +1,219 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import { relatedTools } from '../../data/tools';
+import { PRESETS, allPresetsReviewed } from '../../../../core/forms/visa-photo-sizer';
+
+const countries = [...new Set(PRESETS.map(p => p.country))];
+const reviewed = allPresetsReviewed();
+---
+
+<ToolLayout
+  title="Visa and Passport Photo Sizer"
+  howTo="Choose the country and document, then pick a photo from your device. Use the zoom and position sliders until your face is centred as the rules describe. Click Create photo to get a JPEG at the exact size, compressed to fit any file-size limit, and download it."
+  faq={[
+    { q: "Is my photo uploaded?", a: "No. The photo is cropped and resized in your browser using the canvas. It never leaves your device." },
+    { q: "Where do the sizes come from?", a: "Each preset shows its official source and the date we last checked it. Rules change, so verify on the official site before you apply." },
+    { q: "Does it remove or change the background?", a: "No. Take the photo against the plain background the rules require; this tool only crops, resizes and compresses." },
+    { q: "Why is the print size in pixels?", a: "For printed photos we output 300 DPI, a standard print resolution. That number is our choice, not part of the official rules; the physical size in millimetres is the official part." }
+  ]}
+  relatedTools={relatedTools('visa-passport-photo-sizer')}
+>
+  <div class="tool-ui">
+    <p class="tool-warning"><strong>Not official advice.</strong> Verify the requirements with the official portal before you submit. This tool does not check face position, lighting or background.</p>
+    {!reviewed && (
+      <p class="tool-warning" id="review-pending"><strong>Pending review:</strong> these presets have not yet been checked by a named reviewer, so this tool is not listed on the site yet (AGENTS.md rule 5).</p>
+    )}
+
+    <div class="panels two-col">
+      <div class="controls-panel">
+        <label class="options-group" for="preset">
+          <strong>Country and document</strong>
+          <select id="preset" class="style-select">
+            {countries.map((c) => (
+              <optgroup label={c}>
+                {PRESETS.filter(p => p.country === c).map((p) => <option value={p.id}>{c}: {p.document}</option>)}
+              </optgroup>
+            ))}
+          </select>
+        </label>
+        <div id="preset-info" class="result-box">
+          {PRESETS.map((p, i) => (
+            <div data-preset={p.id} hidden={i !== 0}>
+              <ul class="findings-list">{p.rules.map((r) => <li>{r}</li>)}</ul>
+              <p class="result-detail"><strong>Output:</strong> {p.outputWidth} × {p.outputHeight} px. {p.outputNote}.</p>
+              <p class="result-detail">Source: <a href={p.source.url} rel="noopener noreferrer" target="_blank">{p.source.title}</a>. Last checked {p.lastChecked}.</p>
+            </div>
+          ))}
+        </div>
+
+        <label class="options-group" for="file">
+          <strong>Your photo (JPEG, PNG or WebP)</strong>
+          <input id="file" type="file" accept="image/jpeg,image/png,image/webp" class="text-input" />
+        </label>
+
+        <label class="options-group" for="zoom"><strong>Zoom</strong>
+          <input id="zoom" type="range" min="1" max="4" step="0.01" value="1" disabled />
+        </label>
+        <label class="options-group" for="posx"><strong>Left / right</strong>
+          <input id="posx" type="range" min="0" max="1" step="0.005" value="0.5" disabled />
+        </label>
+        <label class="options-group" for="posy"><strong>Up / down</strong>
+          <input id="posy" type="range" min="0" max="1" step="0.005" value="0.5" disabled />
+        </label>
+
+        <button id="btn-run" class="btn-primary btn-run" disabled>Create photo &rarr;</button>
+        <div id="status-area" class="status-area" role="status"></div>
+      </div>
+
+      <div class="panel">
+        <span class="panel-label">Preview</span>
+        <canvas id="preview" class="photo-preview" width="300" height="386" aria-label="Crop preview"></canvas>
+        <div class="panel-header">
+          <span id="result-size" class="result-detail"></span>
+          <a id="download" class="btn-secondary" hidden download="photo.jpg">Download photo</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</ToolLayout>
+
+<style>
+  .photo-preview {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    background: var(--color-bg-cream);
+  }
+</style>
+
+<script>
+  import { getPreset, computeCrop, findQuality, upscaleFactor, type PhotoPreset } from '../../../../core/forms/visa-photo-sizer';
+  import { byId, setStatus } from '../../scripts/tool-ui';
+
+  const presetEl = byId<HTMLSelectElement>('preset');
+  const fileEl = byId<HTMLInputElement>('file');
+  const zoomEl = byId<HTMLInputElement>('zoom');
+  const xEl = byId<HTMLInputElement>('posx');
+  const yEl = byId<HTMLInputElement>('posy');
+  const runBtn = byId<HTMLButtonElement>('btn-run');
+  const preview = byId<HTMLCanvasElement>('preview');
+  const statusEl = byId<HTMLDivElement>('status-area');
+  const downloadEl = byId<HTMLAnchorElement>('download');
+  const sizeEl = byId<HTMLSpanElement>('result-size');
+
+  let image: ImageBitmap | null = null;
+  let downloadUrl: string | null = null;
+
+  const preset = (): PhotoPreset => getPreset(presetEl.value)!;
+
+  function currentCrop() {
+    if (!image) return null;
+    const p = preset();
+    const r = computeCrop({
+      imageWidth: image.width, imageHeight: image.height, aspect: p.outputWidth / p.outputHeight,
+      zoom: Number(zoomEl.value), centerX: Number(xEl.value), centerY: Number(yEl.value),
+    });
+    return r.ok ? r.output! : null;
+  }
+
+  function clearResult() {
+    if (downloadUrl) URL.revokeObjectURL(downloadUrl);
+    downloadUrl = null;
+    downloadEl.hidden = true;
+    sizeEl.textContent = '';
+  }
+
+  function drawPreview() {
+    const p = preset();
+    preview.width = 300;
+    preview.height = Math.round(300 * p.outputHeight / p.outputWidth);
+    const ctx = preview.getContext('2d')!;
+    ctx.clearRect(0, 0, preview.width, preview.height);
+    const crop = currentCrop();
+    if (!image || !crop) return;
+    ctx.drawImage(image, crop.sx, crop.sy, crop.sw, crop.sh, 0, 0, preview.width, preview.height);
+    // Centre guides help line up the face; they are not drawn on the final photo.
+    ctx.strokeStyle = 'rgba(18, 56, 42, 0.5)';
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath();
+    ctx.moveTo(preview.width / 2, 0); ctx.lineTo(preview.width / 2, preview.height);
+    ctx.stroke();
+  }
+
+  function showPresetInfo() {
+    document.querySelectorAll<HTMLElement>('#preset-info [data-preset]').forEach(el => {
+      el.hidden = el.dataset.preset !== presetEl.value;
+    });
+  }
+
+  presetEl.addEventListener('change', () => { showPresetInfo(); clearResult(); drawPreview(); });
+  for (const el of [zoomEl, xEl, yEl]) el.addEventListener('input', () => { clearResult(); drawPreview(); });
+
+  fileEl.addEventListener('change', async () => {
+    clearResult();
+    const file = fileEl.files?.[0];
+    if (!file) return;
+    try {
+      image?.close();
+      image = await createImageBitmap(file, { imageOrientation: 'from-image' });
+    } catch {
+      image = null;
+      setStatus(statusEl, 'Could not read that image. Use a JPEG, PNG or WebP photo (HEIC from iPhone is not supported by browsers).', 'error');
+      return;
+    }
+    for (const el of [zoomEl, xEl, yEl, runBtn]) el.disabled = false;
+    zoomEl.value = '1'; xEl.value = '0.5'; yEl.value = '0.5';
+    setStatus(statusEl, `Loaded ${image.width} × ${image.height} px. Adjust the crop, then create the photo.`, 'success');
+    drawPreview();
+  });
+
+  runBtn.addEventListener('click', async () => {
+    const p = preset();
+    const crop = currentCrop();
+    if (!image || !crop) return;
+    clearResult();
+    const out = document.createElement('canvas');
+    out.width = p.outputWidth;
+    out.height = p.outputHeight;
+    const ctx = out.getContext('2d')!;
+    // JPEG has no transparency; paint white first so transparent PNG areas do not turn black.
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(0, 0, out.width, out.height);
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(image, crop.sx, crop.sy, crop.sw, crop.sh, 0, 0, out.width, out.height);
+
+    const toBlob = (q: number) => new Promise<Blob>((resolve, reject) =>
+      out.toBlob(b => (b ? resolve(b) : reject(new Error('encode failed'))), 'image/jpeg', q));
+    const cache = new Map<number, Blob>();
+    const encode = async (q: number) => {
+      const blob = cache.get(q) ?? await toBlob(q);
+      cache.set(q, blob);
+      return blob.size;
+    };
+
+    runBtn.disabled = true;
+    setStatus(statusEl, 'Creating photo…');
+    try {
+      const result = await findQuality(encode, { minBytes: p.minBytes, maxBytes: p.maxBytes });
+      const blob = cache.get(result.quality) ?? await toBlob(result.quality);
+      downloadUrl = URL.createObjectURL(blob);
+      downloadEl.href = downloadUrl;
+      downloadEl.download = `${p.id}-${p.outputWidth}x${p.outputHeight}.jpg`;
+      downloadEl.hidden = !result.withinLimits && p.maxBytes !== null && blob.size > p.maxBytes;
+      sizeEl.textContent = `${p.outputWidth} × ${p.outputHeight} px JPEG. ${result.message}`;
+      const blurry = upscaleFactor(crop, p) > 1.05;
+      setStatus(statusEl,
+        (result.withinLimits ? 'Photo ready. Check it against the official rules before submitting.' : 'Photo created, but it does not meet the file-size rule.')
+          + (blurry ? ' The crop was enlarged, so it may look soft; use a larger photo or zoom out.' : ''),
+        result.withinLimits ? 'success' : 'error');
+    } catch {
+      setStatus(statusEl, 'Could not create the photo in this browser.', 'error');
+    } finally {
+      runBtn.disabled = false;
+    }
+  });
+
+  drawPreview();
+</script>
