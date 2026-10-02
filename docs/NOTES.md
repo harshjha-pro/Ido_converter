@@ -34,7 +34,7 @@ The AI assistant reads this at the start of every session and updates it at the 
 | 14 | `public/footer-art.png` is outside Astro's configured `website/public/`, so it is not served. Move it, or delete it if unused? | | Moved to `website/public/` 2026-10-02. |
 | 15 | `tsc --noEmit` fails on the tests because `@types/node` is missing (it is not in CI). Add `@types/node` as a dev dependency (MIT, types only)? | | Yes, added 2026-10-02. |
 | 18 | Volumetric weight calculator ships with no default divisor (rule 4). Do you want a default? If yes, which courier and service, with a rate-card link for `rules-and-sources.md`? | | |
-| 19 | Return-loss calculator (prompt 15): confirm the proposed formula (see session log 2026-10-02, prompt 15). | | |
+| 19 | Return-loss calculator (prompt 15): confirm the proposed formula. | | Confirmed by the team 2026-10-02. |
 | 17 | Muted text fails contrast. The site uses `--color-text-muted: #6B726F` (4.32:1 on cream, below 4.5:1); DESIGN.md says `#88928A` (2.82:1, worse). Proposal: `#5F6662` (5.17:1 on cream, 5.89:1 on white), and update DESIGN.md to match. | | Yes. Applied 2026-10-02 in Layout.astro and DESIGN.md. |
 | 16 | `.claude/skills/idoconverter-design/SKILL.md` does not exist; the skill file is at `Docs/SKILL.md`. Move it? | | Moved 2026-10-02. |
 | 12 | What exactly is the "motion" need — a few subtle CSS transitions on the home page, or real animated marketing sections (which would mean adding React just for that)? | | |
@@ -321,3 +321,11 @@ Tests run and result: vitest 131/131 pass; build passes. Browser: 40×30×20 cm 
 Definition of Done: 1 PASS · 2 PASS · 3 PASS · 4 PARTIAL (Chromium only) · 5 PARTIAL (no related seller tool yet) · 6 PASS · 7 PASS · 8 PARTIAL: courier divisor has no sourced default by design; no rule value is hard-coded.
 Next: STOP for team input. Prompt 12 needs the extension tested; prompt 15 needs the formula confirmed; prompt 16 needs countries and official specs.
 Suggested commit message: Add volumetric weight calculator and sellers page
+
+### 2026-10-02 (prompt 12: extension store prep)
+Milestone / tool: Milestone 4 / tasks 4.1, 4.3, 4.4
+Done: `extension/json-privacy-masker/store/` with privacy policy (collects nothing), listing (single purpose statement verbatim from PRD section 7, short and detailed description, privacy-practices answers), permission justification (`contextMenus` only), screenshot list and a submission checklist. No extension code changed.
+Team instructions (2026-10-02): Claude to self-check the extension; return-loss formula approved; Claude picks visa photo countries; contact email myselfhkjha@gmail.com; Claude decides the remaining open items; payment/backend files to be built now, API keys added later by the team.
+Still manual: right-click menu test by a person, Chrome Web Store developer account and fee, zip and upload, Edge/Firefox.
+Next: prompt 15 (return-loss calculator).
+Suggested commit message: Prepare extension store listing documents
