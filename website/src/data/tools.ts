@@ -81,6 +81,10 @@ export const TOOLS: ToolEntry[] = [
     title: 'TDS Rate and Threshold Lookup', description: 'Find TDS rates and thresholds for 2026-27 under section 393, by old section number or payment type, and check if TDS applies.',
     searchPhrase: 'TDS rate chart 2026-27 section 393', seoTitle: 'TDS Rate Chart 2026-27 (Section 393) and Threshold Check',
     seoDescription: 'TDS rates and thresholds for tax year 2026-27 under section 393 of the Income-tax Act 2025, searchable by old section (194J, 194C, 194-I). Check if TDS applies. Sources shown.' },
+  { profession: 'ca', slug: 'compliance-due-date-calendar', group: 'calendar', live: caReviewed('compliance-due-date-calendar'),
+    title: 'GST and TDS Due Date Calendar', description: 'Your GST, TDS and advance tax due dates for the year by filing type and state, with a calendar file to import.',
+    searchPhrase: 'GST TDS due date calendar 2026-27', seoTitle: 'GST and TDS Due Date Calendar 2026-27 (by State)',
+    seoDescription: 'GSTR-1, GSTR-3B (monthly or QRMP by state), PMT-06, TDS deposit, TDS statements and advance tax due dates for FY 2026-27. Add them to your calendar. Sources shown.' },
 ];
 
 export function toolUrl(tool: ToolEntry): string {

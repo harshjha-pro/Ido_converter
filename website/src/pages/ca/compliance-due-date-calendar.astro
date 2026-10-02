@@ -1,0 +1,102 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import CaNotice from '../../components/CaNotice.astro';
+import { DUE_DATA, STATES } from '../../../../core/ca/due-dates';
+
+const sources = Object.values(DUE_DATA.sources).map(s => ({ ...s, lastChecked: DUE_DATA.lastChecked }));
+---
+
+<ToolLayout
+  slug="compliance-due-date-calendar"
+  howTo="Choose the financial year, how the business files GST (monthly, or quarterly under QRMP with its state), and whether it deducts TDS or pays advance tax. The list shows every due date in order with the period it is for. Download the calendar file to add all the dates to Google Calendar, Outlook or Apple Calendar at once."
+  faq={[
+    { q: "Are these dates final?", a: "They are the due dates in the rules. The government often extends them by notification for a particular month or state, so always check the GST portal and the Income Tax portal for extensions." },
+    { q: "Why does the state matter?", a: "Quarterly GSTR-3B under the QRMP scheme is due on the 22nd for some states and UTs and on the 24th for the others (CGST Rule 61), based on the principal place of business." },
+    { q: "Which dates are not included?", a: "Income-tax return due dates, GST annual returns (GSTR-9/9C), GSTR-4, TCS and government deductors' TDS dates are not included yet, because we have not verified them under the current rules." },
+    { q: "What happens if a due date falls on a holiday?", a: "This calendar does not move dates for weekends or holidays. Check the portal or your CA; do not assume an extension." }
+  ]}
+>
+  <div class="tool-ui">
+    <CaNotice slug="compliance-due-date-calendar" sources={sources} />
+    <form id="calc" class="controls-panel" novalidate>
+      <div class="field-row">
+        <label class="field" for="fy">Financial year
+          <select id="fy" class="style-select">
+            <option value="2026">2026-27</option>
+            <option value="2027">2027-28</option>
+          </select>
+        </label>
+        <label class="field" for="gst">GST filing
+          <select id="gst" class="style-select">
+            <option value="monthly">Monthly (GSTR-1 and GSTR-3B every month)</option>
+            <option value="qrmp">Quarterly (QRMP scheme)</option>
+            <option value="none">Not registered for GST</option>
+          </select>
+        </label>
+        <label class="field" for="state" id="state-wrap" hidden>State or UT of principal place of business
+          <select id="state" class="style-select">
+            <option value="">Choose…</option>
+            {STATES.map((s) => <option>{s}</option>)}
+          </select>
+        </label>
+      </div>
+      <label class="options-group-inline"><input type="checkbox" id="tds" checked /> Deducts TDS (non-government)</label>
+      <label class="options-group-inline"><input type="checkbox" id="adv" /> Pays advance tax</label>
+      <button type="submit" class="btn-primary btn-run">Show due dates &rarr;</button>
+      <div id="status-area" class="status-area" role="status"></div>
+    </form>
+    <section class="result-box" aria-live="polite" aria-labelledby="result-title">
+      <div class="panel-header">
+        <h2 id="result-title" class="panel-label">Due dates</h2>
+        <button id="btn-ics" class="btn-secondary" hidden>Download calendar file</button>
+      </div>
+      <ol id="list" class="due-list"></ol>
+      <p class="result-detail">Dates as per the rules, last checked {DUE_DATA.lastChecked}. Extensions notified by the government are not included.</p>
+    </section>
+  </div>
+</ToolLayout>
+
+<style>
+  .due-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-2); font-size: var(--text-small); }
+  .due-list li { display: grid; grid-template-columns: 7.5rem 1fr; gap: var(--space-2); padding: var(--space-2) 0; border-bottom: 1px solid var(--color-border); }
+  .due-list time { font-weight: 600; color: var(--color-bg-dark); }
+  .due-list .cat { color: var(--color-text-muted); }
+</style>
+
+<script>
+  import { generate, toIcs, type DueItem, type GstFiling } from '../../../../core/ca/due-dates';
+  import { byId, setStatus, downloadText } from '../../scripts/tool-ui';
+
+  const gstEl = byId<HTMLSelectElement>('gst');
+  gstEl.addEventListener('change', () => { byId('state-wrap').hidden = gstEl.value !== 'qrmp'; });
+  const fmt = new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+  let current: DueItem[] = [];
+
+  byId<HTMLFormElement>('calc').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const r = generate({
+      fyStartYear: Number(byId<HTMLSelectElement>('fy').value), gst: gstEl.value as GstFiling, state: byId<HTMLSelectElement>('state').value,
+      tdsDeductor: byId<HTMLInputElement>('tds').checked, advanceTax: byId<HTMLInputElement>('adv').checked,
+    });
+    const list = byId<HTMLOListElement>('list');
+    list.replaceChildren();
+    byId('btn-ics').hidden = true;
+    if (!r.ok || !r.output) {
+      setStatus(byId('status-area'), `Error: ${r.error}`, 'error');
+      return;
+    }
+    current = r.output;
+    for (const it of current) {
+      const li = document.createElement('li');
+      const time = Object.assign(document.createElement('time'), { dateTime: it.date, textContent: fmt.format(new Date(it.date + 'T00:00:00Z')) });
+      const body = document.createElement('span');
+      body.append(`${it.title}: ${it.period} `, Object.assign(document.createElement('span'), { className: 'cat', textContent: `(${it.category})` }));
+      li.append(time, body);
+      list.append(li);
+    }
+    byId('btn-ics').hidden = false;
+    setStatus(byId('status-area'), `${current.length} due dates.`, 'success');
+  });
+
+  byId<HTMLButtonElement>('btn-ics').addEventListener('click', () => downloadText('compliance-due-dates.ics', toIcs(current), 'text/calendar'));
+</script>

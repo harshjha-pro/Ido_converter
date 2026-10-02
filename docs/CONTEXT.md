@@ -185,6 +185,7 @@ Full rules: `AGENTS.md`.
 - Milestone: 6 (Milestones 1–5 built; visa preset review and manual cross-browser checks pending)
 - Professions with any live pages: Developers (6 tools), Job seekers (1), Online sellers (2); Exam and form page exists, its tool is unlisted until reviewed
 - Tools with working logic: JSON PII masker, consistent pseudonymizer, log and secret scrubber, SQL output to JSON, JSON to TypeScript and Zod, JSON repair, notice period buyout, volumetric weight, return-loss, visa photo sizer (unlisted)
+- Phase 2 (CA tools): all six built with sourced rules, **unlisted until a CA reviews them** (core/ca/review.json)
 - Extension: built (JSON Privacy Masker, unpacked, not submitted)
 - Legal pages: drafted (privacy, terms, disclaimer need lawyer/CA review); about and contact done
 - Live/deployed: no (build ready; steps in docs/DEPLOY.md; domain to confirm)

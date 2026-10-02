@@ -1,0 +1,36 @@
+{
+  "_readme": "Recurring statutory due dates as data (AGENTS.md rule 4). These are the dates in the rules; the government often extends them by notification, which this file does not track. Not included (not verified under current rules): income-tax return due dates, GSTR-9/9C, GSTR-4, government deductors' TDS dates, TCS.",
+  "lastChecked": "2026-10-02",
+  "reviewedBy": "",
+  "sources": {
+    "gstr1": { "title": "GST portal FAQ: Form GSTR-1 (monthly 11th; QRMP 13th)", "url": "https://tutorial.gst.gov.in/contextualhelp/Einv/GSTR_1.htm" },
+    "gstr3b": { "title": "GST portal FAQ: Form GSTR-3B (monthly 20th; quarterly 22nd/24th)", "url": "https://tutorial.gst.gov.in/userguide/returns/GSTR3B.htm" },
+    "rule61": { "title": "CGST Rules: Rule 61 (state groups for quarterly GSTR-3B)", "url": "https://taxinformation.cbic.gov.in/content/html/tax_repository/gst/rules/cgst_rules/active/chapter8/rule61_v1.00.html" },
+    "qrmp": { "title": "GST portal: FAQs on QRMP scheme (PMT-06 by 25th, IFF)", "url": "https://tutorial.gst.gov.in/downloads/news/faq_on_qrmp_iff.pdf" },
+    "tdsDeposit": { "title": "Income Tax Department: Payment of TDS and TCS (7th; March by 30 April)", "url": "https://incometaxindia.gov.in/Documents/Tax-Calendar/Payment-of-TDS-and-TCS.htm" },
+    "tdsReturn": { "title": "Income Tax Department: Return filing (quarterly TDS statements)", "url": "https://www.incometaxindia.gov.in/w/return-filing-6" },
+    "advanceTax": { "title": "Income Tax Department: Tax payments (advance tax instalments)", "url": "https://www.incometax.gov.in/iec/foportal/help/all-topics/e-filing-services/tax-payments" }
+  },
+  "gst": {
+    "monthly": { "gstr1Day": 11, "gstr3bDay": 20 },
+    "qrmp": { "gstr1Day": 13, "iffDay": 13, "pmt06Day": 25, "gstr3bDayGroupA": 22, "gstr3bDayGroupB": 24 },
+    "groupA": ["Chhattisgarh", "Madhya Pradesh", "Gujarat", "Maharashtra", "Karnataka", "Goa", "Kerala", "Tamil Nadu", "Telangana", "Andhra Pradesh", "Dadra and Nagar Haveli and Daman and Diu", "Puducherry", "Andaman and Nicobar Islands", "Lakshadweep"],
+    "groupB": ["Himachal Pradesh", "Punjab", "Uttarakhand", "Haryana", "Rajasthan", "Uttar Pradesh", "Bihar", "Sikkim", "Arunachal Pradesh", "Nagaland", "Manipur", "Mizoram", "Tripura", "Meghalaya", "Assam", "West Bengal", "Jharkhand", "Odisha", "Jammu and Kashmir", "Ladakh", "Chandigarh", "Delhi"]
+  },
+  "tds": {
+    "depositDay": 7,
+    "marchDeposit": { "month": 4, "day": 30 },
+    "statements": [
+      { "quarter": "Q1 (Apr–Jun)", "month": 7, "day": 31 },
+      { "quarter": "Q2 (Jul–Sep)", "month": 10, "day": 31 },
+      { "quarter": "Q3 (Oct–Dec)", "month": 1, "day": 31 },
+      { "quarter": "Q4 (Jan–Mar)", "month": 5, "day": 31, "nextYear": true }
+    ]
+  },
+  "advanceTax": [
+    { "month": 6, "day": 15, "cumulative": "15%" },
+    { "month": 9, "day": 15, "cumulative": "45%" },
+    { "month": 12, "day": 15, "cumulative": "75%" },
+    { "month": 3, "day": 15, "cumulative": "100%" }
+  ]
+}

@@ -37,6 +37,8 @@ The AI assistant reads this at the start of every session and updates it at the 
 | 19 | Return-loss calculator (prompt 15): confirm the proposed formula. | | Confirmed by the team 2026-10-02. |
 | 20 | Visa photo presets need a named reviewer: open each official source in docs/rules-and-sources.md, confirm the values, and fill `reviewedBy`. The tool goes live automatically once all five are filled. | | |
 | 21 | Confirm the real domain (with TLD). Canonical links, sitemap.xml and robots.txt use `https://idoconverter.com` from `astro.config.mjs`; change it there or build with `SITE_URL=...`. | | |
+| 22 | **Phase 2 needs a chartered accountant** to review all six CA tools against sample data and every rule in docs/rules-and-sources.md, then fill `reviewedBy`/`reviewedOn` in `core/ca/review.json` (and the rule data files). Each tool is listed on the site as soon as its entry is filled. Who will do this? | | |
+| 23 | Before listing GSTR-2B to Excel: test it with a real GSTR-2B JSON downloaded from the GST portal (the field names come from published documentation, not a real file). | | |
 | 17 | Muted text fails contrast. The site uses `--color-text-muted: #6B726F` (4.32:1 on cream, below 4.5:1); DESIGN.md says `#88928A` (2.82:1, worse). Proposal: `#5F6662` (5.17:1 on cream, 5.89:1 on white), and update DESIGN.md to match. | | Yes. Applied 2026-10-02 in Layout.astro and DESIGN.md. |
 | 16 | `.claude/skills/idoconverter-design/SKILL.md` does not exist; the skill file is at `Docs/SKILL.md`. Move it? | | Moved 2026-10-02. |
 | 12 | What exactly is the "motion" need — a few subtle CSS transitions on the home page, or real animated marketing sections (which would mean adding React just for that)? | | |
@@ -86,7 +88,7 @@ Fill the search phrase and "who ranks" columns during Milestone 0 by googling th
 | GST inclusive and exclusive calculator | CAs | GST calculator new rates 2025 inclusive exclusive | ClearTax, Groww and many others (from planning research) | High | 2 | Built, unlisted until CA review |
 | GST late fee and interest calculator | CAs | GSTR-3B late fee and interest calculator | ClearTax and other tax sites (from planning research) | Medium | 2 | Built, unlisted until CA review |
 | TDS rate and threshold lookup | CAs | TDS rate chart 2026-27 section 393 | ClearTax, Groww, fincalculator.in (from planning research) | Medium | 2 | Built, unlisted until CA review |
-| Compliance due-date calendar | CAs | | | Medium | 2 | Not started |
+| Compliance due-date calendar | CAs | GST TDS due date calendar 2026-27 | Many tax sites publish static calendars (from planning research) | Medium | 2 | Built, unlisted until CA review |
 | JSON formatter and validator, JWT decoder | Developers | | | High | 3 | Not started |
 | Clamp generator, px/rem/em, color converter | Frontend | | | High | 3 | Not started |
 | CSS to Tailwind | Frontend | | | Medium | 3 | Not started |
@@ -522,3 +524,12 @@ Decisions: Only verified rows; dividends and others with conflicting or missing 
 Tests: vitest 228/228; build passes. Browser: "194J" search, no-match message, contractor ₹20,000 with ₹1,10,000 year total → 2% = ₹400; rent ₹45,000/month → no TDS; zero network requests; no horizontal scroll.
 Next: P2.3 tool 6 (compliance due-date calendar).
 Suggested commit message: Add TDS rate and threshold lookup
+
+### 2026-10-02 (P2.3 tool 6: compliance due-date calendar; Phase 2 build complete)
+Done: `core/ca/due-dates.json` (recurring GST, TDS and advance-tax dates with official sources; QRMP state groups from Rule 61), `core/ca/due-dates.ts` (FY calendar generator + `.ics` export), page `/ca/compliance-due-date-calendar`, spec, 9 tests; `.ics` verified with the Python icalendar parser.
+Decisions: Only verified recurring dates; ITR/GSTR-9/TCS/government deductor dates left out. Extensions not tracked (warned on page). FY 2026-27 onwards only.
+**Phase 2 status:** all six PRD tools built (GSTR-2B JSON to Excel, bank statement CSV cleaner, GST calculator, GSTR-3B late fee and interest, TDS lookup, due-date calendar), each with rules as sourced data, a "not professional advice" notice, sources and last-checked dates, tests and a browser check. **None is published**: rule 5 requires a CA's sign-off (open question 22). P2.1 (CA interview), P2.4 (CA review), P2.6 (yearly update reminder) and P2.7 (second extension decision) need the CA.
+Yearly update: GST rates, late fee caps, TDS rows and due dates must be re-checked every financial year and after each Budget/GST Council meeting; each data file has `lastChecked`.
+Tests: vitest 237/237; build passes; every CA page loads with no console errors, zero network requests after load and no horizontal scroll at 360 px.
+Next: team finds a CA reviewer; then list tools one by one.
+Suggested commit message: Add compliance due-date calendar; Phase 2 tools built
