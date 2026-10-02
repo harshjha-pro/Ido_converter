@@ -5,7 +5,7 @@ interface Props {
   title: string;
   howTo: string;
   faq: { q: string; a: string }[];
-  relatedTools: { title: string; url: string }[];
+  relatedTools: { title: string; url?: string }[];
 }
 
 const { title, howTo, faq, relatedTools } = Astro.props;
@@ -25,13 +25,12 @@ const firstPart = titleParts.join(' ');
           <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
           <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
         </svg>
-        <span>Runs locally. No data uploaded.</span>
+        <span>Runs in your browser. Nothing is uploaded.</span>
       </div>
     </div>
   </div>
   
   <div class="tool-area">
-    <p class="placeholder-text"><em>Tool area (placeholder)</em></p>
     <slot />
   </div>
   
@@ -67,7 +66,11 @@ const firstPart = titleParts.join(' ');
         <h2>Related Tools</h2>
         <ul class="related-list">
           {relatedTools.map((tool) => (
-            <li><a href={tool.url}>{tool.title} &rarr;</a></li>
+            <li>
+              {tool.url
+                ? <a href={tool.url}>{tool.title} &rarr;</a>
+                : <span class="related-soon">{tool.title} <em>(coming soon)</em></span>}
+            </li>
           ))}
         </ul>
       </section>
@@ -124,11 +127,6 @@ const firstPart = titleParts.join(' ');
     border: 1px solid rgba(0,0,0,0.05);
   }
   
-  .placeholder-text {
-    color: var(--color-text-muted);
-    text-align: center;
-    margin-top: var(--space-7);
-  }
 
   .tool-meta {
     max-width: 800px;
@@ -219,6 +217,12 @@ const firstPart = titleParts.join(' ');
     border: 1px solid var(--color-border);
   }
   
+  .related-soon {
+    display: inline-block;
+    color: var(--color-text-muted);
+    padding: var(--space-3) var(--space-4);
+  }
+
   .related-list a:hover {
     border-color: var(--color-bg-dark);
   }

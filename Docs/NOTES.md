@@ -2,7 +2,7 @@
 
 The AI assistant reads this at the start of every session and updates it at the end. Keep entries short and dated.
 
-**Last updated:** 2026-09-28
+**Last updated:** 2026-10-02
 
 ---
 
@@ -10,10 +10,10 @@ The AI assistant reads this at the start of every session and updates it at the 
 
 | Item | Status |
 |---|---|
-| Current milestone | Milestone 0: Ready to build |
-| Current tool | none yet |
-| Blockers | Open questions below |
-| Next step | Answer open questions, then validate Phase 1 tools in the tracker |
+| Current milestone | Milestone 1: Skeleton and first tool |
+| Current tool | JSON PII masker (task 1.4): logic, page and tests done; Definition of Done still needs cross-browser check and a tool spec in `docs/tools/` |
+| Blockers | Open questions below; questions 13–16 for the repo layout |
+| Next step | Task 1.5 (test deploy), then Milestone 2 |
 
 ## 2. Open questions
 
@@ -30,6 +30,10 @@ The AI assistant reads this at the start of every session and updates it at the 
 | 9 | Feature list per paid tier | | |
 | 10 | Payment gateway choice for India | | |
 | 11 | Data retention period and deletion process for stored history | | |
+| 13 | Docs live in `Docs/` but every doc refers to `docs/`, and AGENTS.md/CLAUDE.md expect to sit at the repo root. Rename `Docs/` → `docs/` and move AGENTS.md/CLAUDE.md to the root? (Renames need approval per AGENTS.md.) | | |
+| 14 | `public/footer-art.png` is outside Astro's configured `website/public/`, so it is not served. Move it, or delete it if unused? | | |
+| 15 | `tsc --noEmit` fails on the tests because `@types/node` is missing (it is not in CI). Add `@types/node` as a dev dependency (MIT, types only)? | | |
+| 16 | `.claude/skills/idoconverter-design/SKILL.md` does not exist; the skill file is at `Docs/SKILL.md`. Move it? | | |
 | 12 | What exactly is the "motion" need — a few subtle CSS transitions on the home page, or real animated marketing sections (which would mean adding React just for that)? | | |
 
 ## 3. Decisions log
@@ -61,7 +65,7 @@ Fill the search phrase and "who ranks" columns during Milestone 0 by googling th
 
 | Tool | Profession | Search phrase | Who ranks now | Crowding (est.) | Phase | Status |
 |---|---|---|---|---|---|---|
-| JSON PII masker | Developers | | | Low | 1 | Not started |
+| JSON PII masker | Developers | | | Low | 1 | Built, DoD partly verified |
 | Consistent pseudonymizer | Developers | | | Low | 1 | Not started |
 | Log and secret scrubber | Developers | | | Medium | 1 | Not started |
 | SQL console output to JSON | Developers | | | Low to medium | 1 | Not started |
@@ -170,3 +174,22 @@ Problems / open questions: None.
 Next: Next tool in PRD.
 Suggested commit message: Feat: Implement JSON PII masker
 
+
+### 2026-10-02 (review and fixes)
+Milestone / tool: Milestone 1 / Task 1.4: JSON PII Masker
+Done:
+- Fixed broken production build (wrong relative import path on the tool page; CI was red).
+- Fixed related-tool links (page passed `path`, layout read `url`); unbuilt tools now show "(coming soon)" instead of a dead link.
+- Removed the leftover "Tool area (placeholder)" text; privacy badge now uses the DESIGN.md wording.
+- Masker leaks fixed: Indian mobile numbers, lowercase PAN, key variants (`accessToken`, `user-password`, `API_KEY`), values nested under a sensitive key, phone/Aadhaar stored as JSON numbers.
+- `replacementCount` now counts every masked value, not every string touched.
+- Added `mobile` and `apikey` to the default key list. Large-input (>5 MB) warning in the UI.
+Decisions:
+- Key matching ignores case and separators and matches by whole words. This over-masks keys like `file_name` or `test_name` (contain the word "name"); chosen on purpose, since over-masking is safer than leaking.
+- Phone/Aadhaar-like numbers are masked and become strings (type changes, structure stays).
+- Bearer tokens and `sk-...` style keys inside free text are left to the Log and secret scrubber (Milestone 2). They are masked when under a sensitive key such as `authorization`.
+New dependencies (name, size, license): None.
+Tests run and result: vitest 16/16 pass; `npm run build` passes. Built page checked in headless Chromium at 360px: masking works, zero network requests when masking, no horizontal scroll. Only console error is the browser's automatic `/favicon.ico` 404 (no favicon yet).
+Problems / open questions: see open questions 13–16.
+Next: tool spec in `docs/tools/json-pii-masker.md`, cross-browser check, then task 1.5.
+Suggested commit message: Fix build and harden JSON PII masker against leaks

@@ -5,10 +5,26 @@
     "Call us at +1-800-555-0199 for support.",
     "Session token is eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
     "My PAN is ABCDE1234F.",
-    "Aadhaar: 1234-5678-9012"
+    "lowercase pan fghij5678k",
+    "Aadhaar: 1234-5678-9012",
+    "WhatsApp +91 98765 43210 or 087654-32109",
+    "Ring 7654321098 after 6pm"
   ],
   "keys_to_target": {
     "SECRET": "this must go",
-    "password": "this must go too"
-  }
+    "password": "this must go too",
+    "accessToken": "tok-variant-camel",
+    "user-password": "pw-variant-kebab",
+    "API_KEY": "sk-live-variant-snake",
+    "Authorization": "Bearer bearer-secret-value"
+  },
+  "nested_under_key": {
+    "password": { "current": "nested-pw-current", "history": ["nested-pw-old"] },
+    "contact": { "phone": { "home": 5550001111 } }
+  },
+  "numeric_leaks": { "mobileNo": 9123456780, "uid": 234567890123 },
+  "customers": [
+    { "name": "राहुल शर्मा", "email": "rahul.sharma@example.in" },
+    { "name": "Priya Ramanathan", "email": "priya.r@example.co.in" }
+  ]
 }

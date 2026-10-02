@@ -1,5 +1,6 @@
 ---
 import ToolLayout from '../../layouts/ToolLayout.astro';
+import { DEFAULT_KEYS } from '../../../../core/developers/json-pii-masker';
 ---
 
 <ToolLayout 
@@ -7,12 +8,13 @@ import ToolLayout from '../../layouts/ToolLayout.astro';
   howTo="Paste your JSON in the input area. Configure your masking options (by keys or patterns). Get your masked JSON safely."
   faq={[
     { q: "Is my data sent anywhere?", a: "No, all processing happens locally in your browser. We do not upload your data." },
-    { q: "Does it keep the JSON structure?", a: "Yes, arrays and nested objects remain intact." },
+    { q: "Does it keep the JSON structure?", a: "Yes, arrays and nested objects remain intact. Everything under a sensitive key is masked, including nested objects. Numbers that look like phone or Aadhaar numbers are masked and become strings." },
+    { q: "How are key names matched?", a: "Case and separators are ignored, and keys are matched by whole words, so accessToken, user-password and API_KEY all match token, password and apikey." },
     { q: "What happens if a pattern detection is wrong?", a: "Pattern-based scrubbing can miss secrets or over-mask. Always review the output before sharing." }
   ]}
   relatedTools={[
-    { title: "Consistent Pseudonymizer", path: "#" },
-    { title: "Log and Secret Scrubber", path: "#" }
+    { title: "Consistent Pseudonymizer" },
+    { title: "Log and Secret Scrubber" }
   ]}
 >
   <div class="tool-ui">
@@ -32,7 +34,7 @@ import ToolLayout from '../../layouts/ToolLayout.astro';
         </div>
         <div class="options-group">
           <strong>Mask by Key Name (comma separated)</strong>
-          <input type="text" id="opt-keys" value="email, phone, name, password, token, secret, authorization, aadhaar, pan" class="keys-input" />
+          <input type="text" id="opt-keys" value={DEFAULT_KEYS.join(', ')} class="keys-input" />
         </div>
         <div class="options-group">
           <strong>Mask Style</strong>
@@ -138,7 +140,10 @@ import ToolLayout from '../../layouts/ToolLayout.astro';
 </style>
 
 <script>
-  import { run } from '../../../../../core/developers/json-pii-masker';
+  import { run, DEFAULT_KEYS, type MaskerOptions } from '../../../../core/developers/json-pii-masker';
+
+  // Above this size parsing can freeze the tab on low-end phones (TECHNICAL_SPEC section 7).
+  const LARGE_INPUT_BYTES = 5 * 1024 * 1024;
 
   const btnMask = document.getElementById('btn-mask') as HTMLButtonElement;
   const btnCopy = document.getElementById('btn-copy') as HTMLButtonElement;
@@ -154,9 +159,9 @@ import ToolLayout from '../../layouts/ToolLayout.astro';
     const keysStr = (document.getElementById('opt-keys') as HTMLInputElement).value;
     const keysToMask = keysStr.split(',').map(s => s.trim()).filter(Boolean);
 
-    const maskStyle = (document.getElementById('opt-style') as HTMLSelectElement).value as any;
+    const maskStyle = (document.getElementById('opt-style') as HTMLSelectElement).value as MaskerOptions['maskStyle'];
 
-    const options = {
+    const options: MaskerOptions = {
       keysToMask,
       maskEmail: (document.getElementById('opt-email') as HTMLInputElement).checked,
       maskPhone: (document.getElementById('opt-phone') as HTMLInputElement).checked,
@@ -166,11 +171,13 @@ import ToolLayout from '../../layouts/ToolLayout.astro';
       maskStyle
     };
 
+    const isLarge = new Blob([input]).size > LARGE_INPUT_BYTES;
     const result = run(input, options);
 
     if (result.ok) {
       outputEl.value = result.output || '';
-      statusEl.textContent = `Success! Masked ${result.meta?.replacementCount || 0} values.`;
+      statusEl.textContent = `Masked ${result.meta?.replacementCount || 0} values. Review the output before sharing.`
+        + (isLarge ? ' Large input: processing may be slow on some devices.' : '');
       statusEl.classList.add('success');
     } else {
       outputEl.value = '';
