@@ -206,6 +206,8 @@ See `docs/PRD.md` section 10 for the tier numbers and open questions. Do not sta
 | Data retention and deletion | User can delete their stored history and account. Define a retention period. |
 | Legal | Update the privacy policy to describe exactly what paid storage keeps, for how long, and where. Check India's DPDP Act requirements. |
 
+**Schema (2026-10-02):** `backend/schema.sql`: `users`, `subscriptions`, `payments`, `tool_history`, `login_attempts`, `admin_audit_log`, `webhook_events`. Code lives in `backend/` (PHP 8, PDO with prepared statements only), deployed as a separate site (recommended subdomain `account.YOUR-DOMAIN`), configured by the git-ignored `backend/config/config.php`. Plans, prices and retention live in `backend/config/plans.php` and are **unconfirmed placeholders** (see NOTES.md, prompt 22).
+
 **This section breaks the site's static-only architecture.** Once it's built, the site has two parts: the free static tools (still no server, same as before) and a separate account/billing app (Laravel + database) that the free tools do not depend on. Keep them separated so a bug or outage in billing never breaks the free tools.
 
 ## 14. Legal pages (required before ads and the extension)

@@ -200,6 +200,10 @@ This is a real scope change, not an add-on. Sections 4 and 6 say the tools need 
 | Batch processing (multiple files at once) | No | No | Yes | Yes |
 | Priority support | No | No | No | Yes |
 
+### 11.1a Status (2026-10-02)
+
+Not confirmed by the team yet. At the team's request Claude built the Phase 4 code with placeholders: the prices above as written, the draft feature table, Razorpay as gateway, and a retention rule (history kept until deleted or 30 days after the subscription ends). All of these live in `backend/config/plans.php` and must be confirmed before real payments. See NOTES.md open questions 6–11.
+
 ### 11.2 What this changes technically (see TECHNICAL_SPEC.md section 14)
 
 - Storing "previous data" means files or results **leave the browser and reach a server**, which conflicts with the current privacy promise ("your data never leaves your browser"). This needs a clear, separate promise for paid plans: what is stored, for how long, and how it's protected. **[OPEN]** decide this before building.

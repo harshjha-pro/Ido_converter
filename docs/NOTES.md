@@ -404,3 +404,19 @@ Done: `npm run build` completes with no errors; `dist/` contains every page, `40
 Before deploying: confirm the domain (open question 21), and ideally get the legal pages reviewed (question 6).
 Next: Phase 4 gate check (prompt 22).
 Suggested commit message: Add deployment guide
+
+### 2026-10-02 (prompt 22: Phase 4 gate check)
+Gate check against NOTES.md section 2:
+1. Final tier count and prices confirmed? **No** (Q7, Q8 open). 2. ₹89/year confirmed? **No** (Q7). 3. Feature list per tier? **No** (Q9; PRD has a draft). 4. Payment gateway chosen? **No** (Q10). 5. Retention and deletion decided? **No** (Q11). 6. Who reviews legal/storage wording? **No** (Q6).
+Team instruction (2026-10-02, chat): build the payment and backend files now; the team adds API keys and settings later; Claude decides the rest. So Phase 4 code is built with **placeholders, not confirmed decisions**, and must not take real payments until questions 6–11 are answered:
+- Tiers and prices: the team's numbers as given (Basic ₹29/month or ₹89/year, Plus ₹129, Premium ₹429), all in `backend/config/plans.php`, marked UNCONFIRMED.
+- Features: PRD section 10 draft table.
+- Gateway: Razorpay (common for India; PRD's suggestion). One-time payments per period (not auto-renew) to keep it simple; renewal = pay again.
+- Retention: saved history kept until the user deletes it or 30 days after the subscription ends; account deletion removes everything at once; payment records kept for accounting but unlinked from the person.
+- Saving history is manual and opt-in in the account area; the free tools are not changed and never call the backend.
+- Separate app in `backend/`, intended for its own subdomain (e.g. account.YOUR-DOMAIN).
+
+### 2026-10-02 (prompt 23: database schema)
+Done: `backend/schema.sql` (MySQL 8 / MariaDB) with users (hashed password only, role user/admin), subscriptions (one row per user, ends_at), payments (kept, unlinked on account deletion), tool_history (commented as the first and only server-side storage of user data, paid opt-in only), login_attempts (email/IP stored as SHA-256 hashes), admin_audit_log, webhook_events (idempotency). Foreign keys cascade on user deletion. Applied successfully to MariaDB 10.11 in the build container. `TECHNICAL_SPEC.md` section 13 and `PRD.md` section 10 updated.
+Next: prompt 24 (auth backend).
+Suggested commit message: Add Phase 4 gate notes, plans config and database schema

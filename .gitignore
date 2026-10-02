@@ -5,3 +5,5 @@ Docs.zip
 .env
 .DS_Store
 extension/json-privacy-masker/dist/
+backend/config/config.php
+backend/storage/
