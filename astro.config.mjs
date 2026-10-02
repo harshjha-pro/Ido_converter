@@ -7,4 +7,6 @@ export default defineConfig({
   srcDir: './website/src',
   publicDir: './website/public',
   outDir: './dist',
+  // Never inline scripts: the Content-Security-Policy in website/public/.htaccess allows only same-origin script files.
+  vite: { build: { assetsInlineLimit: 0 } },
 });

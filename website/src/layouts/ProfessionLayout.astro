@@ -30,7 +30,7 @@ const tools = toolsFor(profession).filter(t => t.live);
         <span class="tool-action btn-secondary" aria-hidden="true">Open tool &rarr;</span>
       </a>
     ))}
-    {tools.length === 0 && <p class="empty">Tools for this profession are coming soon.</p>}
+    {tools.length === 0 && <h2 class="empty">Tools for this profession are coming soon.</h2>}
   </div>
   <slot />
 </Layout>
@@ -113,5 +113,7 @@ const tools = toolsFor(profession).filter(t => t.live);
   }
   .empty {
     color: var(--color-text-muted);
+    font-size: var(--text-body);
+    font-weight: 400;
   }
 </style>

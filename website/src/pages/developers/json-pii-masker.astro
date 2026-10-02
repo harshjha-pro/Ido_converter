@@ -20,29 +20,29 @@ import { DEFAULT_KEYS } from '../../../../core/developers/json-pii-masker';
         <textarea id="input-json" class="io-area" placeholder='{"email": "secret@mail.com"}'></textarea>
       </div>
       <div class="controls-panel">
-        <div class="options-group">
-          <strong>Mask by Pattern</strong>
+        <fieldset class="options-group">
+          <legend>Mask by pattern</legend>
           <label><input type="checkbox" id="opt-email" checked /> Emails</label>
           <label><input type="checkbox" id="opt-phone" checked /> Phone Numbers</label>
           <label><input type="checkbox" id="opt-jwt" checked /> JWT Tokens</label>
           <label><input type="checkbox" id="opt-aadhaar" checked /> Aadhaar (12 digits)</label>
           <label><input type="checkbox" id="opt-pan" checked /> PAN</label>
-        </div>
-        <div class="options-group">
-          <strong>Mask by Key Name (comma separated)</strong>
+        </fieldset>
+        <label class="options-group" for="opt-keys">
+          <strong>Mask by key name (comma separated)</strong>
           <input type="text" id="opt-keys" value={DEFAULT_KEYS.join(', ')} class="keys-input" />
-        </div>
-        <div class="options-group">
-          <strong>Mask Style</strong>
+        </label>
+        <label class="options-group" for="opt-style">
+          <strong>Mask style</strong>
           <select id="opt-style" class="style-select">
             <option value="placeholder">[REDACTED]</option>
             <option value="full">Full (***)</option>
             <option value="partial">Partial (s***t@mail.com)</option>
           </select>
-        </div>
+        </label>
         
         <button id="btn-mask" class="btn-primary btn-run">Mask Data &rarr;</button>
-        <div id="status-area" class="status-area"></div>
+        <div id="status-area" class="status-area" role="status"></div>
       </div>
       <div class="panel">
         <div class="panel-header">

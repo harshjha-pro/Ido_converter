@@ -187,6 +187,6 @@ Full rules: `AGENTS.md`.
 - Tools with working logic: JSON PII masker, consistent pseudonymizer, log and secret scrubber, SQL output to JSON, JSON to TypeScript and Zod, JSON repair, notice period buyout, volumetric weight, return-loss, visa photo sizer (unlisted)
 - Extension: built (JSON Privacy Masker, unpacked, not submitted)
 - Legal pages: drafted (privacy, terms, disclaimer need lawyer/CA review); about and contact done
-- Live/deployed: no
+- Live/deployed: no (build ready; steps in docs/DEPLOY.md; domain to confirm)
 
 For the detailed, dated log, see `NOTES.md` section 9 (session log) and section 1 (current status table).

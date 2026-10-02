@@ -1,0 +1,35 @@
+# idoconverter: Apache settings for Hostinger shared hosting (copied into dist/ by the build).
+
+Options -Indexes
+ErrorDocument 404 /404.html
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  # Force HTTPS
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+<IfModule mod_headers.c>
+  # The privacy promise enforced by the browser: pages may load only our own files, and may not
+  # connect anywhere (connect-src 'none'), so even buggy code cannot send tool input out.
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; font-src 'self'; connect-src 'none'; form-action 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; upgrade-insecure-requests"
+  Header always set Strict-Transport-Security "max-age=31536000"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), interest-cohort=()"
+  Header always set X-Frame-Options "DENY"
+
+  # Hashed build assets never change; HTML must always be revalidated so updates show at once.
+  <FilesMatch "\.(js|css|woff2?|svg|png|jpg|webp)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.(html|xml|txt)$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json image/svg+xml application/xml text/plain
+</IfModule>

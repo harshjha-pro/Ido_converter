@@ -137,10 +137,10 @@ Kept in `docs/rules-and-sources.md` (created 2026-10-02). Columns: rule, value, 
 - [ ] Legal pages reviewed by a lawyer or CA
 - [x] Extension privacy policy URL (`/privacy#extension`) and permission justifications
 - [x] Sitemap, canonical tags, titles and descriptions (domain to confirm: open question 21)
-- [ ] Lighthouse scores recorded
+- [x] Lighthouse scores recorded (2026-10-02, see session log)
 - [ ] Mobile and four-browser test done
 - [ ] Analytics confirmed to capture no tool input
-- [ ] Backup and rollback copy
+- [x] Backup and rollback copy (process in docs/DEPLOY.md)
 - [ ] Search Console set up
 - [ ] AdSense application submitted
 
@@ -377,3 +377,30 @@ Open: real domain (open question 21).
 Tests run and result: vitest 164/164; build passes; pages load with no console errors (favicon present).
 Next: prompt 20 (testing and performance).
 Suggested commit message: Add SEO basics: titles, descriptions, canonicals, sitemap
+
+### 2026-10-02 (prompt 20: testing and performance)
+Milestone / tool: Milestone 6 / Tasks 6.3, 6.4
+Lighthouse 12 (headless Chromium; mobile = simulated slow 4G phone, desktop preset), after fixes:
+
+| Page | Mobile Perf / A11y / Best Pr. / SEO | Desktop Perf / A11y / Best Pr. / SEO | Mobile FCP / LCP / CLS |
+|---|---|---|---|
+| Home `/` | 97 / 100 / 100 / 100 | 100 / 100 / 100 / 100 | 2.1 s / 2.1 s / 0.053 |
+| `/developers/` | 100 / 100 / 100 / 100 | 100 / 100 / 100 / 100 | 1.5 s / 1.5 s / 0.02 |
+| `/developers/json-pii-masker/` | 99 / 100 / 100 / 100 | 100 / 100 / 100 / 100 | 1.6 s / 1.7 s / 0.018 |
+| `/sellers/return-loss-calculator/` | 98 / 100 / 100 / 100 | 100 / 100 / 100 / 100 | 1.9 s / 2.0 s / 0.032 |
+
+All other pages: accessibility 100 and SEO 100, except `/forms/` and the visa tool (SEO 66 because they are deliberately `noindex` until the visa presets are reviewed). Below 90 before fixes: accessibility 86–95. Remaining minor item: render-blocking CSS (~0.7–1.1 s estimated on slow mobile); scores are still 97–100, so left as is.
+
+Fixed: colour contrast (home "Planned" badges 3.01:1 → dark text; pricing "not included" rows 2.11:1 → muted colour with strike-through; footer "Coming soon" links 2.9:1 (opacity removed); footer privacy note 4.24:1 → #A7C5B8, 6.97:1); heading order (home h4 → h3; footer column titles h3 → h2; empty profession page heading); masker page labels (fieldset/legend, label for inputs). Header had **no navigation at all below 900 px** → links now drop to a stacked row under the logo (no JS); header fits at 360 px. Removed dead footer social icons (all `href="#"`) and the **fabricated testimonials section** (invented quotes and names for a site with no users yet, plus non-working carousel arrows): fake reviews would mislead visitors. Added a 404 page.
+360 px and 1280 px: every page loads with no console errors, no requests after load, no horizontal scroll.
+Security: `website/public/.htaccess` adds HTTPS redirect, CSP `default-src 'self'; connect-src 'none'` and other security headers, caching. Astro set to never inline scripts so the CSP needs no exceptions. Tested every tool, both downloads and the contact page with the CSP applied: all work, zero violations, and a deliberate `fetch()` to another site is blocked by the browser.
+New dependencies (name, size, license): None (Lighthouse run from a scratch folder, not added to the project).
+Manual checks still needed (only Chromium is available here): Firefox, Safari (macOS and iOS) and Edge — open each tool, run it, check layout at phone width, check the visa photo download and the extension in Edge.
+Next: prompt 21 (build and deploy instructions).
+Suggested commit message: Fix accessibility, mobile nav and add security headers
+
+### 2026-10-02 (prompt 21: build and deploy)
+Done: `npm run build` completes with no errors; `dist/` contains every page, `404.html`, `contact.php`, `.htaccess`, `sitemap.xml`, `robots.txt`, `favicon.svg` and hashed `_astro/` assets. Copy-paste deployment steps for Hostinger (File Manager and SSH/rsync), SSL, email, post-deploy checks, backup and rollback in `docs/DEPLOY.md`; Cloudflare Pages differences noted. Nothing was deployed by Claude.
+Before deploying: confirm the domain (open question 21), and ideally get the legal pages reviewed (question 6).
+Next: Phase 4 gate check (prompt 22).
+Suggested commit message: Add deployment guide
