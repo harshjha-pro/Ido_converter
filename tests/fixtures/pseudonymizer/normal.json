@@ -1,0 +1,11 @@
+{
+  "orders": [
+    { "id": 1001, "customer": { "name": "Asha Verma", "email": "asha.verma@example.in", "phone": "+91 98765 43210" }, "total": 1499 },
+    { "id": 1002, "customer": { "name": "Asha Verma", "email": "ASHA.VERMA@example.in", "phone": "+91 98765 43210" }, "total": 250 },
+    { "id": 1003, "customer": { "name": "राहुल शर्मा", "email": "rahul@example.com", "phone": "+91 91234 56789" }, "total": 99 }
+  ],
+  "support_tickets": [
+    { "ticket": "T-1", "reporterEmail": "asha.verma@example.in", "note": "Call back on +91 98765 43210 about PAN ABCDE1234F" }
+  ],
+  "flags": { "active": true, "deleted": null }
+}

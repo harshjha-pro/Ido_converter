@@ -1,0 +1,7 @@
+{
+  "users": [
+    { "full_name": "Priya Ramanathan", "email": "priya.r@corp-secret.in", "mobile": 9123456780, "aadhaar": "2345 6789 0123", "pan": "PQRSX6789Z" },
+    { "full_name": "Jöhn Døe", "email": "john.doe@leaky.io", "phone": "+1-800-555-0199", "password": "hunter2-real", "apiKey": "sk-live-abc123def456" }
+  ],
+  "audit": "Session for priya.r@corp-secret.in used eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcml5YSJ9.c2lnbmF0dXJlLXJlYWw from 9123456780"
+}

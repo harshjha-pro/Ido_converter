@@ -68,7 +68,7 @@ Fill the search phrase and "who ranks" columns during Milestone 0 by googling th
 | Tool | Profession | Search phrase | Who ranks now | Crowding (est.) | Phase | Status |
 |---|---|---|---|---|---|---|
 | JSON PII masker | Developers | | | Low | 1 | Built, DoD partly verified |
-| Consistent pseudonymizer | Developers | | | Low | 1 | Not started |
+| Consistent pseudonymizer | Developers | | | Low | 1 | Built, DoD partly verified |
 | Log and secret scrubber | Developers | | | Medium | 1 | Not started |
 | SQL console output to JSON | Developers | | | Low to medium | 1 | Not started |
 | JSON to TypeScript and Zod | Developers | | | Medium | 1 | Not started |
@@ -224,3 +224,14 @@ Tests run and result: vitest 22/22 pass; build passes.
 Problems / open questions: open question 17 (muted text colour).
 Next: answer question 17, test Edge/Firefox/Safari, fill the search phrase, then prompt 05 / task 1.5.
 Suggested commit message: Record Definition of Done check for JSON PII masker
+
+### 2026-10-02 (prompt 05: consistent pseudonymizer)
+Milestone / tool: Milestone 2 / Task 2.1: Consistent pseudonymizer
+Done: Shared PII detection moved to `core/shared/pii.ts` (masker and pseudonymizer use the same key matching and patterns). Built `core/developers/pseudonymizer.ts`, page `/developers/consistent-pseudonymizer`, spec `docs/tools/consistent-pseudonymizer.md`, fixtures and 12 tests. Shared tool UI styles, `website/src/data/tools.ts` and `website/src/scripts/tool-ui.ts` added so tool pages stay consistent. Muted text and new error colour tokens meet AA.
+Decisions: Empty seed on the page = random seed per run (a fixed seed would let anyone recompute fakes from guessed values). Mapping only on request, downloaded locally. Fake emails use the reserved `example.com` domain.
+New dependencies (name, size, license): None.
+Tests run and result: vitest 34/34 pass; build passes.
+Definition of Done: 1 PASS (spec samples in tests) · 2 PASS (zero requests while running, headless Chromium) · 3 PASS · 4 PARTIAL (360 px and 1280 px PASS in Chromium; Edge/Firefox/Safari untested) · 5 PASS · 6 PASS (keyboard reachable native controls; text uses AA tokens) · 7 PASS · 8 N/A.
+Problems / open questions: none.
+Next: prompt 06 (log and secret scrubber).
+Suggested commit message: Add consistent pseudonymizer

@@ -1,0 +1,111 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import { DEFAULT_SENSITIVE_KEYS } from '../../../../core/shared/pii';
+import { relatedTools } from '../../data/tools';
+---
+
+<ToolLayout
+  title="Consistent Pseudonymizer"
+  howTo="Paste your JSON. Sensitive keys and detected emails, phones, Aadhaar and PAN numbers are replaced with realistic fakes. The same real value always gets the same fake within one run, so joins and relationships still work. Enter a seed if you need the same fakes again later."
+  faq={[
+    { q: "Is my data sent anywhere?", a: "No. Everything runs in your browser. The mapping between real and fake values is never stored or sent; you can download it only if you choose to." },
+    { q: "Will the same value always get the same fake?", a: "Within one run, yes, even across different keys and records. Leave the seed empty for new fakes each run, or enter a seed to get the same fakes every time." },
+    { q: "Why is an empty seed random instead of fixed?", a: "With a fixed seed, anyone who guesses a real value could recompute its fake and match them up. A random seed per run prevents that. Treat any seed you enter like a password." },
+    { q: "Is this the same as masking?", a: "No. Masking hides values. Pseudonymizing swaps them for realistic fakes in the same format, which is better for test data and demos. Always review the output before sharing." }
+  ]}
+  relatedTools={relatedTools('consistent-pseudonymizer')}
+>
+  <div class="tool-ui">
+    <div class="panels">
+      <div class="panel">
+        <label for="input-json" class="panel-label">Input JSON</label>
+        <textarea id="input-json" class="io-area" spellcheck="false" placeholder='{"name": "Asha Verma", "email": "asha@example.in"}'></textarea>
+      </div>
+      <div class="controls-panel">
+        <fieldset class="options-group">
+          <legend>Detect in any text</legend>
+          <label><input type="checkbox" id="opt-email" checked /> Emails</label>
+          <label><input type="checkbox" id="opt-phone" checked /> Phone numbers</label>
+          <label><input type="checkbox" id="opt-jwt" checked /> JWT tokens</label>
+          <label><input type="checkbox" id="opt-aadhaar" checked /> Aadhaar (12 digits)</label>
+          <label><input type="checkbox" id="opt-pan" checked /> PAN</label>
+        </fieldset>
+        <label class="options-group" for="opt-keys">
+          <strong>Replace by key name (comma separated)</strong>
+          <input type="text" id="opt-keys" value={DEFAULT_SENSITIVE_KEYS.join(', ')} class="keys-input" />
+        </label>
+        <label class="options-group" for="opt-seed">
+          <strong>Seed (optional)</strong>
+          <input type="text" id="opt-seed" class="text-input" placeholder="Empty = new fakes each run" autocomplete="off" />
+        </label>
+        <label class="options-group-inline"><input type="checkbox" id="opt-mapping" /> Keep mapping for download</label>
+
+        <button id="btn-run" class="btn-primary btn-run">Pseudonymize &rarr;</button>
+        <div id="status-area" class="status-area" role="status"></div>
+      </div>
+      <div class="panel">
+        <div class="panel-header">
+          <label for="output-json" class="panel-label">Output with fakes</label>
+          <span>
+            <button id="btn-mapping" class="btn-secondary" hidden>Download mapping</button>
+            <button id="btn-copy" class="btn-secondary">Copy output</button>
+          </span>
+        </div>
+        <textarea id="output-json" class="io-area" readonly spellcheck="false"></textarea>
+      </div>
+    </div>
+  </div>
+</ToolLayout>
+
+<script>
+  import { run, type MappingEntry } from '../../../../core/developers/pseudonymizer';
+  import { byId, setStatus, setupCopy, downloadText, isLargeInput } from '../../scripts/tool-ui';
+
+  const inputEl = byId<HTMLTextAreaElement>('input-json');
+  const outputEl = byId<HTMLTextAreaElement>('output-json');
+  const statusEl = byId<HTMLDivElement>('status-area');
+  const mappingBtn = byId<HTMLButtonElement>('btn-mapping');
+  const checked = (id: string) => byId<HTMLInputElement>(id).checked;
+  let lastMapping: MappingEntry[] | null = null;
+
+  function randomSeed(): string {
+    const bytes = crypto.getRandomValues(new Uint8Array(16));
+    return Array.from(bytes, b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  byId<HTMLButtonElement>('btn-run').addEventListener('click', () => {
+    const input = inputEl.value;
+    const userSeed = byId<HTMLInputElement>('opt-seed').value;
+    const keepMapping = checked('opt-mapping');
+
+    const result = run(input, {
+      keysToReplace: byId<HTMLInputElement>('opt-keys').value.split(',').map(s => s.trim()).filter(Boolean),
+      patterns: { email: checked('opt-email'), phone: checked('opt-phone'), jwt: checked('opt-jwt'), aadhaar: checked('opt-aadhaar'), pan: checked('opt-pan') },
+      seed: userSeed || randomSeed(),
+      includeMapping: keepMapping,
+    });
+
+    lastMapping = null;
+    mappingBtn.hidden = true;
+    if (!result.ok) {
+      outputEl.value = '';
+      setStatus(statusEl, `Error: ${result.error}`, 'error');
+      return;
+    }
+    outputEl.value = result.output || '';
+    if (keepMapping) {
+      lastMapping = result.meta?.mapping as MappingEntry[];
+      mappingBtn.hidden = false;
+    }
+    setStatus(statusEl,
+      `Replaced ${result.meta?.replacementCount ?? 0} values (${result.meta?.uniqueValues ?? 0} unique). Review before sharing.`
+        + (isLargeInput(input) ? ' Large input: processing may be slow on some devices.' : ''),
+      'success');
+  });
+
+  mappingBtn.addEventListener('click', () => {
+    if (lastMapping) downloadText('pseudonymizer-mapping.json', JSON.stringify(lastMapping, null, 2));
+  });
+
+  setupCopy(byId<HTMLButtonElement>('btn-copy'), outputEl);
+</script>
