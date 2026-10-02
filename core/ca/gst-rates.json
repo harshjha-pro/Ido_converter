@@ -1,0 +1,20 @@
+{
+  "_readme": "GST rates as data (AGENTS.md rule 4). Every entry needs source, effectiveFrom, lastChecked and reviewedBy. The calculator also accepts a custom rate, because the rate for a specific item depends on its HSN/SAC classification.",
+  "effectiveFrom": "2025-09-22",
+  "lastChecked": "2026-10-02",
+  "reviewedBy": "",
+  "note": "Rates after the GST Council's 56th meeting. Pan masala, gutkha, cigarettes, chewing tobacco and some other tobacco items moved to the new structure on a later date notified separately; check the current notification for them.",
+  "sources": [
+    { "title": "PIB: Recommendations of the 56th Meeting of the GST Council", "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2163555" },
+    { "title": "GST Council press release (56th meeting)", "url": "https://gstcouncil.gov.in/sites/default/files/2025-09/press_release_press_information_bureau.pdf" }
+  ],
+  "rates": [
+    { "rate": 0, "label": "Nil (0%)", "use": "Exempt and nil-rated goods and services" },
+    { "rate": 0.25, "label": "0.25%", "use": "Rough diamonds (special rate)" },
+    { "rate": 1.5, "label": "1.5%", "use": "Cut and polished diamonds (special rate)" },
+    { "rate": 3, "label": "3%", "use": "Gold, silver, jewellery (special rate)" },
+    { "rate": 5, "label": "5% (merit rate)", "use": "Essentials and many daily-use items" },
+    { "rate": 18, "label": "18% (standard rate)", "use": "Most goods and services" },
+    { "rate": 40, "label": "40% (de-merit rate)", "use": "Luxury and sin goods (e.g. high-end cars, aerated drinks)" }
+  ]
+}

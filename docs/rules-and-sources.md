@@ -13,6 +13,8 @@ Every rate, divisor, threshold or official spec used by a tool must be listed he
 
 | GSTR-2B JSON structure (data format, not a rate) | `data.docdata.{b2b,b2ba,cdnr,cdnra,isd,impg,impgsez}` with fields listed in docs/tools/gstr-2b-json-to-excel.md | [GST portal: Viewing Form GSTR-2B](https://tutorial.gst.gov.in/userguide/returns/Manual_gstr2b.htm) and section help pages | — | 2026-10-02 | TODO (CA: verify with a real downloaded file) |
 
+| GST rates from 22-09-2025 | Nil, 0.25%, 1.5%, 3%, 5%, 18%, 40% (tobacco items on a later notified date) | [PIB: 56th GST Council recommendations](https://www.pib.gov.in/PressReleasePage.aspx?PRID=2163555), [GST Council press release](https://gstcouncil.gov.in/sites/default/files/2025-09/press_release_press_information_bureau.pdf) | 2025-09-22 | 2026-10-02 | TODO (CA) |
+
 ## Notes
 
 - **Volumetric weight calculator:** ships with no default divisor. The user enters their courier's divisor. A default can be added only with a courier rate-card source in the table above.

@@ -1,0 +1,89 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import CaNotice from '../../components/CaNotice.astro';
+import { GST_RATES, GST_RATE_META } from '../../../../core/ca/gst-calculator';
+---
+
+<ToolLayout
+  slug="gst-calculator"
+  howTo="Enter the amount, choose the GST rate for the item (or type a custom rate), and say whether the amount already includes GST. Choose intra-state for a sale within the same state (CGST + SGST) or inter-state (IGST). The result shows the taxable value, the tax split and the total, with the formula used."
+  faq={[
+    { q: "Which GST rates apply now?", a: "From 22 September 2025 the main rates are 5% and 18%, with 40% for luxury and sin goods, Nil for exempt items, and special rates of 3% (gold, silver, jewellery), 1.5% (cut and polished diamonds) and 0.25% (rough diamonds). Tobacco items moved on a separate date." },
+    { q: "How do I know the rate for my item?", a: "It depends on the item's HSN or service's SAC code in the rate notification. This calculator does not classify items; choose the rate or type a custom one." },
+    { q: "How is GST taken out of an inclusive price?", a: "Taxable value = price × 100 ÷ (100 + rate). GST is the price minus the taxable value." },
+    { q: "Why can CGST and SGST differ by one paisa?", a: "When GST has an odd number of paise, the extra paisa is shown in CGST so that the two halves always add up to the total GST." }
+  ]}
+>
+  <div class="tool-ui">
+    <CaNotice slug="gst-calculator" sources={GST_RATE_META.sources.map(s => ({ ...s, lastChecked: GST_RATE_META.lastChecked }))} />
+    <form id="calc" class="controls-panel" novalidate>
+      <div class="field-row">
+        <label class="field" for="amount">Amount (₹)
+          <input id="amount" class="text-input" type="number" inputmode="decimal" min="0" step="any" required />
+        </label>
+        <label class="field" for="rate">GST rate
+          <select id="rate" class="style-select">
+            {GST_RATES.map((r) => <option value={r.rate} selected={r.rate === 18}>{r.label}: {r.use}</option>)}
+            <option value="custom">Custom rate…</option>
+          </select>
+        </label>
+        <label class="field" for="custom-rate" id="custom-wrap" hidden>Custom rate (%)
+          <input id="custom-rate" class="text-input" type="number" inputmode="decimal" min="0" max="100" step="any" />
+        </label>
+      </div>
+      <fieldset class="options-group">
+        <legend>The amount is</legend>
+        <label class="options-group-inline"><input type="radio" name="mode" value="exclusive" checked /> Before GST (add GST)</label>
+        <label class="options-group-inline"><input type="radio" name="mode" value="inclusive" /> Including GST (remove GST)</label>
+      </fieldset>
+      <fieldset class="options-group">
+        <legend>Supply</legend>
+        <label class="options-group-inline"><input type="radio" name="supply" value="intra" checked /> Within the state (CGST + SGST/UTGST)</label>
+        <label class="options-group-inline"><input type="radio" name="supply" value="inter" /> Between states (IGST)</label>
+      </fieldset>
+      <button type="submit" class="btn-primary btn-run">Calculate GST &rarr;</button>
+      <div id="status-area" class="status-area" role="status"></div>
+    </form>
+    <section class="result-box" aria-live="polite" aria-labelledby="result-title">
+      <h2 id="result-title" class="panel-label">Total</h2>
+      <p id="total" class="big-number">—</p>
+      <dl id="results" class="result-list"></dl>
+      <p id="formula" class="formula"></p>
+      <p class="result-detail">Rates effective from {GST_RATE_META.effectiveFrom}. {GST_RATE_META.note}</p>
+    </section>
+  </div>
+</ToolLayout>
+
+<script>
+  import { calculate, type GstMode, type SupplyType } from '../../../../core/ca/gst-calculator';
+  import { byId, setStatus } from '../../scripts/tool-ui';
+
+  const inr = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 2 });
+  const rateEl = byId<HTMLSelectElement>('rate');
+  const customWrap = byId<HTMLLabelElement>('custom-wrap');
+  rateEl.addEventListener('change', () => { customWrap.hidden = rateEl.value !== 'custom'; });
+  const radio = (name: string) => (document.querySelector<HTMLInputElement>(`input[name="${name}"]:checked`)?.value ?? '');
+  const num = (v: string) => (v.trim() === '' ? Number.NaN : Number(v));
+
+  byId<HTMLFormElement>('calc').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const rate = rateEl.value === 'custom' ? num(byId<HTMLInputElement>('custom-rate').value) : Number(rateEl.value);
+    const r = calculate({ amount: num(byId<HTMLInputElement>('amount').value), rate, mode: radio('mode') as GstMode, supply: radio('supply') as SupplyType });
+    const list = byId<HTMLDListElement>('results');
+    list.replaceChildren();
+    if (!r.ok || !r.output) {
+      byId('total').textContent = '—';
+      byId('formula').textContent = '';
+      setStatus(byId('status-area'), `Error: ${r.error}`, 'error');
+      return;
+    }
+    const o = r.output;
+    byId('total').textContent = inr.format(o.total);
+    const rows: [string, number][] = [['Taxable value', o.taxableValue], [`GST @ ${o.rate}%`, o.gst]];
+    if (radio('supply') === 'intra') rows.push([`CGST @ ${o.rate / 2}%`, o.cgst], [`SGST/UTGST @ ${o.rate / 2}%`, o.sgst]);
+    else rows.push([`IGST @ ${o.rate}%`, o.igst]);
+    for (const [k, v] of rows) list.append(Object.assign(document.createElement('dt'), { textContent: k }), Object.assign(document.createElement('dd'), { textContent: inr.format(v) }));
+    byId('formula').textContent = o.formula;
+    setStatus(byId('status-area'), 'Calculated.', 'success');
+  });
+</script>

@@ -1,0 +1,9 @@
+[
+  { "name": "exclusive 18% intra", "input": { "amount": 1000, "rate": 18, "mode": "exclusive", "supply": "intra" }, "expected": { "taxableValue": 1000, "gst": 180, "cgst": 90, "sgst": 90, "igst": 0, "total": 1180 } },
+  { "name": "inclusive 18% inter", "input": { "amount": 1180, "rate": 18, "mode": "inclusive", "supply": "inter" }, "expected": { "taxableValue": 1000, "gst": 180, "cgst": 0, "sgst": 0, "igst": 180, "total": 1180 } },
+  { "name": "exclusive 5% with odd paisa split", "input": { "amount": 99.99, "rate": 5, "mode": "exclusive", "supply": "intra" }, "expected": { "taxableValue": 99.99, "gst": 5, "cgst": 2.5, "sgst": 2.5, "total": 104.99 } },
+  { "name": "exclusive 3% odd paisa goes to CGST", "input": { "amount": 101, "rate": 3, "mode": "exclusive", "supply": "intra" }, "expected": { "gst": 3.03, "cgst": 1.52, "sgst": 1.51, "total": 104.03 } },
+  { "name": "inclusive 40%", "input": { "amount": 1400, "rate": 40, "mode": "inclusive", "supply": "intra" }, "expected": { "taxableValue": 1000, "gst": 400, "cgst": 200, "sgst": 200 } },
+  { "name": "inclusive 0.25% rough diamonds", "input": { "amount": 100250, "rate": 0.25, "mode": "inclusive", "supply": "inter" }, "expected": { "taxableValue": 100000, "igst": 250 } },
+  { "name": "nil rate", "input": { "amount": 500, "rate": 0, "mode": "exclusive", "supply": "intra" }, "expected": { "gst": 0, "total": 500 } }
+]

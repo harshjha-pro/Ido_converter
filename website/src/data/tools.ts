@@ -69,6 +69,10 @@ export const TOOLS: ToolEntry[] = [
     title: 'Bank Statement CSV Cleaner', description: 'Clean any bank CSV export into one tidy layout for Tally import, with a running-balance check.',
     searchPhrase: 'bank statement CSV for Tally import', seoTitle: 'Bank Statement CSV Cleaner for Tally Import',
     seoDescription: 'Clean bank statement CSV exports for TallyPrime: removes header junk and totals, fixes dates and Dr/Cr amounts, checks running balances. Runs in your browser.' },
+  { profession: 'ca', slug: 'gst-calculator', group: 'gst-calc', live: caReviewed('gst-calculator'),
+    title: 'GST Calculator (Inclusive and Exclusive)', description: 'Add or remove GST at the new 2025 rates, with CGST/SGST or IGST split.',
+    searchPhrase: 'GST calculator new rates 2025 inclusive exclusive', seoTitle: 'GST Calculator with New 2025 Rates: Inclusive and Exclusive',
+    seoDescription: 'GST calculator with the rates effective 22 September 2025 (5%, 18%, 40% and special rates). Add or remove GST, split CGST/SGST or IGST. Source shown.' },
 ];
 
 export function toolUrl(tool: ToolEntry): string {

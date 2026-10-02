@@ -83,7 +83,7 @@ Fill the search phrase and "who ranks" columns during Milestone 0 by googling th
 | Return-loss calculator | Online sellers | return loss calculator for online sellers | RTO/return calculators from marginpanda, toolbaz, refundorreturn, hillteck | Medium (checked 2026-10-02) | 1 | Built, DoD partly verified |
 | GSTR-2B JSON to Excel (multi-month) | CAs | GSTR-2B JSON to Excel multiple months | GSTZen, Finexo, Conversiontools (from planning research) | High | 2 | Built, unlisted until CA review |
 | Bank statement CSV cleaner (Tally mapping) | CAs | bank statement CSV for Tally import | Parsify, AI Accountant, Suvit (paid, from planning research) | Medium | 2 | Built, unlisted until CA review |
-| GST inclusive and exclusive calculator | CAs | | | High | 2 | Not started |
+| GST inclusive and exclusive calculator | CAs | GST calculator new rates 2025 inclusive exclusive | ClearTax, Groww and many others (from planning research) | High | 2 | Built, unlisted until CA review |
 | GST late fee and interest calculator | CAs | | | Medium | 2 | Not started |
 | TDS rate and threshold lookup | CAs | | | Medium | 2 | Not started |
 | Compliance due-date calendar | CAs | | | Medium | 2 | Not started |
@@ -501,3 +501,10 @@ Decisions: Output layout is generic (Date, Narration, Reference, Withdrawal, Dep
 Tests: vitest 187/187; build passes. Browser: style A cleaned, balance check passed, CSV and Excel downloads (Excel opens in openpyxl), zero network requests, no horizontal scroll at 360 px.
 Next: P2.3 tool 3 (GST inclusive/exclusive calculator).
 Suggested commit message: Add bank statement CSV cleaner
+
+### 2026-10-02 (P2.3 tool 3: GST inclusive/exclusive calculator)
+Done: `core/ca/gst-rates.json` (rates from 22-09-2025 with PIB/GST Council sources, effectiveFrom, lastChecked, empty reviewedBy), `core/ca/gst-calculator.ts`, page `/ca/gst-calculator` (rate list + custom rate, inclusive/exclusive, intra/inter split, formula and rate date on page, CA notice with sources), spec, 7-case fixture and a sweep test. rules-and-sources.md updated.
+Decisions: Custom rate allowed because rates depend on HSN/SAC; the tool never classifies items. Odd paisa goes to CGST. Cess not included. Old (pre-22-09-2025) rate set not included; use the custom rate for older invoices.
+Tests: vitest 202/202; build passes. Browser: ₹1,180 incl. 18% → ₹1,000 + ₹90 + ₹90; custom 12% inter-state works; zero network requests; no horizontal scroll at 360 px.
+Next: P2.3 tool 4 (GST late fee and interest).
+Suggested commit message: Add GST calculator with 2025 rates
