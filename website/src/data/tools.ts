@@ -1,4 +1,5 @@
 import { allPresetsReviewed } from '../../../core/forms/visa-photo-sizer';
+import { caReviewed } from '../../../core/ca/review';
 
 // Single list of tools so profession pages, related-tool links and the footer never drift apart.
 export type Profession = 'developers' | 'sellers' | 'jobseekers' | 'forms' | 'ca' | 'frontend';
@@ -59,6 +60,11 @@ export const TOOLS: ToolEntry[] = [
     title: 'Visa and Passport Photo Sizer', description: 'Crop and resize a photo to India, USA or UK passport and visa photo specs, in your browser.',
     searchPhrase: 'visa and passport photo resizer', seoTitle: 'Visa and Passport Photo Resizer: India, USA, UK',
     seoDescription: 'Resize and crop a photo to India, USA and UK passport and visa photo sizes, compressed to the file-size limit. Runs in your browser; not uploaded.' },
+  // Phase 2 CA tools: listed only after a CA signs off in core/ca/review.json (AGENTS.md rule 5).
+  { profession: 'ca', slug: 'gstr-2b-json-to-excel', group: 'gst-data', live: caReviewed('gstr-2b-json-to-excel'),
+    title: 'GSTR-2B JSON to Excel', description: 'Merge several months of GSTR-2B JSON into one Excel workbook, with a summary sheet. Files stay on your device.',
+    searchPhrase: 'GSTR-2B JSON to Excel multiple months', seoTitle: 'GSTR-2B JSON to Excel: Merge Multiple Months',
+    seoDescription: 'Convert GSTR-2B JSON files to Excel and merge several months into one workbook with B2B, CDNR, IMPG and a summary. Runs in your browser; nothing uploaded.' },
 ];
 
 export function toolUrl(tool: ToolEntry): string {

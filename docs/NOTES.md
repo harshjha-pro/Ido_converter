@@ -81,7 +81,7 @@ Fill the search phrase and "who ranks" columns during Milestone 0 by googling th
 | Notice period buyout calculator | Job seekers | notice period buyout calculator | HR glossaries (Keka, greytHR, Plum), Hyring and ContractShield calculators | Medium (checked 2026-10-02) | 1 | Built, DoD partly verified |
 | Volumetric weight calculator | Online sellers | volumetric weight calculator | Many Indian logistics sites (Shipmozo, BigShip, SellerMitra, Shipybox) | High (checked 2026-10-02) | 1 | Built, DoD partly verified |
 | Return-loss calculator | Online sellers | return loss calculator for online sellers | RTO/return calculators from marginpanda, toolbaz, refundorreturn, hillteck | Medium (checked 2026-10-02) | 1 | Built, DoD partly verified |
-| GSTR-2B JSON to Excel (multi-month) | CAs | | | High | 2 | Not started |
+| GSTR-2B JSON to Excel (multi-month) | CAs | GSTR-2B JSON to Excel multiple months | GSTZen, Finexo, Conversiontools (from planning research) | High | 2 | Built, unlisted until CA review |
 | Bank statement CSV cleaner (Tally mapping) | CAs | | | Medium | 2 | Not started |
 | GST inclusive and exclusive calculator | CAs | | | High | 2 | Not started |
 | GST late fee and interest calculator | CAs | | | Medium | 2 | Not started |
@@ -486,3 +486,11 @@ Known gaps (not failures of the checklist, but real-world risks to decide on):
 Tests at the end of this review: backend 36/36, site + extension 164/164, `tsc` clean, site and extension builds pass.
 Next: team actions (domain, legal review, visa preset review, extension manual test, Razorpay keys and confirmed plans, external security review).
 Suggested commit message: Security review before launch; add session idle timeout
+
+### 2026-10-02 (Phase 2 start; P2.3 tool 1: GSTR-2B JSON to Excel)
+Team instruction: start Phase 2. **Gate not met: no CA reviewer yet (open question 2).** So, as with the visa tool, Phase 2 tools are built with rules as sourced data and stay **unlisted** until a CA signs off in `core/ca/review.json` (AGENTS.md rules 4–5). P2.1 (interview a CA) is skipped for now; the tool list follows the PRD.
+Done: `core/shared/xlsx.ts` (dependency-free .xlsx writer, verified with openpyxl), `core/ca/gstr2b-to-excel.ts`, `/ca/` profession page, `/ca/gstr-2b-json-to-excel` page, shared `CaNotice` component (not-professional-advice note, pending-review banner, sources and last-checked), `core/ca/review.json` + `caReviewed()` driving listing. Spec, two synthetic monthly fixtures, 13 tests.
+Decisions: Excel written without a library (no new dependency). JSON structure recorded in rules-and-sources as a format to verify with a real file.
+Tests: vitest 177/177; build passes. Browser: two months merged, download opens in openpyxl, zero network requests, no horizontal scroll at 360 px; `/ca/` shows "coming soon".
+Next: P2.3 tool 2 (bank statement CSV cleaner).
+Suggested commit message: Add GSTR-2B JSON to Excel (Phase 2, unlisted pending CA review)

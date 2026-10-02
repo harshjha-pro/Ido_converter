@@ -1,0 +1,29 @@
+---
+// Rule 5 notice shown on every CA/tax tool: not professional advice, source, last checked, review state.
+import { caReviewed } from '../../../core/ca/review';
+import review from '../../../core/ca/review.json';
+
+interface Props {
+  slug: string;
+  sources?: { title: string; url: string; lastChecked: string }[];
+}
+const { slug, sources = [] } = Astro.props;
+const reviewed = caReviewed(slug);
+const entry = (review.tools as Record<string, { reviewedBy: string; reviewedOn: string }>)[slug];
+---
+
+<div class="ca-notice">
+  <p class="tool-warning"><strong>Not professional advice.</strong> This tool is for information and convenience. Check results against the GST/Income-tax portal and consult a chartered accountant before filing or paying.</p>
+  {!reviewed && (
+    <p class="tool-warning" id="review-pending"><strong>Pending CA review:</strong> this tool has not yet been checked by a chartered accountant, so it is not listed on the site (AGENTS.md rule 5).</p>
+  )}
+  {reviewed && entry && <p class="result-detail">Reviewed by {entry.reviewedBy} on {entry.reviewedOn}.</p>}
+  {sources.length > 0 && (
+    <details class="formula-details">
+      <summary>Sources and last checked</summary>
+      <ul class="findings-list">
+        {sources.map((s) => <li><a href={s.url} rel="noopener noreferrer" target="_blank">{s.title}</a>, last checked {s.lastChecked}</li>)}
+      </ul>
+    </details>
+  )}
+</div>

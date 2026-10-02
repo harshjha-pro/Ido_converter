@@ -1,0 +1,16 @@
+{
+  "data": {
+    "gstin": "27AAAPZ1234C1ZV",
+    "rtnprd": "052026",
+    "docdata": {
+      "b2b": [
+        { "ctin": "29AABCS1234D1ZF", "trdnm": "Shree Traders", "supprd": "052026", "supfildt": "11-06-2026",
+          "inv": [ { "inum": "ST/26-27/010", "typ": "R", "dt": "09-05-2026", "val": 23600, "pos": "27", "rev": "N", "itcavl": "Y", "diffprcnt": 1, "txval": 20000, "igst": 3600, "cgst": 0, "sgst": 0, "cess": 0 } ] }
+      ],
+      "b2ba": [
+        { "ctin": "27AACCM5678E1ZK", "trdnm": "मुंबई सप्लायर्स", "supprd": "052026", "supfildt": "10-06-2026",
+          "inv": [ { "oinum": "MS-77", "oidt": "20-04-2026", "inum": "MS-77A", "typ": "R", "dt": "20-04-2026", "val": 2100, "pos": "27", "rev": "Y", "itcavl": "Y", "diffprcnt": 1, "txval": 2000, "igst": 0, "cgst": 50, "sgst": 50, "cess": 0 } ] }
+      ]
+    }
+  }
+}

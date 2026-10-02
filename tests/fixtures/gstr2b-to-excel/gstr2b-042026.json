@@ -1,0 +1,26 @@
+{
+  "chksum": "fake-checksum",
+  "data": {
+    "gstin": "27AAAPZ1234C1ZV",
+    "rtnprd": "042026",
+    "version": "1.0",
+    "gendt": "14-05-2026",
+    "docdata": {
+      "b2b": [
+        { "ctin": "29AABCS1234D1ZF", "trdnm": "Shree Traders", "supprd": "042026", "supfildt": "11-05-2026",
+          "inv": [
+            { "inum": "ST/26-27/001", "typ": "R", "dt": "05-04-2026", "val": 11800, "pos": "27", "rev": "N", "itcavl": "Y", "rsn": "", "diffprcnt": 1, "srctyp": "e-Invoice", "irn": "fakeirn001", "irngendate": "05-04-2026", "txval": 10000, "igst": 1800, "cgst": 0, "sgst": 0, "cess": 0 },
+            { "inum": "ST/26-27/002", "typ": "R", "dt": "18-04-2026", "val": 5900, "pos": "27", "rev": "N", "itcavl": "Y", "diffprcnt": 1, "txval": 5000, "igst": 900, "cgst": 0, "sgst": 0, "cess": 0 }
+          ] },
+        { "ctin": "27AACCM5678E1ZK", "trdnm": "मुंबई सप्लायर्स", "supprd": "042026", "supfildt": "10-05-2026",
+          "inv": [ { "inum": "MS-77", "typ": "R", "dt": "20-04-2026", "val": 2100, "pos": "27", "rev": "Y", "itcavl": "N", "rsn": "C", "diffprcnt": 1, "txval": 2000, "igst": 0, "cgst": 50, "sgst": 50, "cess": 0 } ] }
+      ],
+      "cdnr": [
+        { "ctin": "29AABCS1234D1ZF", "trdnm": "Shree Traders", "supprd": "042026", "supfildt": "11-05-2026",
+          "nt": [ { "ntnum": "CN-01", "typ": "C", "suptyp": "R", "dt": "25-04-2026", "val": 1180, "pos": "27", "rev": "N", "itcavl": "Y", "diffprcnt": 1, "txval": 1000, "igst": 180, "cgst": 0, "sgst": 0, "cess": 0 } ] }
+      ],
+      "impg": [ { "refdt": "02-04-2026", "portcode": "INNSA1", "boenum": "1234567", "boedt": "01-04-2026", "isamd": "N", "txval": 50000, "igst": 9000, "cess": 0 } ],
+      "ecom": []
+    }
+  }
+}

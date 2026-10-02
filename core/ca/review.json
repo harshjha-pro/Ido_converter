@@ -1,0 +1,11 @@
+{
+  "_readme": "AGENTS.md rule 5: CA and tax tools are not published until a qualified CA has checked the tool against sample data and the rules in docs/rules-and-sources.md. Fill reviewedBy (name, membership no.) and reviewedOn to list a tool on the site.",
+  "tools": {
+    "gstr-2b-json-to-excel": { "reviewedBy": "", "reviewedOn": "" },
+    "bank-statement-csv-cleaner": { "reviewedBy": "", "reviewedOn": "" },
+    "gst-calculator": { "reviewedBy": "", "reviewedOn": "" },
+    "gst-late-fee-interest-calculator": { "reviewedBy": "", "reviewedOn": "" },
+    "tds-rate-lookup": { "reviewedBy": "", "reviewedOn": "" },
+    "compliance-due-date-calendar": { "reviewedBy": "", "reviewedOn": "" }
+  }
+}

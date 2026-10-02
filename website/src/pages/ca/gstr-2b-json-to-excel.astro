@@ -1,0 +1,72 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import CaNotice from '../../components/CaNotice.astro';
+---
+
+<ToolLayout
+  slug="gstr-2b-json-to-excel"
+  howTo="On the GST portal go to Services → Returns → Returns Dashboard, choose the month, open GSTR-2B and click Download → Generate JSON file. Repeat for each month. Then choose all the JSON files here (you can select several at once) and click Create Excel. One workbook comes out with a Summary sheet and one sheet per section (B2B, B2BA, CDNR, CDNRA, ISD, IMPG, IMPGSEZ), months merged."
+  faq={[
+    { q: "Are my clients' GST files uploaded?", a: "No. The JSON files are read and converted in your browser. Nothing is sent to any server, which is why this works for confidential client data." },
+    { q: "Can I merge a whole financial year?", a: "Yes. Select all twelve monthly JSON files at once; the workbook keeps every row and labels it with its return period." },
+    { q: "Does it calculate my eligible ITC?", a: "No. It reshapes the portal data into Excel. The Summary sheet adds up the amounts per section for convenience; it is not the official ITC summary in GSTR-2B." },
+    { q: "Some data is missing from the Excel file", a: "The page lists any section it could not convert. Check that section on the GST portal, and tell us so we can add it." }
+  ]}
+>
+  <div class="tool-ui">
+    <CaNotice slug="gstr-2b-json-to-excel" sources={[{ title: 'GST portal user manual: Viewing Form GSTR-2B', url: 'https://tutorial.gst.gov.in/userguide/returns/Manual_gstr2b.htm', lastChecked: '2026-10-02' }]} />
+    <div class="controls-panel">
+      <label class="options-group" for="files">
+        <strong>GSTR-2B JSON files (select one or more months)</strong>
+        <input id="files" type="file" accept=".json,application/json" multiple class="text-input" />
+      </label>
+      <button id="btn-run" class="btn-primary btn-run" disabled>Create Excel &rarr;</button>
+      <div id="status-area" class="status-area" role="status"></div>
+      <ul id="details" class="findings-list"></ul>
+      <a id="download" class="btn-secondary" hidden>Download Excel</a>
+    </div>
+  </div>
+</ToolLayout>
+
+<script>
+  import { convert, type Gstr2bMeta } from '../../../../core/ca/gstr2b-to-excel';
+  import { byId, setStatus } from '../../scripts/tool-ui';
+
+  const filesEl = byId<HTMLInputElement>('files');
+  const runBtn = byId<HTMLButtonElement>('btn-run');
+  const statusEl = byId<HTMLDivElement>('status-area');
+  const detailsEl = byId<HTMLUListElement>('details');
+  const downloadEl = byId<HTMLAnchorElement>('download');
+  let url: string | null = null;
+
+  filesEl.addEventListener('change', () => {
+    runBtn.disabled = !filesEl.files?.length;
+    downloadEl.hidden = true;
+    detailsEl.replaceChildren();
+    setStatus(statusEl, filesEl.files?.length ? `${filesEl.files.length} file(s) chosen.` : '');
+  });
+
+  runBtn.addEventListener('click', async () => {
+    const files = await Promise.all([...(filesEl.files ?? [])].map(async f => ({ name: f.name, text: await f.text() })));
+    const r = convert(files);
+    detailsEl.replaceChildren();
+    if (url) URL.revokeObjectURL(url);
+    if (!r.ok || !r.output) {
+      downloadEl.hidden = true;
+      setStatus(statusEl, `Error: ${r.error}`, 'error');
+      return;
+    }
+    const meta = r.meta as unknown as Gstr2bMeta;
+    const lines = [
+      `Months: ${meta.periods.join(', ')}`,
+      ...Object.entries(meta.rowsBySection).map(([k, v]) => `${k}: ${v} documents`),
+      ...meta.warnings.map(w => `Note: ${w}`),
+    ];
+    detailsEl.replaceChildren(...lines.map(t => Object.assign(document.createElement('li'), { textContent: t })));
+    url = URL.createObjectURL(new Blob([r.output], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
+    downloadEl.href = url;
+    downloadEl.download = `GSTR-2B ${meta.periods[0]}${meta.periods.length > 1 ? ' to ' + meta.periods[meta.periods.length - 1] : ''}.xlsx`;
+    downloadEl.hidden = false;
+    setStatus(statusEl, 'Workbook ready. Check it against the portal before relying on it.', 'success');
+  });
+</script>

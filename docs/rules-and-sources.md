@@ -11,6 +11,8 @@ Every rate, divisor, threshold or official spec used by a tool must be listed he
 | UK passport digital photo | ≥ 600 × 750 px; 50 KB–10 MB; colour, in focus, unaltered | [GOV.UK digital photos](https://www.gov.uk/photos-for-passports) | — | 2026-10-02 | TODO |
 | UK passport printed photo | 45 × 35 mm; head 29–34 mm | [GOV.UK printed photos](https://www.gov.uk/photos-for-passports/photo-requirements) | — | 2026-10-02 | TODO |
 
+| GSTR-2B JSON structure (data format, not a rate) | `data.docdata.{b2b,b2ba,cdnr,cdnra,isd,impg,impgsez}` with fields listed in docs/tools/gstr-2b-json-to-excel.md | [GST portal: Viewing Form GSTR-2B](https://tutorial.gst.gov.in/userguide/returns/Manual_gstr2b.htm) and section help pages | — | 2026-10-02 | TODO (CA: verify with a real downloaded file) |
+
 ## Notes
 
 - **Volumetric weight calculator:** ships with no default divisor. The user enters their courier's divisor. A default can be added only with a courier rate-card source in the table above.
