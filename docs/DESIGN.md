@@ -81,7 +81,7 @@ The privacy promise is a product feature and should be visible throughout the si
 | Accent Green | `#2F8F52` | Large accents, emphasis, badges |
 | Link Green | `#236E3F` | Text links and accessible green text |
 | Highlight Yellow | `#F2C94C` | Small badges, featured accents, dark-section CTA |
-| Muted | `#88928A` | Muted text, borders, secondary UI |
+| Muted | `#5F6662` | Muted text, borders, secondary UI |
 
 ## 3.2 CSS tokens
 
@@ -95,7 +95,7 @@ The privacy promise is a product feature and should be visible throughout the si
   --color-accent: #2F8F52;
   --color-link: #236E3F;
   --color-yellow: #F2C94C;
-  --color-muted: #88928A;
+  --color-muted: #5F6662;
 
   --color-card-bg: #FFFFFF;
 
@@ -183,7 +183,9 @@ Use sparingly for:
 
 Do not use yellow as ordinary body text on the cream background.
 
-### Muted — `#88928A`
+### Muted — `#5F6662`
+
+Contrast: 5.17:1 on cream `#F4F0E4`, 5.89:1 on white (WCAG AA). The earlier value `#88928A` was 2.82:1 and failed.
 
 Use for:
 

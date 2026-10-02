@@ -33,7 +33,7 @@ The AI assistant reads this at the start of every session and updates it at the 
 | 13 | Docs live in `Docs/` but every doc refers to `docs/`, and AGENTS.md/CLAUDE.md expect to sit at the repo root. Rename `Docs/` → `docs/` and move AGENTS.md/CLAUDE.md to the root? (Renames need approval per AGENTS.md.) | | Yes, done 2026-10-02. `Design.md` also renamed to `DESIGN.md` to match the references. |
 | 14 | `public/footer-art.png` is outside Astro's configured `website/public/`, so it is not served. Move it, or delete it if unused? | | Moved to `website/public/` 2026-10-02. |
 | 15 | `tsc --noEmit` fails on the tests because `@types/node` is missing (it is not in CI). Add `@types/node` as a dev dependency (MIT, types only)? | | Yes, added 2026-10-02. |
-| 17 | Muted text fails contrast. The site uses `--color-text-muted: #6B726F` (4.32:1 on cream, below 4.5:1); DESIGN.md says `#88928A` (2.82:1, worse). Proposal: `#5F6662` (5.17:1 on cream, 5.89:1 on white), and update DESIGN.md to match. | | |
+| 17 | Muted text fails contrast. The site uses `--color-text-muted: #6B726F` (4.32:1 on cream, below 4.5:1); DESIGN.md says `#88928A` (2.82:1, worse). Proposal: `#5F6662` (5.17:1 on cream, 5.89:1 on white), and update DESIGN.md to match. | | Yes. Applied 2026-10-02 in Layout.astro and DESIGN.md. |
 | 16 | `.claude/skills/idoconverter-design/SKILL.md` does not exist; the skill file is at `Docs/SKILL.md`. Move it? | | Moved 2026-10-02. |
 | 12 | What exactly is the "motion" need — a few subtle CSS transitions on the home page, or real animated marketing sections (which would mean adding React just for that)? | | |
 
