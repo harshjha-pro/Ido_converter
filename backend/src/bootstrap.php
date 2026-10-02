@@ -8,7 +8,7 @@ ini_set('log_errors', '1');
 
 const BACKEND_ROOT = __DIR__ . '/..';
 
-function config(?string $key = null): mixed
+function &config_ref(): array
 {
     static $config = null;
     if ($config === null) {
@@ -20,6 +20,12 @@ function config(?string $key = null): mixed
         $config = require $path;
         $config['plans'] = require BACKEND_ROOT . '/config/plans.php';
     }
+    return $config;
+}
+
+function config(?string $key = null): mixed
+{
+    $config = config_ref();
     return $key === null ? $config : ($config[$key] ?? null);
 }
 
@@ -80,6 +86,6 @@ function send_security_headers(array $cspOverrides = []): void
 }
 
 if (PHP_SAPI !== 'cli') {
-    start_session();
+    if (!defined('IDO_NO_SESSION')) start_session();   // the webhook is server-to-server and needs no session
     send_security_headers();
 }

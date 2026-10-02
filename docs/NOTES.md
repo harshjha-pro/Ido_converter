@@ -28,7 +28,7 @@ The AI assistant reads this at the start of every session and updates it at the 
 | 7 | Confirm the ₹89 yearly Basic price — is it correct, or should it be closer to ₹29×12=₹348 minus a normal discount? | | |
 | 8 | Is ₹89 the yearly price for Basic, or a separate 4th tier? Team said "4 tiers: 29, 89, 129, 429" but also "89 if paid yearly" | | |
 | 9 | Feature list per paid tier | | |
-| 10 | Payment gateway choice for India | | |
+| 10 | Payment gateway choice for India | | Placeholder by Claude (team asked): Razorpay. Team to confirm and add keys in backend/config/config.php. |
 | 11 | Data retention period and deletion process for stored history | | |
 | 13 | Docs live in `Docs/` but every doc refers to `docs/`, and AGENTS.md/CLAUDE.md expect to sit at the repo root. Rename `Docs/` → `docs/` and move AGENTS.md/CLAUDE.md to the root? (Renames need approval per AGENTS.md.) | | Yes, done 2026-10-02. `Design.md` also renamed to `DESIGN.md` to match the references. |
 | 14 | `public/footer-art.png` is outside Astro's configured `website/public/`, so it is not served. Move it, or delete it if unused? | | Moved to `website/public/` 2026-10-02. |
@@ -441,3 +441,19 @@ Security check, tested over HTTP against the running app (not assumed): anonymou
 Tests: 25/25 backend tests pass (5 admin tests).
 Next: prompt 27 (payment gateway).
 Suggested commit message: Add admin panel
+
+### 2026-10-02 (prompt 27: payment gateway)
+Gate: gateway not formally chosen and no API keys yet; the team asked for the files to be built now and will add keys later. Built for **Razorpay** (placeholder choice). Nothing can be bought until real keys are in `backend/config/config.php` (`/plans.php` shows "Payments are not set up yet" and disables the buttons).
+Done: `src/razorpay.php` (order creation, checkout signature check, webhook signature check, idempotent row-locked `complete_payment`, failure handling, checkout callback that also confirms with Razorpay's API), `/plans.php`, `/checkout.php` (Razorpay script allowed by CSP on this page only; no inline script), `/assets/checkout.js`, `/payment-verify.php`, `/webhook-razorpay.php` (no session, signature only). Keys: only in the git-ignored `backend/config/config.php`; where to get each one is in `backend/README.md`.
+Tests: 10 payment tests with a fake Razorpay transport and signatures computed from test secrets (no network, no money): server-side amount; unavailable plans refused; placeholder keys refused; valid/tampered/wrong-key signatures; callback requires signature + API `captured` + same order + same amount + same user; API outage leaves it pending for the webhook; webhook activates once, ignores replays and `order.paid` duplicates; bad or tampered webhook signatures → 400 with no change; `payment.failed` never downgrades a paid order; payment for a deleted account not applied. HTTP run against the PHP server: plan buttons show the configured prices; checkout with Razorpay unreachable shows a friendly error; webhook GET 405, bad signature 400, good signature activates, replay ignored, no session cookie; a forged browser callback did not activate anything. 35/35 backend tests pass.
+**Security assumptions to double-check (please review each):**
+1. HMAC-SHA256 of `order_id|payment_id` with the key secret is Razorpay's checkout signature scheme, and HMAC-SHA256 of the raw body with the webhook secret is the webhook scheme (as in Razorpay's docs; confirm against the current docs before going live).
+2. Payments are expected to be **auto-captured** (Razorpay setting). If manual capture is used, `authorized` payments stay pending until captured, and the webhook `payment.captured` activates them.
+3. Amounts are in paise and the currency is INR; `config/plans.php` prices are rupees × 100.
+4. The webhook URL is reachable only over HTTPS and Razorpay's IPs are not allow-listed; authenticity rests on the signature alone.
+5. `REMOTE_ADDR` is the real client IP (no proxy in front). If Cloudflare or another proxy is added, login throttling must read the proxy's trusted header instead.
+6. One-time payments per period, no auto-renewal; refunds are done in the Razorpay dashboard and then "Cancel now" in the admin panel (not automated).
+7. A payment that arrives after the account was deleted is recorded at Razorpay but not applied here; it needs a manual refund.
+8. Razorpay Checkout loads Razorpay's script and iframe on `/checkout.php` only; no other account page and no tool page loads third-party code.
+Next: prompt 28 (security review).
+Suggested commit message: Add Razorpay payments with server-side verification
