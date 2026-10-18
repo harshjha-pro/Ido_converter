@@ -38,13 +38,14 @@ Pages are rendered per request so each response carries a fresh CSP nonce (`midd
 
 ```
 components/
-  ui/         Button, ButtonLink, TextButton, Tag, NumberField, TextField, Checkbox, Progress, Toast
+  ui/         Button, ButtonLink, TextButton, Tag, NumberField, TextField, ColorField, Checkbox, Progress, Toast
   site/       Header (mobile menu), Footer, Logo, Breadcrumbs (+ JSON-LD), JsonLd
   tool/       DropZone, Overlay (crop marks / dimension lines), Workbench (product photos),
-              ConverterWorkbench, useLeaveWarning, workbench.module.css (shared tool layout)
+              product/{ProductSettings, Inspector, types}, ConverterWorkbench,
+              converter/ConverterSettings, useLeaveWarning, workbench.module.css (shared tool layout)
   marketing/  HeroDrop, Specimen, EarlyAccessForm
 lib/
-  image/      engine.ts (decode, analyse, clean, fit, encode), convert.ts, worker.ts, client.ts (queue + fallback), zip.ts, files.ts
+  image/      engine.ts (decode, analyse, clean, fit, encode), convert.ts, converterForm.ts (form → settings), worker.ts, client.ts (queue + fallback), zip.ts, files.ts (naming, sniffing, CSV)
   server/     env, http, rateLimit, log, handlers, services/*, db/{schema,client}
   validation.ts  presets.ts  config.ts  seo.ts  routes.ts  specimen.ts
 ```
@@ -60,7 +61,7 @@ lib/
 - One job at a time (`client.ts` queue), so only one image is decoded in memory at once.
 - The Web Worker uses OffscreenCanvas; if that's unavailable or the worker fails, the same code runs on the main thread.
 - Decoding uses `createImageBitmap` with `imageOrientation: "from-image"`, which applies EXIF rotation.
-- Validation is decode-based: a file named `.jpg` that isn't an image fails with "Couldn't read this image". Files are filtered by MIME type before they're added.
+- Files are admitted by their first bytes (`sniffImageType`): JPG, PNG or WebP signatures only, whatever the name or reported type; misnamed files are relabelled with the real type. Decoding is the second check: a file with a valid header but damaged data fails with "Couldn't read this image".
 - Limits: 30 MB, 40 MP, 100 files.
 - Output is re-encoded via canvas, so **EXIF metadata, colour profiles and animation are not preserved** (stated to users where it matters).
 
@@ -74,8 +75,8 @@ lib/
 7. Checks: touches edge, enlarged more than 1.5×, original under the minimum side, still over the limit.
 
 **Converter (`convertImage`):**
-1. Target size: rotation swaps axes, then longest-side, width or height scaling; never enlarges unless allowed; never below 1 px.
-2. JPG gets a white background; rotate and flip via the canvas transform.
+1. Layout (`targetSize`): rotation swaps axes; an optional aspect ratio makes a frame by centre-cropping or padding; longest-side, width or height scaling applies to that frame; never enlarges unless allowed; never below 1 px.
+2. The background colour (or white, for transparent-on-JPG) fills the canvas; the whole image is drawn centred in the frame with rotate and flip via the canvas transform, so crops simply fall outside the canvas.
 3. Encode as the chosen type. If the browser can't encode it (WebP on older Safari), the actual type is used and the user is told.
 4. Notes on transparency loss and when the output is larger than the original.
 
@@ -84,4 +85,4 @@ lib/
 **Measured:** 100 photos (3000×2000 to 4000×3000) took about 76 s in headless Chromium, with the main thread responsive (0.1 ms task delay) thanks to the worker.
 
 ## 5. Deployment shape
-Static pages plus three API routes on one Node process (Hostinger Node.js Web App). There are no background jobs; the rate-limit cleanup is opportunistic. See `DEPLOYMENT_GUIDE.md`.
+Server-rendered pages (per request, for CSP nonces) plus three API routes on one Node process (Hostinger Node.js Web App). There are no background jobs; the rate-limit cleanup is opportunistic. See `DEPLOYMENT_GUIDE.md`.

@@ -4,7 +4,7 @@ Marketplace-ready product photos, prepared in the browser. Sellers drop a batch 
 
 - **Stack:** Next.js 15.5 (App Router), React 19, TypeScript, CSS Modules. No UI or image libraries.
 - **Processing:** entirely in the visitor's browser, in a Web Worker (with a main-thread fallback). Nothing is uploaded.
-- **Pages:** all statically generated, so the server does almost no work.
+- **Pages:** server-rendered per request (about 10 ms each locally) so every response carries a fresh Content-Security-Policy nonce; images are processed in the browser, so the server still does little work.
 - **Design system:** `docs/DESIGN.md` ("Inspection desk"). Tokens live in `app/globals.css`.
 - **Backend:** a small MySQL-backed API for early-access sign-ups, anonymous batch statistics and a health check. See `backend.md`.
 - **Tools:** product photos for marketplaces (`/product-photos`) and a bulk image converter (`/tools/image-converter`).
@@ -69,7 +69,7 @@ After deploying, check:
 
 - `/`, `/product-photos`, `/photo-guide`, `/privacy` load, and an unknown path shows the 404 page.
 - "Try it with sample photos" processes four photos and downloads a ZIP.
-- Resource usage in hPanel stays low. All pages are static and images are processed by visitors' browsers.
+- Resource usage in hPanel stays low. Pages are light server renders and images are processed by visitors' browsers.
 
 ## Project structure
 

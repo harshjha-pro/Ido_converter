@@ -6,7 +6,7 @@ _Versions are exact pins from `package.json`. Each release was at least 14 days 
 
 | Technology | Version | Purpose |
 |---|---|---|
-| Next.js (App Router) | 15.5.27 | Routing, static generation, server route handlers |
+| Next.js (App Router) | 15.5.27 | Routing, server rendering, middleware (CSP), route handlers |
 | React / React DOM | 19.2.8 | UI |
 | TypeScript | 5.9.3 | Types across browser and server |
 | CSS Modules + CSS variables | built into Next.js | Styling with the `docs/DESIGN.md` tokens |
@@ -63,7 +63,7 @@ None connected.
 
 ## 10. SEO
 
-Static HTML for every page; `lib/seo.ts` gives every page a title, description, canonical URL and sharing tags; `app/robots.ts` and `app/sitemap.ts`; JSON-LD (WebSite, Organization, WebApplication, BreadcrumbList). See `docs/TECHNICAL_SEO.md`.
+Server-rendered HTML for every page; `lib/seo.ts` gives every page a title, description, canonical URL and sharing tags; `app/robots.ts` and `app/sitemap.ts`; JSON-LD (WebSite, Organization, WebApplication, BreadcrumbList). See `docs/TECHNICAL_SEO.md`.
 
 ## 11. Hosting requirements
 
@@ -83,7 +83,7 @@ Hostinger Business Web Hosting, using its Node.js Web App and MySQL database. No
 ## 13. Known risks and limitations
 
 - **Hostinger's exact MySQL/MariaDB version is unverified.** Run `npm run db:verify`; it checks the version.
-- **Process limits on shared hosting.** The 3-connection pool and static pages keep usage low.
+- **Process limits on shared hosting.** The 3-connection pool and light page renders keep usage low (watch CPU after deploy, KNOWN_ISSUES K13).
 - **Client IP header.** Rate limiting assumes `X-Forwarded-For`. If Hostinger uses another header, every visitor shares one bucket; see `docs/ENVIRONMENT_CONFIGURATION.md`.
 - **npm 10 resolver bug.** The lockfile was produced with npm 11 because npm 10.9 crashes resolving Vitest 4's optional peers. `npm ci` with npm 10 installs it correctly (tested).
 - **Dependency audit:** production 0 known vulnerabilities on 18 Oct 2026 (PostCSS override 8.5.28 pinned). Dev-only: a `braces` advisory via eslint-config-next has no patched release; accepted (THREAT_MODEL S9).

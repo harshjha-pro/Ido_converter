@@ -24,6 +24,33 @@ _Executed 18 October 2026 in the development container: Node 22.22, Chromium 141
 
 First-load JS: shared 103 KB; homepage 137 KB (includes Zod for the form); tool pages 119–122 KB.
 
+## 0.5.0 run (18 October 2026)
+Clean production build served by `next start`, MariaDB 10.11.14 installed in the container, Chromium 141 via Playwright 1.56.
+
+| Gate | Result |
+|---|---|
+| `npm run lint`, `npm run typecheck` | Pass |
+| `npm test` (unit + component) | **59 passed** |
+| `npm run test:db` | **21 passed**, 1 skipped (the no-DB notice) |
+| `npm run test:e2e` (with `E2E_DATABASE_URL`) | **66 passed** (33 desktop + 33 phone), 0 skipped |
+| `npm run build` | Pass; first-load JS: shared 103 KB, `/` 138 KB, `/product-photos` 123 KB, converter 120 KB |
+| `npm audit --omit=dev` | 0 vulnerabilities (full audit: the accepted dev-only `braces` chain, A15) |
+| Network check (both tools, scripted) | 0 third-party requests; the only POST is the 214-byte anonymous batch summary |
+| 360 px | No sideways scroll on any public page (e2e); screenshots of both tools reviewed |
+
+Lab (headless Chromium, localhost; **lab, not field data**). Phone = 360 px, 4× CPU, 150 ms latency, 1.6 Mbps.
+
+| Page | Desktop LCP | Phone LCP | CLS |
+|---|---|---|---|
+| `/` | 316 ms (cold start) | 624 ms | 0 |
+| `/product-photos` | 152 ms | 576 ms | 0 |
+| `/tools/image-converter` | 108 ms | 552 ms | 0 |
+| `/photo-guide` | 104 ms | 512 ms | 0 |
+
+Defects found in this run and fixed: an edit script emptied `components/site/site.module.css` (header and footer unstyled; caught by screenshot review, now guarded by an e2e test); settings fields overflowed their 300 px panel (caught by a new e2e test).
+
+Not re-run: the 100-photo Python stress test (engine unchanged for product photos).
+
 ## CSP check (0.4.0, 18 October 2026)
 Re-run on a clean production build without a database: lint, typecheck, 44 unit tests, 40 e2e (4 DB-only skipped), production audit 0. Manual probes: a nonce-less inline script and an inline `onerror` handler injected into the served HTML were both blocked, and the page still hydrated. `npm run dev` checked: converter works, no CSP errors. `npm run test:db` was not re-run (no DB in this container; no server code changed).
 

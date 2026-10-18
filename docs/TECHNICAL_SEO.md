@@ -12,7 +12,7 @@ _Also covers structured data and crawler policy._
 | robots.txt | `app/robots.ts`: allow `/`, disallow `/api/`, sitemap link | e2e |
 | Sitemap | `app/sitemap.ts` from `lib/routes.ts` with real last-modified dates | e2e (all routes listed, no `/api`) |
 | 404 | Real 404 status + `noindex` | e2e |
-| Rendering | All pages statically rendered HTML (crawlable without JS) | build output |
+| Rendering | All pages server-rendered HTML per request (crawlable without JS; per-request CSP nonce, ADR-13) | build output; e2e SEO |
 | Performance | See TEST_RESULTS (lab) | Lab script |
 
 **Remember:** `robots.txt` is not access control, and `noindex` doesn't protect content. The API protects itself.

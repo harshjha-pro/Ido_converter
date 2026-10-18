@@ -18,7 +18,7 @@ Images, file names and photo contents never reach the server.
 ## 2. Runtime and hosting
 
 - **Runtime:** Next.js 15.5 route handlers on Node.js (`runtime = "nodejs"`), served by `next start` as a Hostinger **Node.js Web App** (Business plan).
-- **Pages** are static; only `/api/*` runs per request.
+- **Pages** render per request (for CSP nonces, ~10 ms locally); `/api/*` handles data. No image ever reaches the server.
 - **Database:** Hostinger's MySQL service, which is the only database engine Hostinger shared hosting offers. SQL targets the subset shared by **MySQL 8.0.16+** and **MariaDB 10.6+**; tested on MariaDB 10.11.
 - **No background workers, cron or system packages are required.** Rate-limit cleanup runs opportunistically inside requests.
 

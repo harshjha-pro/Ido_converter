@@ -37,11 +37,12 @@ Evidence and risks are in the business evaluation from earlier in the project. I
 | Must | Per-file status, reasons and fixes; before/after sizes | Implemented |
 | Must | Bulk renaming, organised ZIP, CSV report | Implemented |
 | Must | Converter: JPG/PNG/WebP, resize (longest/width/height), quality, rotate, flip | Implemented |
+| Should | Converter: crop or pad to an aspect ratio, background colour, exact sizes | Implemented (0.5.0) |
 | Must | Mobile-usable workflow; accessible controls | Implemented (emulated; real devices pending) |
 | Should | Early-access sign-ups and anonymous usage statistics | Implemented |
 | Should | Photo-shooting guide | Implemented |
 | Should | Done-for-you WhatsApp offer | Implemented; hidden until configured |
-| Could | Interactive crop | Not started (post-MVP) |
+| Could | Interactive (drag) crop | Not started (post-MVP); centred aspect-ratio crop shipped |
 | Could | Saved workflows (local) | Not started |
 | Won't (MVP) | Accounts, payments, AI background removal or generation, templates and editor, watermark removal, scheduling | Deferred (ROADMAP.md) |
 

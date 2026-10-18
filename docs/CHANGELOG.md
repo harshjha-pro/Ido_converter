@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.5.0 — 18 October 2026
+- **Added (converter):** Shape step — Original, 1:1, 4:5, 4:3, 3:2, 16:9, 9:16 or a custom ratio — with *Crop to fit* (centre) or *Add padding* (whole image, centred). Background: white, black, transparent (PNG/WebP) or a custom colour; it also fills transparent areas. A custom ratio plus resize-by-width gives exact sizes (e.g. 1200 × 628).
+- **Added:** uploads are judged by their first bytes, not the file name or the browser's reported type. A PNG named `.jpg` is accepted as PNG; non-images named `.png` are refused at the door.
+- **Added:** remove a file after processing in both tools (it leaves the ZIP and the CSV); "Download this photo" in the product-photo inspector.
+- **Added (SEO/content):** `/product-photos` now has a preset comparison table (rendered from `lib/presets.ts`, with sources and verification labels), a Pass/Check/Fail explainer matching the engine, and a FAQ.
+- **Security:** no inline `style` attributes remain, so production CSP is `style-src 'self' 'nonce-…'` (no `'unsafe-inline'`). HSTS (`max-age=31536000`, no subdomains/preload) in production.
+- **Changed:** `Workbench.tsx` split into `product/ProductSettings`, `product/Inspector`, `product/types`; converter settings in `converter/ConverterSettings` with form logic in `lib/image/converterForm.ts`. One `outputName` for both tools.
+- **Fixed:** settings fields overflowed the 300 px panel (grid `minmax(0, 1fr)`; inputs size from their container).
+- **Tests:** 59 unit (+15), 66 e2e (+11 per viewport), including pixel checks of real output files and layout regression checks (header styles, no sideways scroll at 360 px, settings fit their panel).
+
 ## 0.4.0 — 18 October 2026
 - **Added:** Content-Security-Policy on every HTML page (`middleware.ts`, `lib/csp.ts`): per-request script nonce with `'strict-dynamic'`, `object-src 'none'`, `frame-ancestors 'none'`, `base-uri`/`form-action 'self'`, `connect-src 'self'`, `worker-src 'self' blob:`. `'unsafe-eval'` only under `next dev`.
 - **Changed:** pages are now rendered per request (needed for fresh nonces); see ADR-13. About 10 ms per page locally.

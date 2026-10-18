@@ -12,12 +12,12 @@ Visitors' images (on their device), early-access contacts (personal data), the d
 ## Threats and mitigations (STRIDE-style)
 | ID | Threat | Mitigation | Residual |
 |---|---|---|---|
-| S1 | Malicious image (decoder exploit) | Decoding happens in the browser's sandboxed codecs; SVG not accepted; nothing reaches the server | Browser zero-days (out of scope) |
+| S1 | Malicious image (decoder exploit) | Files admitted only with a JPG/PNG/WebP byte signature (renamed SVG/HTML refused, tested); decoding happens in the browser's sandboxed codecs; nothing reaches the server | Browser zero-days (out of scope) |
 | S2 | Decompression or huge images exhaust memory | 30 MB and 40 MP limits checked after decode; one image in memory at a time; batches up to 100 | Low-end phones may still struggle (needs device testing) |
 | S3 | Spam or bot sign-ups | Honeypot; 5/h per client; strict schema; origin check | Distributed bots; add a CAPTCHA if seen |
 | S4 | Cross-site request abuse (CSRF-like) | `Origin` must match; JSON-only; no cookies or sessions exist | — |
 | S5 | SQL injection | Parameterised queries only; no multi-statements for the app pool (tested) | — |
-| S6 | XSS | React escaping; no user HTML rendered; JSON-LD escapes `<`; nonce-based CSP with `'strict-dynamic'` (injected inline scripts and handlers verified blocked) | Inline styles still allowed (Low) |
+| S6 | XSS | React escaping; no user HTML rendered; JSON-LD escapes `<`; nonce-based CSP for scripts (`'strict-dynamic'`) and styles; injected inline scripts and handlers verified blocked; no `style` attributes rendered (e2e) | — |
 | S7 | Personal data leak (logs, errors, exports) | Logs carry no PII; generic error bodies (tested); no admin UI; exports via CLI with formula escaping | Owner's handling of exports |
 | S8 | Rate-limit bypass or lockout | HMAC(IP) buckets; unknown IP → shared 20× bucket + warning | Spoofed headers if the proxy doesn't overwrite X-Forwarded-For (verify on Hostinger) |
 | S9 | Supply chain | Exact pins, ≥ 14-day-old releases, lockfile, audit 0 for production | Dev-only `braces` advisory (no fix exists; patterns are not attacker-controlled) |

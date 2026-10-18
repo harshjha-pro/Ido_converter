@@ -20,6 +20,13 @@ test.describe("Content-Security-Policy", () => {
     }
   });
 
+  test("production responses carry HSTS and the other security headers", async ({ request }) => {
+    const h = (await request.get("/")).headers();
+    expect(h["strict-transport-security"]).toBe("max-age=31536000");
+    expect(h["x-content-type-options"]).toBe("nosniff");
+    expect(h["referrer-policy"]).toBe("strict-origin-when-cross-origin");
+  });
+
   test("API responses and static files are left without a page policy", async ({ request }) => {
     expect((await request.get("/api/health")).headers()["content-security-policy"]).toBeUndefined();
     expect((await request.get("/robots.txt")).headers()["content-security-policy"]).toBeUndefined();
