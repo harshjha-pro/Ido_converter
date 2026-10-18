@@ -21,8 +21,10 @@ _Also covers structured data and crawler policy._
 | Page | Types | Notes |
 |---|---|---|
 | `/` | WebSite, Organization (name, url, logo) | No address, phone or social profiles: none exist yet |
-| `/product-photos`, `/tools/image-converter` | WebApplication (+ `isAccessibleForFree`), BreadcrumbList | **No ratings, reviews or prices**, so these pages aren't eligible for software rich results; the markup is descriptive only |
+| `/product-photos`, `/tools/image-converter`, `/tools/watermark` | WebApplication (+ `isAccessibleForFree`), BreadcrumbList | **No ratings, reviews or prices**, so these pages aren't eligible for software rich results; the markup is descriptive only |
 | Inner pages | BreadcrumbList | |
+
+**Not indexed on purpose:** `/brand-kit` (personal settings) and `/templates/[id]` (editors that share the gallery's intent). Both carry `noindex, follow` and are not in the sitemap; the gallery `/templates` is indexed.
 
 FAQ markup is **not used**: FAQ rich results are limited to a narrow set of sites, and the visible FAQs work without it. Validate with Google's Rich Results Test after launch.
 

@@ -41,3 +41,10 @@ Visitors' images (on their device), early-access contacts (personal data), the d
 | Real client IP header unverified on Hostinger | Medium | Open: post-deploy check |
 | Dev dependency `braces` advisory | Low | Accepted (dev only) |
 | No CAPTCHA | Low | Accepted until abuse is observed |
+
+## Added in 0.6.0
+| # | Threat | Mitigation | Residual |
+|---|---|---|---|
+| S16 | Tampered browser storage (saved settings, brand kit, template drafts) | Each read is validated field by field; stored logos must be `data:image/png;base64` and ≤ 1 MB; unknown values fall back to defaults (unit-tested) | Storage is per device and readable by anyone using that browser profile; no secrets are stored there |
+| S17 | Malicious watermark logo or template photo | Same byte-signature check as uploads; decoded by the browser's codecs; never sent to the server | Browser codec zero-days (out of scope) |
+| S18 | Misuse of the watermark tool on others' work | Terms forbid removing or covering others' marks; the tool only adds marks and has no removal feature | Can't be enforced technically |

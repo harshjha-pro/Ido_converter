@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.6.0 — 18 October 2026
+Owner decisions: domain idoconverter.com (no www); build everything the prompts describe that needs no outside service; accounts, payments and AI wait for keys and budget.
+- **Added:** bulk watermark tool (`/tools/watermark`): text or logo, nine positions or repeated, opacity, size, margin, output format.
+- **Added:** editable templates (`/templates`, `/templates/[id]`): 8 original designs in 4 sizes (1080², 1080×1350, 1080×1920, 1280×720); edit text and size, colours, photo, logo; undo/redo; draft kept in the browser; PNG/JPG download. Preview and export share one renderer.
+- **Added:** brand kit (`/brand-kit`, noindex) and named saved settings in the converter, watermark and product-photo tools, all in browser storage only.
+- **Added:** product photos for several marketplaces in one run, one ZIP with a folder and report per marketplace.
+- **Added:** `/tools` directory, `/about`, `/pricing` (free during early access, no invented prices); header now Product photos · Tools · Templates · Photo guide · Pricing; home links to every tool.
+- **Changed:** privacy notice restructured for the DPDP Act (itemised data, purposes, retention, rights, Data Protection Board route); contact shown from `NEXT_PUBLIC_SUPPORT_EMAIL`. Early-access form carries a standalone itemised notice; `CONSENT_VERSION` → `2026-10-18.2`. Terms gain watermark, template and governing-law (India) clauses. **Self-reviewed, not lawyer-reviewed.**
+- **Changed:** Meesho preset minimum side 800 → 1000 px (most-repeated third-party figure); preset sources say the official rules are behind seller logins.
+- **Changed:** converter and watermark share `components/tool/batch/BatchWorkbench.tsx`.
+- **Fixed:** breadcrumbs broke into indented lines on content pages; `/product-photos` source notes rendered as a grid; a racy DB e2e journey (other tests also posted statistics).
+- **Tests:** 86 unit (+27), 101 e2e (+16 per viewport); every public page checked at 360, 768 and 1024 px.
+
 ## 0.5.1 — 18 October 2026
 - **Fixed (accessibility):** removing a file with the keyboard dropped focus to the top of the page; focus now moves to the next file's Remove button, or the drop zone when the list is empty (`components/tool/focus.ts`).
 - **Fixed (accessibility):** the phone details sheet is announced as a modal dialog but Tab escaped to the page behind it after three stops; Tab and Shift+Tab now stay inside until it closes.

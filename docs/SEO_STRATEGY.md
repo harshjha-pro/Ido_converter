@@ -16,6 +16,9 @@ _Covers the keyword map, page briefs, internal linking, content plan and launch 
 | product photo resizer Amazon | Amazon product image size India, Amazon main image white background | Transactional | `/product-photos` | Product photo resizer for Amazon, Flipkart & Meesho | Product photos | /#rules, /photo-guide | Done (0.5.0): preset table, Pass/Check/Fail explainer, FAQ below the tool | Medium | Unvalidated |
 | bulk image converter | JPG to WebP, PNG to JPG, WebP to JPG, image resizer, compress image | Transactional | `/tools/image-converter` | Bulk image converter: JPG, PNG and WebP | Bulk image converter | / , /product-photos | Very competitive; few links | Low–Medium | Unvalidated |
 | how to take product photos with phone | white background product photography at home | Informational | `/photo-guide` | Product photos on a white background with a phone | Shoot product photos that pass first time | /product-photos | Example photos (original, not stock) | Medium | Unvalidated |
+| add watermark to photos | bulk watermark, add logo to photos | Transactional | `/tools/watermark` | Add a watermark to photos in bulk | Add a watermark to photos | /tools, /product-photos, /tools/image-converter | New page; no links yet | Low–Medium | Unvalidated |
+| instagram post templates for sellers | sale post template, festive offer post, youtube thumbnail template | Transactional | `/templates` | Free post, story and thumbnail templates for sellers | Templates for posts, stories and thumbnails | /brand-kit, /tools | Only 8 templates; editor pages noindex to avoid thin duplicates | Low | Unvalidated |
+| free image tools for sellers | online seller tools | Navigational | `/tools` | Free image tools for online sellers | Image tools | every tool | — | Low | Unvalidated |
 | Meesho image size / Flipkart image guidelines | Meesho product photo requirements | Informational | **Planned**: `/guides/meesho-image-requirements`, `/guides/flipkart-image-requirements` | — | — | /product-photos?preset=… | Needs official-source verification first | Medium | Blocked (rules unverified) |
 
 **Rejected on purpose:** separate pages per format pair (`/jpg-to-webp` and so on). They'd target near-identical intent with the same tool, a doorway-page pattern. Revisit only if Search Console shows distinct demand and the page can carry unique, useful content.
@@ -27,7 +30,7 @@ _Covers the keyword map, page briefs, internal linking, content plan and launch 
 - **`/photo-guide`:** a step-by-step setup, common problems, and a CTA to the tool.
 
 ## Internal linking
-- **Header:** Product photos, Image converter, Marketplace rules, Photo guide.
+- **Header:** Product photos, Tools, Templates, Photo guide, Pricing.
 - **Footer:** all public pages.
 - **In content:** home → converter (how-it-works); rules → presets (`/product-photos?preset=…`); tool results → photo guide (failures) and early access; guide → tool.
 - **Breadcrumbs** on all inner pages (with BreadcrumbList JSON-LD).

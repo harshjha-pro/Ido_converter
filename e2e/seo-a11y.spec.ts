@@ -96,11 +96,12 @@ test.describe("layout", () => {
     expect(await page.locator("footer ul").first().evaluate(el => getComputedStyle(el).listStyleType)).toBe("none");
   });
 
-  test("no page scrolls sideways at 360 px", async ({ page }) => {
-    await page.setViewportSize({ width: 360, height: 780 });
-    for (const r of PUBLIC_ROUTES) {
+  test("no page scrolls sideways at phone and tablet widths", async ({ page }) => {
+    for (const r of PUBLIC_ROUTES) for (const width of [360, 768, 1024]) {
+      await page.setViewportSize({ width, height: 900 });
       await page.goto(r.path);
       expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth), r.path).toBe(0);
+      if (width !== 360) continue;
       const crumbs = page.getByRole("navigation", { name: "Breadcrumb" }).locator("ol");
       if (await crumbs.count()) expect(await crumbs.evaluate(el => getComputedStyle(el).display), `${r.path} breadcrumb layout`).toBe("flex");
     }

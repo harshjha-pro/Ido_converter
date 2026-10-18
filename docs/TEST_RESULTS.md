@@ -24,6 +24,32 @@ _Executed 18 October 2026 in the development container: Node 22.22, Chromium 141
 
 First-load JS: shared 103 KB; homepage 137 KB (includes Zod for the form); tool pages 119–122 KB.
 
+## 0.6.0 run (18 October 2026)
+Clean production build served by `next start`, MariaDB 10.11.14 in the container, Chromium 141 (Playwright 1.56). No Safari/Firefox engines or real devices available.
+
+| Gate | Result |
+|---|---|
+| `npm run lint`, `npm run typecheck` | Pass |
+| `npm test` | **86 passed** |
+| `npm run test:db` | **21 passed**, 1 skipped (the no-DB notice) |
+| `npm run test:e2e` (with `E2E_DATABASE_URL`) | **101 passed**, 1 skipped (phone-only sheet test on desktop) |
+| `npm run build` | Pass; shared JS 103 KB; `/templates/[id]` 116 KB, `/tools/watermark` 125 KB, `/product-photos` 127 KB, `/` 138 KB |
+| `npm audit --omit=dev` | 0 vulnerabilities |
+| Emulated widths | Every public page at 360, 768, 1024 px: no sideways scroll; phone and tablet screenshots of the editor, watermark tool and gallery reviewed; dark mode reviewed |
+
+Lab (headless Chromium, localhost; **lab, not field data**). Phone = 360 px, 4× CPU, 150 ms latency, 1.6 Mbps.
+
+| Page | Desktop LCP | Phone LCP | CLS |
+|---|---|---|---|
+| `/` | 104 ms | 572 ms | 0 |
+| `/tools` | 76 ms | 488 ms | 0 |
+| `/tools/watermark` | 88 ms | 504 ms | 0 |
+| `/templates` | 76 ms | 528 ms | 0 |
+| `/templates/weekend-sale` | 104 ms | 512 ms | 0 |
+| `/pricing` | 92 ms | 520 ms | 0 |
+
+Defects found and fixed in this run: breadcrumbs on content pages broke into indented lines (CSS specificity); `/product-photos` source notes rendered as a grid; colour fields clipped at 360 px in the editor; a racy DB journey (other tests also posted statistics, now stubbed).
+
 ## 0.5.1 run (18 October 2026)
 Same setup as 0.5.0. `npm test` 59 passed; `npm run test:db` 21 passed, 1 skipped; `npm run test:e2e` with `E2E_DATABASE_URL` **69 passed, 1 skipped** (the sheet focus test runs on the phone project only). Lint and typecheck pass. Scripted keyboard walkthrough results are in ACCESSIBILITY.md.
 

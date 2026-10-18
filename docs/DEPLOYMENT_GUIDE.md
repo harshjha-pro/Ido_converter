@@ -32,7 +32,8 @@ Pick one:
 2. hPanel → add a **Node.js Web App** from the repository. Choose Node.js **20 or newer** and the Next.js preset if offered.
 3. Install `npm ci` (or `npm install`), build `npm run build`, start `npm start`.
 4. Set the environment variables from `docs/ENVIRONMENT_CONFIGURATION.md`. Use `localhost` as the DB host here.
-5. Deploy, then connect your domain and confirm HTTPS.
+   For idoconverter.com (owner's choice, no www): `NEXT_PUBLIC_SITE_URL=https://idoconverter.com`, `APP_ORIGIN=https://idoconverter.com`, and `NEXT_PUBLIC_SUPPORT_EMAIL` once the support address exists. `NEXT_PUBLIC_*` values are built into the pages, so set them **before** the build.
+5. Deploy, then connect your domain and confirm HTTPS. In Hostinger's domain settings, redirect `www.idoconverter.com` to `https://idoconverter.com` with a 301.
 
 ## 4. Check the deployment
 

@@ -93,3 +93,11 @@
 .page .toolList h2 { margin: 0; font-size: 20px; }
 .page .toolList p { color: var(--graphite); max-width: 70ch; margin: 0; }
 .toolFor { font-size: 14px; }
+
+/* Home: links to the other tools */
+.moreTitle { font-size: 18px; }
+.moreTools { list-style: none; padding: 0; margin: var(--s3) 0 0; display: grid; gap: var(--s3); }
+@media (min-width: 768px) { .moreTools { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s5); } }
+.moreTools li { border-top: 1px solid var(--line); padding-top: var(--s3); display: grid; gap: var(--s1); }
+.moreTools a { font-weight: 600; }
+.moreTools span { color: var(--graphite); font-size: 15px; }

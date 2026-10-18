@@ -4,8 +4,8 @@
 
 | Item | State | Needed |
 |---|---|---|
-| Privacy notice (`/privacy`) | Draft, matches the code (local processing, anonymous statistics, sign-ups, hashed rate limits, Hostinger logs, WhatsApp jobs) | Controller identity and contact; DPDP Act review; grievance contact if required |
-| Terms of use (`/terms`) | Draft | Governing law and jurisdiction; owner identity; liability wording |
+| Privacy notice (`/privacy`) | Draft, restructured 0.6.0 against the DPDP Act 2023 and DPDP Rules 2025 (itemised data, purposes, retention, rights, Board complaint route; standalone notice on the sign-up form). Self-reviewed by Claude, **not** a lawyer | Owner identity; support email (`NEXT_PUBLIC_SUPPORT_EMAIL`); lawyer review. Notice duties under s.5/Rule 3 start around May 2027 |
+| Terms of use (`/terms`) | Draft; 0.6.0 adds watermark, template-licence and governing-law (India) clauses | Court/city for jurisdiction; owner identity; liability wording; lawyer review of the template licence |
 | Cookie notice | Not needed today (no cookies set) | Revisit if analytics or accounts are added |
 | AI disclosures | N/A (no AI) | Required before Phase 4 |
 | Acceptable use / copyright reporting | Short clause in Terms | A reporting contact |

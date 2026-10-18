@@ -3,6 +3,7 @@
 | Data | Where | Personal? | Kept | Deleted by |
 |---|---|---|---|---|
 | Photos and file names | Visitor's browser only | — | Until the tab closes | Never sent to the server |
+| Saved settings, brand kit (name, logo, colours), template drafts (text and colours) | Visitor's browser storage (`localStorage`) | Possibly (a shop name or logo) | Until the visitor clears them | The visitor, in the tool or browser settings; never sent to us |
 | Early-access leads | `early_access_leads` | Yes | 12 months after the last submission, or until the person asks | `database/queries/retention.sql`, `delete_person.sql` |
 | Batch statistics | `batch_events` | No | 24 months | `retention.sql` |
 | Rate-limit counters | `rate_limits` | No (keyed hash) | Under 1 day | Automatic cleanup in requests; `retention.sql` |

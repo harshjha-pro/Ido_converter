@@ -21,7 +21,7 @@
 | 961–1099 | Full navigation; settings above results; inspector as a sheet |
 | ≥ 1100 | Three-zone tool layout (settings, results, inspector) |
 
-No horizontal overflow at 360, 390, 768 or 1440 px (tested). Long file names truncate with the full name in a tooltip.
+No horizontal overflow at 360, 390, 768, 1024 or 1440 px (every public page at 360, 768 and 1024 px is checked by e2e since 0.6.0). Long file names truncate with the full name in a tooltip.
 
 ## Scripted walkthrough (0.5.1)
 Headless Chromium, keyboard only, plus a scan for controls without an accessible name. **This is not a screen-reader test**: it checks names, focus order and focus handling, not how NVDA or VoiceOver actually speak the page.

@@ -2,7 +2,7 @@
 
 | # | Assumption (safe, reversible default) | Where it's set | Needs |
 |---|---|---|---|
-| Q1 | Domain is `https://idoconverter.com` | `NEXT_PUBLIC_SITE_URL` (default in `lib/config.ts`) | Owner confirms the real domain and preferred host (with or without www) |
+| Q1 | Domain is `https://idoconverter.com`, without www | `NEXT_PUBLIC_SITE_URL` (default in `lib/config.ts`) | **Confirmed by the owner, 18 Oct 2026**; set the www → apex 301 in Hostinger |
 | Q2 | Hostinger passes the visitor IP in `X-Forwarded-For` | `CLIENT_IP_HEADER` | Post-deploy check (ENVIRONMENT_CONFIGURATION.md) |
 | Q3 | Hostinger MySQL is MySQL 8.0.16+ or MariaDB 10.6+ | SQL syntax | Run `npm run db:verify` |
 | Q4 | Node.js 20+ is available for the Web App | `engines` in package.json | hPanel check |

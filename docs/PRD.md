@@ -43,8 +43,9 @@ Evidence and risks are in the business evaluation from earlier in the project. I
 | Should | Photo-shooting guide | Implemented |
 | Should | Done-for-you WhatsApp offer | Implemented; hidden until configured |
 | Could | Interactive (drag) crop | Not started (post-MVP); centred aspect-ratio crop shipped |
-| Could | Saved workflows (local) | Not started |
-| Won't (MVP) | Accounts, payments, AI background removal or generation, templates and editor, watermark removal, scheduling | Deferred (ROADMAP.md) |
+| Could | Saved workflows (local) | Implemented (0.6.0): named saved settings per tool, browser only |
+| Added by owner (0.6.0) | Watermark tool; editable templates and editor; brand kit (local); multi-marketplace run; tools/about/pricing pages | Implemented |
+| Won't (MVP) | Accounts, payments, AI background removal or generation, watermark removal, scheduling | Deferred (ROADMAP.md); accounts/payments/AI need keys and budget (owner decision, 18 Oct 2026) |
 
 Why so narrow: validate repeat use and willingness to pay before adding cost or complexity. AI watermark removal is excluded because of abuse and rights risks.
 

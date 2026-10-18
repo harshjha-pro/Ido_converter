@@ -7,7 +7,7 @@ Marketplace-ready product photos, prepared in the browser. Sellers drop a batch 
 - **Pages:** server-rendered per request (about 10 ms each locally) so every response carries a fresh Content-Security-Policy nonce; images are processed in the browser, so the server still does little work.
 - **Design system:** `docs/DESIGN.md` ("Inspection desk"). Tokens live in `app/globals.css`.
 - **Backend:** a small MySQL-backed API for early-access sign-ups, anonymous batch statistics and a health check. See `backend.md`.
-- **Tools:** product photos for marketplaces (`/product-photos`) and a bulk image converter (`/tools/image-converter`).
+- **Tools:** product photos for marketplaces (`/product-photos`, several marketplaces per run), a bulk image converter (`/tools/image-converter`), a bulk watermark tool (`/tools/watermark`) and editable templates (`/templates`). Brand kit and saved settings stay in the browser.
 - **Docs:** start at `docs/DOCUMENTATION_INDEX.md`; status in `docs/IMPLEMENTATION_STATUS.md`.
 
 ## Requirements

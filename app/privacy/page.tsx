@@ -24,7 +24,7 @@ export default function Privacy() {
       <h2>Your images</h2>
       <p>Every Idoconverter tool processes images in your web browser, on your own device. Your images are not uploaded to our servers or to anyone else. When you close or refresh the page, they are gone from the tool.</p>
       <p>Processed images are saved as new files. These do not include the EXIF data from your originals, such as camera details or location.</p>
-      <p>Some tools can remember your settings, such as a preset or a brand logo, so you don’t have to set them again. These are saved only in your own browser’s storage, never sent to us, and you can clear them in the tool or in your browser settings.</p>
+      <p>Some tools can remember things for you: saved settings, your brand kit (shop name, logo and colours) and the text and colours of a template you’re editing. These are saved only in your own browser’s storage, never sent to us, and you can clear them in the tool or in your browser settings.</p>
 
       <h2>What we collect, and why</h2>
       <p>There are no accounts, no cookies and no third-party analytics.</p>

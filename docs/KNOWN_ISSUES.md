@@ -17,3 +17,8 @@
 | K13 | Pages render per request (CSP nonces) instead of being static | Small server cost per page view; no static HTML caching | ~10 ms per page locally; watch CPU on Hostinger (ADR-13) |
 | K14 | Crop is centred only (no drag-to-position) | Off-centre subjects may be trimmed | Use *Add padding*, or crop before uploading; drag crop is on ROADMAP phase 2 |
 | K15 | No real screen-reader test yet | Unknown speech issues (e.g. chatty progress on big batches) | Scripted keyboard/name audit passes; human NVDA + VoiceOver pass before launch (ACCESSIBILITY.md) |
+| K16 | Brand kit, saved settings and template drafts live in one browser | Not on other devices; lost if site data is cleared or in private browsing | Stated in the UI; cross-device needs accounts (ROADMAP phase 3) |
+| K17 | Templates: fixed layouts, no carousels, no resizing one design to another size | Less flexible than a full editor | By design for now (ROADMAP phase 5 follow-ups) |
+| K18 | Template sample photos are our raw "before" shots (wood, grey backgrounds) | Previews look less polished until the user adds a photo | The editor says to add your own; could add processed samples |
+| K19 | Text is drawn with the system font, which differs by device | Exported text looks slightly different on Windows, Android and Apple devices | Matches DESIGN.md (no web fonts); a bundled font needs owner approval |
+| K20 | Terms choose Indian law but no court/city; no owner identity on legal pages | Legal pages incomplete | Lawyer review (B3) and owner details |

@@ -1,9 +1,10 @@
+import Link from "next/link";
 import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 import { pageMetadata } from "@/lib/seo";
 import s from "@/components/marketing/marketing.module.css";
 
 // DRAFT: requires review by a qualified lawyer before public launch (docs/LEGAL_READINESS.md).
-export const metadata = pageMetadata({ title: "Terms of use", description: "The terms for using Idoconverter’s free image tools and early-access programme.", path: "/terms" });
+export const metadata = pageMetadata({ title: "Terms of use", description: "The terms for using Idoconverter’s free image tools, templates and early-access programme, including watermark and template use.", path: "/terms" });
 
 export default function Terms() {
   return (
@@ -18,6 +19,12 @@ export default function Terms() {
       <h2>Your images</h2>
       <p>Only process images you own or have permission to edit. You remain responsible for the images you use, including whether they may be published on any marketplace or website.</p>
 
+      <h2>Watermarks</h2>
+      <p>Only add watermarks, names or logos that you’re entitled to use, and only to images you own or may edit. Don’t use the tools to remove, cover or replace someone else’s watermark or credit.</p>
+
+      <h2>Templates</h2>
+      <p>Our templates are free to use for your own business posts, including commercial ones. You may edit them and publish the designs you make. Don’t sell or redistribute the templates themselves as templates. The text, photos and logos you add remain yours and your responsibility.</p>
+
       <h2>Marketplace checks</h2>
       <p>Checks and presets are based on published rules we’ve been able to verify, and on third-party guides where marked “Unverified”. A “Pass” is a technical pre-check, not a promise that any marketplace will accept a photo. Always confirm current rules in your seller panel.</p>
 
@@ -28,7 +35,10 @@ export default function Terms() {
       <p>The tools are provided as they are. Keep your original images: always check results before you publish them.</p>
 
       <h2>Early access and your data</h2>
-      <p>If you join early access, we use your details as described in our <a href="/privacy">privacy notice</a>.</p>
+      <p>If you join early access, we use your details as described in our <Link href="/privacy">privacy notice</Link>. Settings, brand kits and template drafts are kept only in your own browser.</p>
+
+      <h2>Governing law</h2>
+      <p>These terms are governed by the laws of India.</p>
 
       <h2>Changes</h2>
       <p>We’ll update this page if these terms change, and note the date above.</p>

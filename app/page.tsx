@@ -5,6 +5,7 @@ import { HeroDrop } from "@/components/marketing/HeroDrop";
 import { EarlyAccessForm } from "@/components/marketing/EarlyAccessForm";
 import { Specimen } from "@/components/marketing/Specimen";
 import { MARKETPLACES } from "@/lib/presets";
+import { TOOLS } from "@/lib/tools";
 import { whatsappLink } from "@/lib/config";
 import { JsonLd } from "@/components/site/JsonLd";
 import { pageMetadata, siteJsonLd } from "@/lib/seo";
@@ -43,7 +44,12 @@ export default function Home() {
             <li><h3>Pick the marketplace</h3><p>Size, fill and file-size limits are set for you. Change anything you need.</p></li>
             <li><h3>Download a ZIP and report</h3><p>Renamed, ready-to-upload images, plus a list of what still needs your attention.</p></li>
           </ol>
-          <p className={`${s.intro} ${s.spaced}`}>Just need to change formats or sizes? The <Link href="/tools/image-converter">bulk image converter</Link> turns JPG, PNG and WebP into each other, and resizes, compresses, rotates and flips whole batches.</p>
+          <h3 className={`${s.moreTitle} ${s.spaced}`}>More free tools</h3>
+          <ul className={s.moreTools}>
+            {TOOLS.filter(t => t.path !== "/product-photos").map(t => (
+              <li key={t.path}><Link href={t.path}>{t.name}</Link><span>{t.summary}</span></li>
+            ))}
+          </ul>
         </div>
       </section>
 

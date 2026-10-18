@@ -24,6 +24,12 @@ Backend details: `backend.md`. Schema: `DATABASE_DESIGN.md`.
 | `/` | Rendered per request | Value proposition, hero drop zone, rules, early access, FAQ | Yes | product photos for marketplaces |
 | `/product-photos` | Server shell + client tool | Marketplace batch tool | Yes | product photo resizer Amazon/Flipkart/Meesho |
 | `/tools/image-converter` | Server shell + client tool | Format, size and quality conversion | Yes | bulk image converter |
+| `/tools` | Rendered per request | Directory of every tool (`lib/tools.ts`) | Yes | free image tools for online sellers |
+| `/tools/watermark` | Server shell + client tool | Bulk text/logo watermark | Yes | add watermark to photos in bulk |
+| `/templates` | Server shell + client gallery | Template gallery with filters | Yes | post, story and thumbnail templates for sellers |
+| `/templates/[id]` | Server shell + client editor | Template editor; unknown ids 404 | No (noindex) | — |
+| `/brand-kit` | Server shell + client form | Shop name, logo, colours (browser storage) | No (noindex) | — |
+| `/pricing`, `/about` | Rendered per request | Free during early access; who and why | Yes | — |
 | `/photo-guide` | Rendered per request | Shooting guide | Yes | product photography with a phone, white background |
 | `/privacy`, `/terms` | Rendered per request | Trust and legal | Yes (low priority) | — |
 | `/robots.txt`, `/sitemap.xml` | Static | Crawling | — | — |
@@ -32,7 +38,7 @@ Backend details: `backend.md`. Schema: `DATABASE_DESIGN.md`.
 
 Pages are rendered per request so each response carries a fresh CSP nonce (`middleware.ts`, ADR-13). `/robots.txt` and `/sitemap.xml` stay static.
 
-**Navigation:** header (Product photos, Image converter, Marketplace rules, Photo guide, plus a "Fix my photos" button); footer (the same plus FAQ, Privacy, Terms); breadcrumbs on inner pages. Route list for sitemap and tests: `lib/routes.ts`.
+**Navigation:** header (Product photos, Tools, Templates, Photo guide, Pricing, plus a "Fix my photos" button); footer (every tool, Templates, All tools, Brand kit, Marketplace rules, Photo guide; About, Pricing, FAQ, Privacy, Terms); breadcrumbs on inner pages. Route list for sitemap and tests: `lib/routes.ts`.
 
 ## 3. Component architecture
 
@@ -41,14 +47,18 @@ components/
   ui/         Button, ButtonLink, TextButton, Tag, NumberField, TextField, ColorField, Checkbox, Progress, Toast
   site/       Header (mobile menu), Footer, Logo, Breadcrumbs (+ JSON-LD), JsonLd
   tool/       DropZone, Overlay (crop marks / dimension lines), Workbench (product photos),
-              product/{ProductSettings, Inspector, types}, ConverterWorkbench,
+              product/{ProductSettings, Inspector, types}, ConverterWorkbench, WatermarkWorkbench,
+              batch/BatchWorkbench (shared batch screen), watermark/WatermarkSettings, SavedSettings,
               converter/ConverterSettings, useLeaveWarning, focus.ts (focus after removal, sheet Tab trap),
               workbench.module.css (shared tool layout)
   marketing/  HeroDrop, Specimen, EarlyAccessForm
+  templates/  TemplateGallery, TemplateEditor, DesignCanvas, useLoadedImage
+  brand/      BrandKitEditor, useBrandKit
 lib/
   image/      engine.ts (decode, analyse, clean, fit, encode), convert.ts, converterForm.ts (form → settings), worker.ts, client.ts (queue + fallback), zip.ts, files.ts (naming, sniffing, CSV)
   server/     env, http, rateLimit, log, handlers, services/*, db/{schema,client}
-  validation.ts  presets.ts  config.ts  seo.ts  routes.ts  specimen.ts
+  templates/  types.ts, catalog.ts (8 templates), render.ts (one renderer for preview and export), state.ts (edits, undo/redo, drafts)
+  validation.ts  presets.ts  config.ts  seo.ts  routes.ts  specimen.ts  tools.ts  storage.ts (browser storage)  brandKit.ts  fonts.ts
 ```
 
 **Rules:**
