@@ -5,3 +5,13 @@
 /* Same footprint as the empty tool (drop zone + note), so the swap causes no layout shift */
 .toolPlaceholder { margin-top: var(--s4); min-height: 236px; display: grid; place-items: center; border: 1px dashed var(--line); border-radius: var(--r-ctl); background: var(--well); }
 @media (max-width: 480px) { .toolPlaceholder { min-height: 300px; } }
+
+/* Preset comparison: scrolls inside its own box on small screens. */
+.tableWrap { margin-top: var(--s5); overflow-x: auto; border: 1px solid var(--line); border-radius: var(--r-panel); }
+.table { width: 100%; min-width: 760px; border-collapse: collapse; font-size: 15px; font-variant-numeric: tabular-nums; }
+.table th, .table td { text-align: left; padding: var(--s2) var(--s3); border-bottom: 1px solid var(--line); vertical-align: top; }
+.table thead th { font-size: 13px; font-weight: 600; color: var(--graphite); background: var(--well); }
+.table tbody tr:last-child th, .table tbody tr:last-child td { border-bottom: 0; }
+.table tbody th { font-weight: 600; }
+.sub { display: block; font-weight: 400; font-size: 13px; color: var(--graphite); }
+.sources { margin: var(--s3) 0 0; padding: 0; list-style: none; display: grid; gap: var(--s1); font-size: 14px; color: var(--graphite); max-width: 75ch; }
