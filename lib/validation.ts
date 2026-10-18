@@ -7,7 +7,8 @@ import { z } from "zod";
 // Zod otherwise probes for eval with Function(""), which the page CSP blocks and reports as a violation.
 z.config({ jitless: true });
 
-export const CONSENT_VERSION = "2026-10-18";
+// Bump whenever the notice or consent wording on the early-access form changes.
+export const CONSENT_VERSION = "2026-10-18.2";
 
 export const ROLES = ["seller", "cataloguer", "agency", "other"] as const;
 export const VOLUMES = ["under_50", "50_200", "200_1000", "over_1000"] as const;

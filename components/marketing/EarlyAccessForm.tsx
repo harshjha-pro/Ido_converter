@@ -116,7 +116,7 @@ export function EarlyAccessForm({ source = "home" }: { source?: "home" | "tool" 
 
       <label className={s.consent}>
         <input type="checkbox" checked={consent} aria-invalid={!!errors.consent} aria-describedby={desc("consent")} onChange={e => setConsent(e.target.checked)} />
-        <span>Idoconverter may contact me about early access. I can ask for my details to be deleted at any time.</span>
+        <span>Idoconverter may contact me about early access. I can withdraw this and ask for my details to be deleted at any time.</span>
       </label>
       {err("consent")}
 
@@ -124,7 +124,10 @@ export function EarlyAccessForm({ source = "home" }: { source?: "home" | "tool" 
         <Button type="submit" disabled={status === "sending"}>{status === "sending" ? "Sending…" : "Join early access"}</Button>
         {status === "error" && <span className={s.error} role="alert">{message}</span>}
       </div>
-      <p id={`${id}-privacy`} className={s.small}>We store only what you enter here. See <a href="/privacy">Privacy</a>.</p>
+      <p id={`${id}-privacy`} className={s.small}>
+        We store only what you enter here: your email or phone number, what describes you, where you sell, your monthly photo volume, your note, and when you agreed.
+        We use it only to contact you about early access and keep it for up to 12 months after your last sign-up. See <a href="/privacy">Privacy</a> for your rights.
+      </p>
     </form>
   );
 }

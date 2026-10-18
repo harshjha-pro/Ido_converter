@@ -11,6 +11,7 @@ Set these in hPanel → your Node.js app → environment variables. Locally, cop
 | `CLIENT_IP_HEADER` | no | `x-forwarded-for` | Header carrying the visitor IP behind Hostinger's proxy |
 | `NEXT_PUBLIC_SITE_URL` | yes in production | `https://idoconverter.com` | Canonical host for canonicals, sitemap, OG and JSON-LD. Built into the pages: set **before** `npm run build`. |
 | `NEXT_PUBLIC_WHATSAPP_NUMBER` | no | `919876543210` | Shows WhatsApp links. Built into the pages, so set it **before** `npm run build`. |
+| `NEXT_PUBLIC_SUPPORT_EMAIL` | before launch | `support@idoconverter.com` | Contact for questions and privacy requests, shown on `/privacy`. Until set, the privacy page says a contact address is being set up. Built into the pages. |
 
 **Without `DATABASE_URL`/`IP_HASH_SECRET`,** the whole site and tool still work. The sign-up form shows "This feature isn't available right now", and statistics are skipped.
 
