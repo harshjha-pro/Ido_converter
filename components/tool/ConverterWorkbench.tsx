@@ -2,40 +2,24 @@
 /* eslint-disable @next/next/no-img-element -- previews are local blob: URLs of the user's own files */
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button, TextButton } from "@/components/ui/Button";
-import { Checkbox, NumberField, TextField } from "@/components/ui/Field";
 import { Progress, Toast, type ToastData } from "@/components/ui/Feedback";
 import { Tag } from "@/components/ui/Tag";
 import { LIMITS } from "@/lib/config";
-import { EXT, type ConvertResult, type ConvertSettings, type OutFormat, type ResizeMode, type Rotation } from "@/lib/image/convert";
+import { EXT, type ConvertResult } from "@/lib/image/convert";
+import { DEFAULT_FORM, isValid, toSettings, type ConverterForm } from "@/lib/image/converterForm";
 import { runConvert, runThumb } from "@/lib/image/client";
 import { buildZip } from "@/lib/image/zip";
-import { formatKB, saveBlob } from "@/lib/image/files";
+import { acceptImages, formatKB, outputName, saveBlob } from "@/lib/image/files";
 import { useLeaveWarning } from "./useLeaveWarning";
 import { DropZone } from "./DropZone";
+import { ConverterSettings } from "./converter/ConverterSettings";
 import s from "./workbench.module.css";
 
 interface Item { id: number; file: File; thumb?: string; state: "loading" | "ready" | "working" | "done"; result?: ConvertResult; outUrl?: string; output?: string }
-interface Form { format: OutFormat; quality: string; resize: ResizeMode; px: string; noEnlarge: boolean; rotate: Rotation; flipH: boolean; flipV: boolean; pattern: string }
-
-const FORMATS: [OutFormat, string, string][] = [
-  ["image/jpeg", "JPG", "Photos, smallest files"], ["image/png", "PNG", "Graphics, keeps transparency"],
-  ["image/webp", "WebP", "Websites, small with transparency"], ["keep", "Keep format", "Same type as each original"],
-];
-const RESIZES: [ResizeMode, string][] = [["none", "Keep size"], ["longest", "Longest side"], ["width", "Width"], ["height", "Height"]];
-const inRange = (v: string, lo: number, hi: number) => { const n = Number(v); return v !== "" && Number.isFinite(n) && n >= lo && n <= hi; };
-
-function outName(pattern: string, original: string, i: number, ext: string, used: Set<string>) {
-  let n = (pattern || "{name}").replaceAll("{name}", original.replace(/\.[^.]+$/, "")).replaceAll("{n}", String(i + 1).padStart(3, "0"));
-  n = n.replace(/[\\/:*?"<>|\u0000-\u001f]/g, "-").replace(/\s+/g, " ").trim() || `image-${i + 1}`;
-  let out = `${n}.${ext}`, k = 2;
-  while (used.has(out.toLowerCase())) out = `${n}-${k++}.${ext}`;
-  used.add(out.toLowerCase());
-  return out;
-}
 
 export function ConverterWorkbench() {
   const [items, setItems] = useState<Item[]>([]);
-  const [form, setForm] = useState<Form>({ format: "image/webp", quality: "82", resize: "none", px: "1600", noEnlarge: true, rotate: 0, flipH: false, flipV: false, pattern: "{name}" });
+  const [form, setForm] = useState<ConverterForm>(DEFAULT_FORM);
   const [phase, setPhase] = useState<"idle" | "running" | "done">("idle");
   const [done, setDone] = useState(0);
   const [notice, setNotice] = useState("");
@@ -49,13 +33,12 @@ export function ConverterWorkbench() {
   useLeaveWarning(phase === "running");
   useEffect(() => () => { for (const it of itemsRef.current) { if (it.thumb) URL.revokeObjectURL(it.thumb); if (it.outUrl) URL.revokeObjectURL(it.outUrl); } }, []);
 
-  const update = (p: Partial<Form>) => { setForm(f => ({ ...f, ...p })); if (phase === "done") setPhase("idle"); };
-  const pngOnly = form.format === "image/png";
-  const valid = inRange(form.quality, 10, 100) && (form.resize === "none" || inRange(form.px, 16, 10000));
+  const update = (p: Partial<ConverterForm>) => { setForm(f => ({ ...f, ...p })); if (phase === "done") setPhase("idle"); };
+  const valid = isValid(form);
 
-  const addFiles = (incoming: File[]) => {
+  const addFiles = async (incoming: File[]) => {
     if (phase === "running") return;
-    const ok = incoming.filter(f => LIMITS.accept.includes(f.type));
+    const { accepted: ok } = await acceptImages(incoming);
     const room = LIMITS.maxFiles - itemsRef.current.length;
     const take = ok.slice(0, Math.max(0, room));
     const msgs: string[] = [];
@@ -80,10 +63,7 @@ export function ConverterWorkbench() {
 
   const run = async () => {
     if (!valid) return;
-    const settings: ConvertSettings = {
-      format: form.format, quality: Number(form.quality) / 100, resize: form.resize, px: Number(form.px),
-      noEnlarge: form.noEnlarge, rotate: form.rotate, flipH: form.flipH, flipV: form.flipV,
-    };
+    const settings = toSettings(form);
     const list = itemsRef.current;
     for (const it of list) if (it.outUrl) URL.revokeObjectURL(it.outUrl);
     setItems(prev => prev.map(x => ({ ...x, state: "ready", result: undefined, outUrl: undefined, output: undefined })));
@@ -93,11 +73,12 @@ export function ConverterWorkbench() {
     for (let i = 0; i < list.length; i++) {
       if (cancelRef.current) break;
       const it = list[i];
+      if (!itemsRef.current.some(x => x.id === it.id)) continue;
       setItems(prev => prev.map(x => x.id === it.id ? { ...x, state: "working" } : x));
       let result: ConvertResult;
       try { result = await runConvert(it.file, settings); }
       catch { result = { status: "fail", issues: ["Something went wrong with this image. Try it on its own."], inW: 0, inH: 0 }; }
-      const output = result.blob ? outName(form.pattern, it.file.name, i, EXT[result.outType ?? ""] ?? "img", used) : undefined;
+      const output = result.blob ? outputName(form.pattern, it.file.name, i, used, EXT[result.outType ?? ""] ?? "img") : undefined;
       const outUrl = result.blob ? URL.createObjectURL(result.blob) : undefined;
       setItems(prev => prev.map(x => x.id === it.id ? { ...x, state: "done", result, output, outUrl } : x));
       setDone(++n);
@@ -107,6 +88,10 @@ export function ConverterWorkbench() {
   };
 
   const finished = items.filter(i => i.result?.blob);
+  const startOver = () => {
+    for (const it of items) { if (it.thumb) URL.revokeObjectURL(it.thumb); if (it.outUrl) URL.revokeObjectURL(it.outUrl); }
+    setItems([]); setPhase("idle"); setNotice("");
+  };
   const failed = items.filter(i => i.result?.status === "fail").length;
   const inKB = finished.reduce((a, i) => a + Math.round(i.file.size / 1024), 0);
   const outKB = finished.reduce((a, i) => a + Math.round((i.result?.blob?.size ?? 0) / 1024), 0);
@@ -146,55 +131,10 @@ export function ConverterWorkbench() {
 
   return (
     <div className={s.withBar}>
-      <div className={s.workspace} style={{ gridTemplateColumns: undefined }}>
-        <aside className={`${s.panel} ${s.sticky}`} aria-labelledby="cv-set">
-          <div className={s.panelSection}>
-            <h2 id="cv-set">Convert to</h2>
-            <div className={s.presets} role="radiogroup" aria-labelledby="cv-set">
-              {FORMATS.map(([v, l, d]) => (
-                <label key={v} className={s.preset}>
-                  <input type="radio" name="cv-format" checked={form.format === v} disabled={phase === "running"} onChange={() => update({ format: v })} />
-                  <span className={s.t}>{l}</span><span className={s.d}>{d}</span>
-                </label>
-              ))}
-            </div>
-          </div>
-          <div className={`${s.panelSection} ${s.fields}`}>
-            <NumberField label="Quality" unit="%" min={10} max={100} value={form.quality} disabled={phase === "running" || pngOnly}
-              onChange={v => update({ quality: v })} hint={pngOnly ? "PNG is lossless, so quality doesn’t apply." : "Lower means smaller files. 75–85% suits most photos."} />
-            <fieldset className={s.fields} style={{ border: 0, padding: 0, margin: 0 }}>
-              <legend style={{ fontSize: 14, fontWeight: 600, padding: 0, marginBottom: 4 }}>Resize</legend>
-              <div className={s.presets}>
-                {RESIZES.map(([v, l]) => (
-                  <label key={v} className={s.preset}>
-                    <input type="radio" name="cv-resize" checked={form.resize === v} disabled={phase === "running"} onChange={() => update({ resize: v })} />
-                    <span className={s.t}>{l}</span>
-                  </label>
-                ))}
-              </div>
-              {form.resize !== "none" && (
-                <>
-                  <NumberField label={form.resize === "longest" ? "Longest side" : form.resize === "width" ? "Width" : "Height"} unit="px" min={16} max={10000}
-                    value={form.px} disabled={phase === "running"} onChange={v => update({ px: v })} hint="The other side follows the original proportions." />
-                  <Checkbox label="Don’t enlarge smaller images" checked={form.noEnlarge} disabled={phase === "running"} onChange={v => update({ noEnlarge: v })} />
-                </>
-              )}
-            </fieldset>
-            <fieldset style={{ border: 0, padding: 0, margin: 0 }}>
-              <legend style={{ fontSize: 14, fontWeight: 600, padding: 0, marginBottom: 8 }}>Rotate</legend>
-              <div className={s.seg} role="group" aria-label="Rotate clockwise" style={{ marginTop: 0 }}>
-                {([0, 90, 180, 270] as Rotation[]).map(r => (
-                  <button key={r} type="button" aria-pressed={form.rotate === r} disabled={phase === "running"} onClick={() => update({ rotate: r })}>{r}°</button>
-                ))}
-              </div>
-            </fieldset>
-            <Checkbox label="Flip horizontally (mirror)" checked={form.flipH} disabled={phase === "running"} onChange={v => update({ flipH: v })} />
-            <Checkbox label="Flip vertically" checked={form.flipV} disabled={phase === "running"} onChange={v => update({ flipV: v })} />
-            <TextField label="File names" value={form.pattern} disabled={phase === "running"} onChange={v => update({ pattern: v })} hint="{name} = original name, {n} = 001, 002…" />
-          </div>
-        </aside>
+      <div className={s.workspace}>
+        <ConverterSettings form={form} disabled={phase === "running"} update={update} />
 
-        <section aria-labelledby="cv-res" style={{ gridColumn: "span 2" }}>
+        <section aria-labelledby="cv-res" className={s.wide}>
           <div className={s.resultsHead}><h2 id="cv-res">{phase === "idle" ? "Your images" : "Results"}</h2></div>
           <div className={s.batch}>
             <div className={s.batchStatus}>
@@ -205,11 +145,11 @@ export function ConverterWorkbench() {
             <div className={s.batchActions}>
               <span className={s.desktopOnly}>{primary}</span>
               {phase === "done" && <TextButton onClick={run}>Convert again</TextButton>}
-              {phase !== "running" && <TextButton onClick={() => { for (const it of items) { if (it.thumb) URL.revokeObjectURL(it.thumb); if (it.outUrl) URL.revokeObjectURL(it.outUrl); } setItems([]); setPhase("idle"); setNotice(""); }}>Start over</TextButton>}
+              {phase !== "running" && <TextButton onClick={startOver}>Start over</TextButton>}
             </div>
           </div>
           {notice && <p className={s.help} role="status">{notice}</p>}
-          <ul className={s.grid} aria-label="Images" style={{ listStyle: "none", padding: 0 }}>
+          <ul className={s.grid} aria-label="Images">
             {items.map(it => {
               const r = it.result;
               const tone = !r ? "neutral" : r.status === "fail" ? "fail" : r.status === "note" ? "check" : "pass";
@@ -226,10 +166,10 @@ export function ConverterWorkbench() {
                     <span className="muted">
                       {r?.blob ? `${r.outW}×${r.outH} · ${formatKB(Math.round(it.file.size / 1024))} → ${formatKB(Math.round(r.blob.size / 1024))}` : formatKB(Math.round(it.file.size / 1024))}
                     </span>
-                    {r && r.issues.length > 0 && <span className="muted" style={{ fontSize: 13 }}>{r.issues.join(" ")}</span>}
-                    {r?.blob && <TextButton style={{ justifySelf: "start" }} onClick={() => saveBlob(it.output!, r.blob!)} aria-label={`Download ${it.output}`}>Download</TextButton>}
+                    {r && r.issues.length > 0 && <span className={s.note}>{r.issues.join(" ")}</span>}
+                    {r?.blob && <TextButton className={s.start} onClick={() => saveBlob(it.output!, r.blob!)} aria-label={`Download ${it.output}`}>Download</TextButton>}
                   </div>
-                  {phase === "idle" && !r && <button className={s.remove} aria-label={`Remove ${it.file.name}`} onClick={() => remove(it.id)}>×</button>}
+                  {phase !== "running" && <button className={s.remove} aria-label={`Remove ${it.file.name}`} onClick={() => remove(it.id)}>×</button>}
                 </li>
               );
             })}

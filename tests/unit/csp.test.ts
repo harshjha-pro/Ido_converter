@@ -13,10 +13,12 @@ describe("buildCsp", () => {
     expect(d.get("base-uri")).toEqual(["'self'"]);
     expect(d.get("connect-src")).toEqual(["'self'"]);
     expect(d.get("worker-src")).toEqual(["'self'", "blob:"]);
+    expect(d.get("style-src")).toEqual(["'self'", "'nonce-abc123'"]);
   });
 
-  it("adds 'unsafe-eval' only in development", () => {
-    expect(buildCsp("n")).not.toContain("unsafe-eval");
+  it("relaxes scripts and styles only in development", () => {
+    expect(buildCsp("n")).not.toContain("unsafe-");
+    expect(directives(buildCsp("n", true)).get("style-src")).toContain("'unsafe-inline'");
     expect(directives(buildCsp("n", true)).get("script-src")).toContain("'unsafe-eval'");
   });
 });

@@ -48,6 +48,8 @@
   font: inherit; padding: 0 var(--s3);
 }
 .control input:focus { outline: none; }
+.colorControl input[type="color"] { flex: 0 0 56px; padding: 4px var(--s2); cursor: pointer; }
+.colorControl input[type="color"]:disabled { cursor: not-allowed; }
 .unit { padding: 0 var(--s3); color: var(--graphite); font-size: 14px; }
 .hint { font-size: 13px; color: var(--graphite); }
 .error { font-size: 13px; color: var(--fail); }

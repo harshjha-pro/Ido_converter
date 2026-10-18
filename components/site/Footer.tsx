@@ -7,7 +7,7 @@ export function Footer() {
     <footer className={s.footer}>
       <div className={`wrap ${s.footGrid}`}>
         <div>
-          <span style={{ display: "inline-flex", gap: 8, alignItems: "center", color: "var(--ink)", fontWeight: 600 }}>
+          <span className={s.footBrand}>
             <LogoMark size={20} /> idoconverter
           </span>
           <p className={s.footNote}>Marketplace rules change and differ by category. Always confirm them in your seller panel. A pass here is a technical pre-check, not a guarantee of acceptance.</p>

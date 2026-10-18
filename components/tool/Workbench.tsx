@@ -4,7 +4,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Button, TextButton } from "@/components/ui/Button";
-import { Checkbox, NumberField, TextField } from "@/components/ui/Field";
 import { Progress, Toast, type ToastData } from "@/components/ui/Feedback";
 import { Tag, type TagTone } from "@/components/ui/Tag";
 import { LIMITS, whatsappLink } from "@/lib/config";
@@ -13,19 +12,15 @@ import type { ProcessResult, ProcessSettings, Status } from "@/lib/image/engine"
 import { runProcess, runThumb, usingWorker } from "@/lib/image/client";
 import type { BatchEventInput } from "@/lib/validation";
 import { buildZip } from "@/lib/image/zip";
-import { csvReport, formatKB, outputName, saveBlob, takeHandoff } from "@/lib/image/files";
+import { acceptImages, csvReport, formatKB, outputName, saveBlob, takeHandoff } from "@/lib/image/files";
 import { DropZone } from "./DropZone";
 import { useLeaveWarning } from "./useLeaveWarning";
 import { Overlay } from "./Overlay";
+import { ProductSettings } from "./product/ProductSettings";
+import { Inspector } from "./product/Inspector";
+import { LABEL, fromPreset, type Item, type Phase, type Settings } from "./product/types";
 import s from "./workbench.module.css";
 
-type ItemState = "loading" | "ready" | "processing" | "done";
-interface Item {
-  id: number; file: File; name: string; inKB: number;
-  thumb?: string; state: ItemState; result?: ProcessResult; outUrl?: string; output?: string;
-}
-interface Settings { presetKey: PresetKey; size: string; fill: string; maxKB: string; pattern: string; clean: boolean }
-type Phase = "idle" | "running" | "done";
 type Filter = "all" | Status;
 
 const SAMPLES = ["teal-mug.jpg", "amber-bottle.jpg", "gold-earrings.jpg", "canvas-tote.jpg"];
@@ -40,12 +35,6 @@ function sendBatchEvent(e: BatchEventInput) {
 function deviceClass(): BatchEventInput["deviceClass"] {
   const w = window.innerWidth;
   return w < 768 ? "mobile" : w < 1100 ? "tablet" : "desktop";
-}
-const LABEL: Record<Status, string> = { pass: "Pass", check: "Check", fail: "Fail" };
-
-function fromPreset(key: PresetKey): Settings {
-  const p = PRESETS[key];
-  return { presetKey: key, size: String(p.size), fill: String(p.fill), maxKB: String(p.maxKB), pattern: p.pattern, clean: p.clean };
 }
 const inRange = (v: string, lo: number, hi: number) => { const n = Number(v); return v !== "" && Number.isFinite(n) && n >= lo && n <= hi; };
 
@@ -73,7 +62,6 @@ export function Workbench() {
   const [cancelled, setCancelled] = useState(false);
   const [filter, setFilter] = useState<Filter>("all");
   const [selected, setSelected] = useState<number | null>(null);
-  const [view, setView] = useState<"after" | "before">("after");
   const [notice, setNotice] = useState("");
   const [toast, setToast] = useState<ToastData | null>(null);
   const [zipping, setZipping] = useState(false);
@@ -94,10 +82,9 @@ export function Workbench() {
   const closeToast = useCallback(() => setToast(null), []);
 
   /* ---------- Adding and removing files ---------- */
-  const addFiles = useCallback((incoming: File[]) => {
+  const addFiles = useCallback(async (incoming: File[]) => {
     if (phaseRef.current === "running") return;
-    const ok = incoming.filter(f => LIMITS.accept.includes(f.type));
-    const skipped = incoming.length - ok.length;
+    const { accepted: ok, skipped } = await acceptImages(incoming);
     const room = LIMITS.maxFiles - itemsRef.current.length;
     const take = ok.slice(0, Math.max(0, room));
     const dropped = ok.length - take.length;
@@ -274,7 +261,7 @@ export function Workbench() {
   const primaryReason = !valid ? "Fix the highlighted setting first." : loading ? "Waiting for previews to load." : "";
 
   /* ---------- Inspector open/close ---------- */
-  const openItem = (id: number, el: HTMLElement) => { lastTileRef.current = el; setView("after"); setSelected(id); };
+  const openItem = (id: number, el: HTMLElement) => { lastTileRef.current = el; setSelected(id); };
   const closeInspector = useCallback(() => { setSelected(null); lastTileRef.current?.focus(); }, []);
   const sheetOpen = !isDesktop && current !== null;
   useEffect(() => {
@@ -285,20 +272,12 @@ export function Workbench() {
     return () => document.removeEventListener("keydown", onKey);
   }, [sheetOpen, closeInspector]);
 
-  const [origUrl, setOrigUrl] = useState<string | null>(null);
-  useEffect(() => {
-    if (!current || view !== "before") { setOrigUrl(null); return; }
-    const u = URL.createObjectURL(current.file);
-    setOrigUrl(u);
-    return () => URL.revokeObjectURL(u);
-  }, [current, view]);
-
   /* ---------- Render ---------- */
   if (!items.length) {
     return (
       <div className={s.empty}>
         <DropZone onFiles={addFiles} />
-        {notice && <p className="muted" role="status" style={{ marginTop: 16 }}>{notice}</p>}
+        {notice && <p className={s.help} role="status">{notice}</p>}
         <div className={s.emptyNote}>
           <span>Photos stay on your device</span>
           <span>Up to {LIMITS.maxFiles} photos, {LIMITS.maxMegapixels} MP each</span>
@@ -311,37 +290,7 @@ export function Workbench() {
   return (
     <div className={s.withBar}>
       <div className={s.workspace}>
-        {/* Settings */}
-        <aside className={`${s.panel} ${s.sticky}`} aria-labelledby="set-h">
-          <div className={s.panelSection}>
-            <h2 id="set-h">Marketplace</h2>
-            <div className={s.presets} role="radiogroup" aria-labelledby="set-h">
-              {(Object.keys(PRESETS) as PresetKey[]).map(k => {
-                const p = PRESETS[k];
-                return (
-                  <label key={k} className={s.preset}>
-                    <input type="radio" name="preset" value={k} checked={settings.presetKey === k} disabled={phase === "running"}
-                      onChange={() => setSettings(fromPreset(k))} />
-                    <span className={s.t}>{p.label}</span>
-                    <span className={s.d}>{p.sub}{p.verification === "unverified" ? " · Unverified rules" : ""}</span>
-                  </label>
-                );
-              })}
-            </div>
-            <p className={s.source}>{preset.source}{preset.checkedOn ? ` Last checked ${preset.checkedOn}.` : ""}</p>
-          </div>
-          <div className={`${s.panelSection} ${s.fields}`}>
-            <NumberField label="Output size" unit="px" min={500} max={5000} step={100} value={settings.size} disabled={phase === "running"}
-              onChange={v => update({ size: v })} hint={`Square. Minimum for ${preset.label}: ${preset.minSide.toLocaleString("en-IN")} px.`} />
-            <NumberField label="Product fills" unit="%" min={50} max={98} value={settings.fill} disabled={phase === "running"}
-              onChange={v => update({ fill: v })} hint="Share of the frame the product’s longest side takes." />
-            <NumberField label="Max file size" unit="KB" min={100} max={20000} step={100} value={settings.maxKB} disabled={phase === "running"}
-              onChange={v => update({ maxKB: v })} hint="We lower JPEG quality until each photo fits." />
-            <TextField label="File names" value={settings.pattern} disabled={phase === "running"} onChange={v => update({ pattern: v })}
-              hint="{name} = original name, {n} = 001, 002…" />
-            <Checkbox label="Make near-white backgrounds pure white" checked={settings.clean} disabled={phase === "running"} onChange={v => update({ clean: v })} />
-          </div>
-        </aside>
+        <ProductSettings settings={settings} disabled={phase === "running"} onPreset={k => setSettings(fromPreset(k))} update={update} />
 
         {/* Results */}
         <section aria-labelledby="res-h">
@@ -391,12 +340,12 @@ export function Workbench() {
           )}
           {notice && <p className={s.help} role="status">{notice}</p>}
           {phase === "done" && finished.length > 0 && (
-            <p className="muted" style={{ fontSize: 14, marginTop: 16 }}>
+            <p className={s.upsell}>
               Doing this every week? <Link href="/#early-access">Get founding-user access</Link> to saved workflows and background removal.
             </p>
           )}
 
-          <ul className={s.grid} aria-label="Photos" style={{ listStyle: "none", padding: 0 }}>
+          <ul className={s.grid} aria-label="Photos">
             {visible.map(it => {
               const r = it.result;
               const tone: TagTone = r ? r.status : "neutral";
@@ -428,14 +377,14 @@ export function Workbench() {
                       </span>
                     </span>
                   </button>
-                  {phase === "idle" && (
+                  {phase !== "running" && (
                     <button className={s.remove} aria-label={`Remove ${it.name}`} onClick={() => removeItem(it.id)}>×</button>
                   )}
                 </li>
               );
             })}
           </ul>
-          {visible.length === 0 && <p className="muted" style={{ marginTop: 24 }}>No photos with this result.</p>}
+          {visible.length === 0 && <p className={s.emptyFilter}>No photos with this result.</p>}
 
           {phase !== "running" && items.length < LIMITS.maxFiles && (
             <div className={s.addMore}><DropZone onFiles={addFiles} compact title="Add more photos" /></div>
@@ -444,59 +393,8 @@ export function Workbench() {
 
         {/* Inspector */}
         {sheetOpen && <button className={s.backdrop} aria-label="Close details" onClick={closeInspector} />}
-        <aside
-          className={`${s.panel} ${s.sticky} ${s.inspector} ${current ? "" : s.inspectorIdle}`}
-          aria-labelledby="insp-h"
-          role={sheetOpen ? "dialog" : undefined}
-          aria-modal={sheetOpen ? true : undefined}
-        >
-          {!current ? (
-            <>
-              <h2 id="insp-h">Details</h2>
-              <p className="muted" style={{ fontSize: 14, marginTop: 8 }}>
-                {phase === "done" ? "Select a photo to see its measurements and what to fix." : "Process your photos to inspect each result here."}
-              </p>
-            </>
-          ) : (
-            <>
-              <div className={s.inspHead}>
-                <h2 id="insp-h">{current.name}</h2>
-                <Button ref={closeRef} variant="secondary" size="small" className={s.closeBtn} onClick={closeInspector}>Close</Button>
-              </div>
-              {current.result && <div style={{ marginTop: 8 }}><Tag tone={current.result.status}>{LABEL[current.result.status]}</Tag></div>}
-              <div className={s.seg} role="group" aria-label="Compare">
-                <button aria-pressed={view === "after"} disabled={!current.result?.blob} onClick={() => setView("after")}>After</button>
-                <button aria-pressed={view === "before" || !current.result?.blob} onClick={() => setView("before")}>Before</button>
-              </div>
-              <div className={s.stage}>
-                {view === "after" && current.result?.blob && current.outUrl ? (
-                  <>
-                    <img src={current.outUrl} alt={`Processed ${current.name}`} />
-                    <Overlay size={current.result.size!} box={current.result.box!} target={current.result.target!} detailed />
-                  </>
-                ) : origUrl || current.thumb ? (
-                  <img src={origUrl ?? current.thumb} alt={`Original ${current.name}`} />
-                ) : null}
-              </div>
-              {view === "after" && current.result?.blob && (
-                <p className={s.legend}>Blue box: product. Dashed square: {Math.round((current.result.target ?? 0) * 100)}% target. Corners: frame edge.</p>
-              )}
-              {current.result && (
-                <dl className={s.spec}>
-                  <dt>Background</dt><dd>{current.result.background || "—"}</dd>
-                  <dt>Product fill</dt><dd>{current.result.blob ? `${current.result.fillPct}% (target ${Math.round(current.result.target! * 100)}%)` : "—"}</dd>
-                  <dt>Size</dt><dd>{current.result.inW ? `${current.result.inW} × ${current.result.inH}` : "—"}{current.result.blob ? ` → ${current.result.size} × ${current.result.size} px` : ""}</dd>
-                  <dt>File size</dt><dd>{formatKB(current.inKB)}{current.result.blob ? ` → ${formatKB(current.result.outKB!)}` : ""}</dd>
-                  <dt>Saved as</dt><dd>{current.output ?? "Not included in the ZIP"}</dd>
-                </dl>
-              )}
-              <ul className={s.issues}>
-                {current.result && current.result.issues.length === 0 && <li>Meets the {preset.label} rules we can measure. Still check for text, logos and focus yourself.</li>}
-                {current.result?.issues.map((t, i) => <li key={i}>{t}</li>)}
-              </ul>
-            </>
-          )}
-        </aside>
+        <Inspector item={current} preset={preset} phase={phase} sheetOpen={sheetOpen} closeRef={closeRef} onClose={closeInspector}
+          onDownload={it => saveBlob(it.output!, it.result!.blob!)} />
       </div>
 
       <div className={s.actionBar}>

@@ -9,7 +9,7 @@ export default function Privacy() {
     <article className={`wrap ${s.page}`}>
       <Breadcrumbs crumbs={[{ name: "Home", path: "/" }, { name: "Privacy", path: "/privacy" }]} />
       <h1>Privacy</h1>
-      <p className="muted" style={{ marginTop: 8 }}>Last updated 18 October 2026</p>
+      <p className={s.updated}>Last updated 18 October 2026</p>
 
       <h2>Your photos</h2>
       <p>The Product photos tool processes images in your web browser, on your own device. Your photos are not uploaded to our servers or to anyone else. When you close or refresh the page, they are gone from the tool.</p>

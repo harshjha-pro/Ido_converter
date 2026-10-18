@@ -1,15 +1,15 @@
 /**
  * Content-Security-Policy for HTML pages. Scripts need a per-request nonce
  * (Next.js inlines its hydration data); 'strict-dynamic' lets those trusted
- * scripts load the app's chunks. Styles allow 'unsafe-inline' because pages
- * render React `style` attributes, which nonces can't cover; script injection
- * is the risk this policy is for.
+ * scripts load the app's chunks. Styles come from our own files only; pages
+ * render no `style` attributes (React's runtime style updates use the CSSOM,
+ * which CSP doesn't restrict). Dev mode needs inline styles for its overlay.
  */
 export function buildCsp(nonce: string, dev = false): string {
   return [
     "default-src 'self'",
     `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'${dev ? " 'unsafe-eval'" : ""}`,
-    "style-src 'self' 'unsafe-inline'",
+    `style-src 'self' ${dev ? "'unsafe-inline'" : `'nonce-${nonce}'`}`,
     // blob: for previews of the user's own files; data: for tiny inline assets.
     "img-src 'self' blob: data:",
     "font-src 'self'",

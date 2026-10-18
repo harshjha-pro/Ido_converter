@@ -49,3 +49,17 @@ export function Checkbox({ label, checked, onChange, disabled }: { label: string
     </label>
   );
 }
+
+export function ColorField({ label, value, onChange, hint, disabled }: { label: string; value: string; onChange: (v: string) => void; hint?: string; disabled?: boolean }) {
+  const id = useId();
+  return (
+    <div className={s.field}>
+      <label className={s.label} htmlFor={id}>{label}</label>
+      <div className={`${s.control} ${s.colorControl}`}>
+        <input id={id} type="color" value={value} disabled={disabled} aria-describedby={hint ? `${id}-h` : undefined} onChange={e => onChange(e.target.value.toUpperCase())} />
+        <span className={s.unit} aria-hidden="true">{value.toUpperCase()}</span>
+      </div>
+      {hint && <span id={`${id}-h`} className={s.hint}>{hint}</span>}
+    </div>
+  );
+}

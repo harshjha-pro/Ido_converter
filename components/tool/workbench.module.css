@@ -23,12 +23,17 @@
 .workspace { display: grid; gap: var(--s4); grid-template-columns: minmax(0, 1fr); align-items: start; }
 @media (min-width: 1100px) {
   .workspace { grid-template-columns: 300px minmax(0, 1fr) 340px; }
+  .wide { grid-column: span 2; }
   .sticky { position: sticky; top: calc(var(--header-h) + var(--s3)); max-height: calc(100vh - var(--header-h) - var(--s5)); overflow: auto; }
 }
 .panel { border: 1px solid var(--line); border-radius: var(--r-panel); padding: var(--s4); background: var(--surface); }
 .panel h2 { font-size: 16px; margin-bottom: var(--s3); }
 .panelSection + .panelSection { margin-top: var(--s4); padding-top: var(--s4); border-top: 1px solid var(--line); }
 .fields { display: grid; gap: var(--s3); }
+.bare { border: 0; padding: 0; margin: 0; min-width: 0; }
+.groupLabel { font-size: 14px; font-weight: 600; padding: 0; margin-bottom: var(--s2); }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s2); }
+.hintText { font-size: 13px; color: var(--graphite); }
 
 /* Presets */
 .presets { display: grid; border: 1px solid var(--line); border-radius: var(--r-ctl); overflow: hidden; }
@@ -56,8 +61,10 @@
 .summary b { display: block; font-size: 24px; line-height: 1.2; color: var(--ink); font-weight: 600; }
 .help { margin-top: var(--s3); padding: var(--s3); border-radius: var(--r-ctl); background: var(--well); font-size: 14px; }
 .addMore { margin-top: var(--s3); }
+.upsell { font-size: 14px; color: var(--graphite); margin-top: var(--s3); }
+.emptyFilter { color: var(--graphite); margin-top: var(--s4); }
 
-.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--s4) var(--s3); margin-top: var(--s4); }
+.grid { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--s4) var(--s3); margin-top: var(--s4); }
 @media (max-width: 420px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s3); } }
 
 .tile { position: relative; min-width: 0; }
@@ -86,10 +93,24 @@
 
 /* ---------- Inspector ---------- */
 .inspector h2 { font-size: 16px; word-break: break-all; }
+.inspEmpty { font-size: 14px; color: var(--graphite); margin-top: var(--s2); }
+.inspTag { margin-top: var(--s2); }
 .seg { display: inline-flex; margin-top: var(--s3); border: 1px solid var(--graphite); border-radius: var(--r-ctl); overflow: hidden; }
 .seg button { appearance: none; border: 0; background: none; color: var(--ink); padding: var(--s1) var(--s3); min-height: 36px; font-size: 14px; cursor: pointer; }
 .seg button[aria-pressed="true"] { background: var(--ink); color: var(--surface); }
 .seg button:disabled { opacity: 0.45; cursor: not-allowed; }
+.segFlush { margin-top: 0; }
+/* Wrapping button group for longer option sets (aspect ratios, backgrounds). */
+.segWrap { display: flex; flex-wrap: wrap; gap: var(--s1); }
+.segWrap button {
+  appearance: none; min-height: 36px; padding: 0 var(--s3); border: 1px solid var(--graphite); border-radius: var(--r-ctl);
+  background: var(--surface); color: var(--ink); font-size: 14px; cursor: pointer; font-variant-numeric: tabular-nums;
+}
+.segWrap button:hover { border-color: var(--ink); }
+.segWrap button[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--surface); }
+.segWrap button:disabled { opacity: 0.45; cursor: not-allowed; }
+.note { font-size: 13px; color: var(--graphite); }
+.start { justify-self: start; }
 .stage { position: relative; aspect-ratio: 1; margin-top: var(--s3); background: var(--img-bg); border: 1px solid var(--line); border-radius: var(--r-ctl); overflow: hidden; }
 .stage img, .stage svg { position: absolute; inset: 0; width: 100%; height: 100%; }
 .stage img { object-fit: contain; }

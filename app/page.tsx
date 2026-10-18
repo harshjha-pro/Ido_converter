@@ -43,7 +43,7 @@ export default function Home() {
             <li><h3>Pick the marketplace</h3><p>Size, fill and file-size limits are set for you. Change anything you need.</p></li>
             <li><h3>Download a ZIP and report</h3><p>Renamed, ready-to-upload images, plus a list of what still needs your attention.</p></li>
           </ol>
-          <p className={s.intro} style={{ marginTop: 32 }}>Just need to change formats or sizes? The <Link href="/tools/image-converter">bulk image converter</Link> turns JPG, PNG and WebP into each other, and resizes, compresses, rotates and flips whole batches.</p>
+          <p className={`${s.intro} ${s.spaced}`}>Just need to change formats or sizes? The <Link href="/tools/image-converter">bulk image converter</Link> turns JPG, PNG and WebP into each other, and resizes, compresses, rotates and flips whole batches.</p>
         </div>
       </section>
 
@@ -98,7 +98,7 @@ export default function Home() {
         <div className="wrap">
           <h2 id="ea-h">Become a founding user</h2>
           <p className={s.intro}>We’re building saved workflows, background removal and more for sellers who prepare photos every week. Tell us how you work and we’ll invite you first.</p>
-          <div style={{ marginTop: 32 }}><EarlyAccessForm source="home" /></div>
+          <div className={s.spaced}><EarlyAccessForm source="home" /></div>
         </div>
       </section>
 

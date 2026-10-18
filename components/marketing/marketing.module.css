@@ -73,3 +73,12 @@
 .page ol, .page ul { padding-left: var(--s4); display: grid; gap: var(--s3); margin: var(--s3) 0 0; }
 .page .intro { margin-top: var(--s3); }
 .callout { margin-top: var(--s5); padding: var(--s4); border-radius: var(--r-panel); background: var(--well); display: grid; gap: var(--s3); justify-items: start; }
+
+/* Spacing helpers for page-level blocks (kept here so pages carry no inline styles; the CSP forbids them). */
+.spaced { margin-top: var(--s5); }
+.bandAfterTool { margin-top: var(--s6); }
+.updated { margin-top: var(--s2); color: var(--graphite); }
+.actions { display: flex; flex-wrap: wrap; gap: var(--s3); margin-top: var(--s4); }
+.narrow { padding-block: var(--s6); max-width: 640px; }
+.narrow h1 { font-size: 32px; }
+.narrow p { margin-top: var(--s3); color: var(--graphite); }

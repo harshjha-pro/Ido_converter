@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
-import { csvReport, outputName } from "@/lib/image/files";
+import { acceptImages, csvReport, outputName, sniffImageType } from "@/lib/image/files";
 import { buildZip } from "@/lib/image/zip";
 import { hashKey, windowStart } from "@/lib/server/rateLimit";
 import { resetEnvCache } from "@/lib/server/env";
@@ -13,6 +13,48 @@ describe("outputName", () => {
     expect(outputName("{name}.MAIN", "B0ABC.png", 1, used)).toBe("B0ABC.MAIN-2.jpg");
     expect(outputName("shoe-{n}", "x.jpg", 6, used)).toBe("shoe-007.jpg");
     expect(outputName("{name}", "../../etc/pass:wd.jpg", 0, used)).toBe("..-..-etc-pass-wd.jpg");
+  });
+});
+
+describe("outputName with other formats", () => {
+  it("uses the given extension and de-duplicates per extension", () => {
+    const used = new Set<string>();
+    expect(outputName("{name}", "a.png", 0, used, "webp")).toBe("a.webp");
+    expect(outputName("{name}", "a.jpg", 1, used, "webp")).toBe("a-2.webp");
+    expect(outputName("{name}", "a.jpg", 2, used, "png")).toBe("a.png");
+    expect(outputName("", "x.jpg", 3, used)).toBe("x.jpg");
+  });
+});
+
+const JPG = [0xff, 0xd8, 0xff, 0xe0, 0, 0, 0, 0, 0, 0, 0, 0];
+const PNG = [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0, 0, 0, 0];
+const WEBP = [...Buffer.from("RIFF"), 0, 0, 0, 0, ...Buffer.from("WEBP")];
+
+describe("sniffImageType", () => {
+  it("recognises JPG, PNG and WebP by their first bytes", () => {
+    expect(sniffImageType(new Uint8Array(JPG))).toBe("image/jpeg");
+    expect(sniffImageType(new Uint8Array(PNG))).toBe("image/png");
+    expect(sniffImageType(new Uint8Array(WEBP))).toBe("image/webp");
+  });
+  it("rejects SVG, GIF, HEIC, text and truncated headers", () => {
+    for (const t of ["<svg xmlns=", "GIF89a......", "\0\0\0\x18ftypheic", "hello world!", ""]) expect(sniffImageType(new Uint8Array(Buffer.from(t)))).toBeNull();
+    expect(sniffImageType(new Uint8Array([0xff, 0xd8]))).toBeNull();
+    expect(sniffImageType(new Uint8Array([...Buffer.from("RIFF"), 0, 0, 0, 0, ...Buffer.from("WAVE")]))).toBeNull();
+  });
+});
+
+describe("acceptImages", () => {
+  it("trusts content over the name and relabels the type", async () => {
+    const files = [
+      new File([new Uint8Array(PNG)], "photo.jpg", { type: "image/jpeg" }), // a PNG named .jpg
+      new File([new Uint8Array(JPG)], "IMG_0001", { type: "" }),            // no extension, no type
+      new File(["<svg onload=alert(1)>"], "evil.png", { type: "image/png" }),
+      new File([new Uint8Array(WEBP)], "ok.webp", { type: "image/webp" }),
+    ];
+    const { accepted, skipped } = await acceptImages(files);
+    expect(skipped).toBe(1);
+    expect(accepted.map(f => [f.name, f.type])).toEqual([["photo.jpg", "image/png"], ["IMG_0001", "image/jpeg"], ["ok.webp", "image/webp"]]);
+    expect(accepted[2]).toBe(files[3]); // unchanged files are passed through as-is
   });
 });
 

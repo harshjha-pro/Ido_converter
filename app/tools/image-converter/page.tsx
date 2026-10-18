@@ -21,7 +21,7 @@ export default function ImageConverterPage() {
         <ConverterWorkbench />
       </div>
 
-      <section className={m.band} aria-labelledby="fmt-h" style={{ marginTop: 64 }}>
+      <section className={`${m.band} ${m.bandAfterTool}`} aria-labelledby="fmt-h">
         <div className="wrap">
           <h2 id="fmt-h">Which format should you choose?</h2>
           <div className={m.rules}>
@@ -40,7 +40,7 @@ export default function ImageConverterPage() {
             <details><summary>Why is my converted file bigger than the original?</summary><p>Converting a photo to PNG, or re-saving a compressed JPG at high quality, can make it larger. The tool tells you when that happens; choose JPG or WebP, or lower the quality.</p></details>
             <details><summary>Can I convert HEIC, GIF or SVG?</summary><p>Not yet. The converter accepts JPG, PNG and WebP. iPhones usually convert HEIC photos to JPG when you share or email them.</p></details>
             <details><summary>Why did WebP come out as PNG?</summary><p>Some older browsers, including older versions of Safari, can’t save WebP. The tool saves the closest format it can and tells you. Using a current version of Chrome, Edge or Firefox fixes this.</p></details>
-            <details><summary>Is there a limit?</summary><p>Up to {100} images per batch, each under 30 MB and 40 megapixels.</p></details>
+            <details><summary>Is there a limit?</summary><p>Up to 100 images per batch, each under 30 MB and 40 megapixels.</p></details>
           </div>
         </div>
       </section>

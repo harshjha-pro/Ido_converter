@@ -10,7 +10,7 @@ export default function Terms() {
     <article className={`wrap ${s.page}`}>
       <Breadcrumbs crumbs={[{ name: "Home", path: "/" }, { name: "Terms", path: "/terms" }]} />
       <h1>Terms of use</h1>
-      <p className="muted" style={{ marginTop: 8 }}>Last updated 18 October 2026</p>
+      <p className={s.updated}>Last updated 18 October 2026</p>
 
       <h2>The service</h2>
       <p>Idoconverter provides free, browser-based tools for preparing images. The tools run on your device; we don’t receive the images you process with them. The service is offered during early access and may change, or be paused, at any time.</p>

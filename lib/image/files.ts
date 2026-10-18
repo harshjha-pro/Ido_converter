@@ -1,15 +1,38 @@
 /** File helpers: naming, CSV, saving, and a hand-off store between pages. */
 import type { ProcessResult } from "./engine";
 
-export function outputName(pattern: string, original: string, index: number, used: Set<string>): string {
-  let n = pattern
+/** Builds a safe, unique output file name from a `{name}`/`{n}` pattern. */
+export function outputName(pattern: string, original: string, index: number, used: Set<string>, ext = "jpg"): string {
+  let n = (pattern || "{name}")
     .replaceAll("{name}", original.replace(/\.[^.]+$/, ""))
     .replaceAll("{n}", String(index + 1).padStart(3, "0"));
   n = n.replace(/[\\/:*?"<>|\u0000-\u001f]/g, "-").replace(/\s+/g, " ").trim() || `image-${index + 1}`;
-  let out = `${n}.jpg`, k = 2;
-  while (used.has(out.toLowerCase())) out = `${n}-${k++}.jpg`;
+  let out = `${n}.${ext}`, k = 2;
+  while (used.has(out.toLowerCase())) out = `${n}-${k++}.${ext}`;
   used.add(out.toLowerCase());
   return out;
+}
+
+/** Image type from the file's first bytes, or null. The browser's reported type comes from the extension and can be wrong or empty. */
+export function sniffImageType(b: Uint8Array): "image/jpeg" | "image/png" | "image/webp" | null {
+  if (b.length >= 3 && b[0] === 0xff && b[1] === 0xd8 && b[2] === 0xff) return "image/jpeg";
+  if (b.length >= 8 && [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a].every((v, i) => b[i] === v)) return "image/png";
+  if (b.length >= 12 && String.fromCharCode(...b.subarray(0, 4)) === "RIFF" && String.fromCharCode(...b.subarray(8, 12)) === "WEBP") return "image/webp";
+  return null;
+}
+
+/**
+ * Keeps files whose content is JPG, PNG or WebP, whatever their name says, and
+ * relabels them with the real type (so "keep format" and decoding use the truth).
+ */
+export async function acceptImages(files: File[]): Promise<{ accepted: File[]; skipped: number }> {
+  const accepted: File[] = [];
+  for (const f of files) {
+    let type: string | null = null;
+    try { type = sniffImageType(new Uint8Array(await f.slice(0, 12).arrayBuffer())); } catch { type = null; }
+    if (type) accepted.push(type === f.type ? f : new File([f], f.name, { type, lastModified: f.lastModified }));
+  }
+  return { accepted, skipped: files.length - accepted.length };
 }
 
 export interface ReportRow { original: string; output?: string; inKB: number; result?: ProcessResult }

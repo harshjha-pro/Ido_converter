@@ -9,13 +9,14 @@ test.describe("Content-Security-Policy", () => {
       const first = await request.get(path), second = await request.get(path);
       const csp = first.headers()["content-security-policy"];
       expect(csp, path).toMatch(/script-src 'self' 'nonce-[^']+' 'strict-dynamic'/);
-      expect(csp, path).not.toContain("unsafe-eval");
+      expect(csp, path).not.toContain("unsafe-");
       const nonce = nonceOf(csp)!;
       expect(nonceOf(second.headers()["content-security-policy"]), `${path} nonce reused`).not.toBe(nonce);
       const html = await first.text();
       const scripts = [...html.matchAll(/<script\b([^>]*)>/g)].map(m => m[1]).filter(a => !/type="application\/ld\+json"/.test(a));
       expect(scripts.length, path).toBeGreaterThan(0);
       for (const attrs of scripts) expect(attrs, `${path} script without nonce`).toContain(`nonce="${nonce}"`);
+      expect(html, `${path} inline style attribute`).not.toMatch(/<[^>]+\sstyle="/);
     }
   });
 
