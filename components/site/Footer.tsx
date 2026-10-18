@@ -17,6 +17,8 @@ export function Footer() {
           <ul>
             <li><Link href="/product-photos">Product photos</Link></li>
             <li><Link href="/tools/image-converter">Image converter</Link></li>
+            <li><Link href="/tools/watermark">Watermark</Link></li>
+            <li><Link href="/tools">All tools</Link></li>
             <li><Link href="/#rules">Marketplace rules</Link></li>
             <li><Link href="/photo-guide">Photo guide</Link></li>
           </ul>
@@ -24,6 +26,8 @@ export function Footer() {
         <div>
           <h2>About</h2>
           <ul>
+            <li><Link href="/about">About</Link></li>
+            <li><Link href="/pricing">Pricing</Link></li>
             <li><Link href="/#faq">FAQ</Link></li>
             <li><Link href="/privacy">Privacy</Link></li>
             <li><Link href="/terms">Terms</Link></li>

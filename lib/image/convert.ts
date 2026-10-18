@@ -82,7 +82,7 @@ export function resolveFormat(format: OutFormat, inputType: string): Exclude<Out
   return inputType === "image/png" || inputType === "image/webp" ? inputType : "image/jpeg";
 }
 
-async function encode(c: HTMLCanvasElement | OffscreenCanvas, type: string, quality: number): Promise<Blob> {
+export async function encode(c: HTMLCanvasElement | OffscreenCanvas, type: string, quality: number): Promise<Blob> {
   if ("convertToBlob" in c) return c.convertToBlob({ type, quality });
   return new Promise((res, rej) => (c as HTMLCanvasElement).toBlob(b => (b ? res(b) : rej(new Error("encode"))), type, quality));
 }

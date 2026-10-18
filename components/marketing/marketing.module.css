@@ -84,3 +84,12 @@
 .narrow { padding-block: var(--s6); max-width: 640px; }
 .narrow h1 { font-size: 32px; }
 .narrow p { margin-top: var(--s3); color: var(--graphite); }
+
+/* Tools directory: full-width rows divided by rules, not a card grid. */
+.page.wide { max-width: 960px; }
+.page .toolList { list-style: none; padding: 0; margin-top: var(--s5); display: grid; gap: 0; }
+.toolList li { border-top: 1px solid var(--line); padding: var(--s4) 0; display: grid; gap: var(--s1); }
+.toolList li:last-child { border-bottom: 1px solid var(--line); }
+.page .toolList h2 { margin: 0; font-size: 20px; }
+.page .toolList p { color: var(--graphite); max-width: 70ch; margin: 0; }
+.toolFor { font-size: 14px; }

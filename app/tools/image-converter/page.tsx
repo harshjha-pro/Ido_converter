@@ -13,7 +13,7 @@ export default function ImageConverterPage() {
   return (
     <>
       <div className={`wrap ${s.page}`}>
-        <Breadcrumbs crumbs={[{ name: "Home", path: "/" }, { name: "Image converter", path: "/tools/image-converter" }]} />
+        <Breadcrumbs crumbs={[{ name: "Home", path: "/" }, { name: "Tools", path: "/tools" }, { name: "Image converter", path: "/tools/image-converter" }]} />
         <header className={s.head}>
           <h1>Bulk image converter</h1>
           <p className="muted">Convert JPG, PNG and WebP images, resize and compress them, rotate or flip them, all in one batch. Everything happens in your browser.</p>

@@ -40,6 +40,7 @@ test.describe("Content-Security-Policy", () => {
     });
     for (const r of PUBLIC_ROUTES) await page.goto(r.path, { waitUntil: "networkidle" });
     // The sample batch exercises fetch, the Web Worker, blob: previews and the ZIP download.
+    await page.route("**/api/events/batch", route => route.fulfill({ status: 204, body: "" })); // only journeys.spec writes statistics
     await page.goto("/product-photos?samples=1");
     await expect(page.getByRole("status").filter({ hasText: "4 photos ready to process" })).toBeVisible({ timeout: 30_000 });
     await page.getByRole("button", { name: "Process 4 photos" }).last().click();

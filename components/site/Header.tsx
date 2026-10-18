@@ -8,9 +8,9 @@ import s from "./site.module.css";
 
 const LINKS = [
   { href: "/product-photos", label: "Product photos" },
-  { href: "/tools/image-converter", label: "Image converter" },
-  { href: "/#rules", label: "Marketplace rules" },
+  { href: "/tools", label: "Tools" },
   { href: "/photo-guide", label: "Photo guide" },
+  { href: "/pricing", label: "Pricing" },
 ];
 
 export function Header() {

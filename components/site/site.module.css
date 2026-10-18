@@ -35,7 +35,8 @@
 .footGrid a:hover { color: var(--ink); text-decoration: underline; }
 .footNote { margin-top: var(--s2); max-width: 48ch; }
 
-.crumbs ol { list-style: none; display: flex; flex-wrap: wrap; gap: var(--s1) var(--s2); margin: 0 0 var(--s3); padding: 0; font-size: 14px; color: var(--graphite); }
+/* .crumbs.crumbs: higher specificity than content-page list styles (`.page ol`), whatever the CSS order. */
+.crumbs.crumbs ol { list-style: none; display: flex; flex-wrap: wrap; gap: var(--s1) var(--s2); margin: 0 0 var(--s3); padding: 0; font-size: 14px; color: var(--graphite); }
 .crumbs li + li::before { content: "/"; margin-right: var(--s2); color: var(--line); }
 .crumbs a { color: var(--graphite); }
 .crumbs a:hover { color: var(--ink); }

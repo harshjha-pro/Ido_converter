@@ -61,6 +61,7 @@ test.describe("accessibility (axe, WCAG 2.2 AA rules)", () => {
   }
 
   test("no violations in the product-photo tool after processing, with the form errors showing", async ({ page }) => {
+    await page.route("**/api/events/batch", route => route.fulfill({ status: 204, body: "" })); // only journeys.spec writes statistics
     await page.goto("/product-photos?samples=1");
     await expect(page.getByRole("status").filter({ hasText: "4 photos ready to process" })).toBeVisible({ timeout: 30_000 });
     await page.getByRole("button", { name: "Process 4 photos" }).last().click();
@@ -89,7 +90,7 @@ test.describe("layout", () => {
     } else {
       await expect(nav).toBeHidden();
       await menu.click();
-      await expect(nav.getByRole("link", { name: "Image converter" })).toBeVisible();
+      await expect(nav.getByRole("link", { name: "Tools" })).toBeVisible();
     }
     // Footer lists are unstyled bullets only if site.module.css failed to load.
     expect(await page.locator("footer ul").first().evaluate(el => getComputedStyle(el).listStyleType)).toBe("none");
@@ -100,6 +101,8 @@ test.describe("layout", () => {
     for (const r of PUBLIC_ROUTES) {
       await page.goto(r.path);
       expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth), r.path).toBe(0);
+      const crumbs = page.getByRole("navigation", { name: "Breadcrumb" }).locator("ol");
+      if (await crumbs.count()) expect(await crumbs.evaluate(el => getComputedStyle(el).display), `${r.path} breadcrumb layout`).toBe("flex");
     }
   });
 

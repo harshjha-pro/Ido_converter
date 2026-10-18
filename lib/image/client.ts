@@ -4,6 +4,7 @@
  */
 import { makeThumb, processImage, type ProcessResult, type ProcessSettings } from "./engine";
 import { convertImage, type ConvertResult, type ConvertSettings } from "./convert";
+import { watermarkImage, type WatermarkSettings } from "./watermark";
 
 type Pending = { resolve: (v: unknown) => void; reject: (e: unknown) => void };
 
@@ -87,6 +88,16 @@ export function runConvert(file: Blob, settings: ConvertSettings): Promise<Conve
       try { return await viaWorker; } catch { /* fall back */ }
     }
     return convertImage(file, settings);
+  });
+}
+
+export function runWatermark(file: Blob, settings: WatermarkSettings): Promise<ConvertResult> {
+  return queue(async () => {
+    const viaWorker = call<ConvertResult>({ kind: "watermark", file, settings });
+    if (viaWorker) {
+      try { return await viaWorker; } catch { /* fall back */ }
+    }
+    return watermarkImage(file, settings);
   });
 }
 
