@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.1 — 18 October 2026
+- **Fixed (accessibility):** removing a file with the keyboard dropped focus to the top of the page; focus now moves to the next file's Remove button, or the drop zone when the list is empty (`components/tool/focus.ts`).
+- **Fixed (accessibility):** the phone details sheet is announced as a modal dialog but Tab escaped to the page behind it after three stops; Tab and Shift+Tab now stay inside until it closes.
+- **Added:** 2 keyboard e2e tests (focus after removal; sheet focus containment and return on Escape).
+- **Checked, not changed:** Flipkart and Meesho image rules. No official public page exists (both are behind seller logins); public third-party guides contradict each other. Presets stay labelled Unverified.
+
 ## 0.5.0 — 18 October 2026
 - **Added (converter):** Shape step — Original, 1:1, 4:5, 4:3, 3:2, 16:9, 9:16 or a custom ratio — with *Crop to fit* (centre) or *Add padding* (whole image, centred). Background: white, black, transparent (PNG/WebP) or a custom colour; it also fills transparent areas. A custom ratio plus resize-by-width gives exact sizes (e.g. 1200 × 628).
 - **Added:** uploads are judged by their first bytes, not the file name or the browser's reported type. A PNG named `.jpg` is accepted as PNG; non-images named `.png` are refused at the door.

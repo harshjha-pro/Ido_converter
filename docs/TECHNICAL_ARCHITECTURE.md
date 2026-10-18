@@ -42,7 +42,8 @@ components/
   site/       Header (mobile menu), Footer, Logo, Breadcrumbs (+ JSON-LD), JsonLd
   tool/       DropZone, Overlay (crop marks / dimension lines), Workbench (product photos),
               product/{ProductSettings, Inspector, types}, ConverterWorkbench,
-              converter/ConverterSettings, useLeaveWarning, workbench.module.css (shared tool layout)
+              converter/ConverterSettings, useLeaveWarning, focus.ts (focus after removal, sheet Tab trap),
+              workbench.module.css (shared tool layout)
   marketing/  HeroDrop, Specimen, EarlyAccessForm
 lib/
   image/      engine.ts (decode, analyse, clean, fit, encode), convert.ts, converterForm.ts (form → settings), worker.ts, client.ts (queue + fallback), zip.ts, files.ts (naming, sniffing, CSV)

@@ -11,6 +11,7 @@ import { runConvert, runThumb } from "@/lib/image/client";
 import { buildZip } from "@/lib/image/zip";
 import { acceptImages, formatKB, outputName, saveBlob } from "@/lib/image/files";
 import { useLeaveWarning } from "./useLeaveWarning";
+import { focusAfterRemove } from "./focus";
 import { DropZone } from "./DropZone";
 import { ConverterSettings } from "./converter/ConverterSettings";
 import s from "./workbench.module.css";
@@ -169,7 +170,7 @@ export function ConverterWorkbench() {
                     {r && r.issues.length > 0 && <span className={s.note}>{r.issues.join(" ")}</span>}
                     {r?.blob && <TextButton className={s.start} onClick={() => saveBlob(it.output!, r.blob!)} aria-label={`Download ${it.output}`}>Download</TextButton>}
                   </div>
-                  {phase !== "running" && <button className={s.remove} aria-label={`Remove ${it.file.name}`} onClick={() => remove(it.id)}>×</button>}
+                  {phase !== "running" && <button className={s.remove} data-remove aria-label={`Remove ${it.file.name}`} onClick={() => { remove(it.id); focusAfterRemove(items.indexOf(it)); }}>×</button>}
                 </li>
               );
             })}

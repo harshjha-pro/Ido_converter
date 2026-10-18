@@ -15,6 +15,7 @@ import { buildZip } from "@/lib/image/zip";
 import { acceptImages, csvReport, formatKB, outputName, saveBlob, takeHandoff } from "@/lib/image/files";
 import { DropZone } from "./DropZone";
 import { useLeaveWarning } from "./useLeaveWarning";
+import { focusAfterRemove, trapTab } from "./focus";
 import { Overlay } from "./Overlay";
 import { ProductSettings } from "./product/ProductSettings";
 import { Inspector } from "./product/Inspector";
@@ -267,7 +268,10 @@ export function Workbench() {
   useEffect(() => {
     if (!sheetOpen) return;
     closeRef.current?.focus();
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") closeInspector(); };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeInspector();
+      else trapTab(e, closeRef.current?.closest('[role="dialog"]'));
+    };
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
   }, [sheetOpen, closeInspector]);
@@ -378,7 +382,7 @@ export function Workbench() {
                     </span>
                   </button>
                   {phase !== "running" && (
-                    <button className={s.remove} aria-label={`Remove ${it.name}`} onClick={() => removeItem(it.id)}>×</button>
+                    <button className={s.remove} data-remove aria-label={`Remove ${it.name}`} onClick={() => { removeItem(it.id); focusAfterRemove(visible.indexOf(it)); }}>×</button>
                   )}
                 </li>
               );

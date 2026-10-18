@@ -5,7 +5,7 @@ _Last updated: 18 October 2026_
 **Verdict: ready for controlled testing** (a small group of known sellers using a deployed build). **Not ready for public launch** until the blockers below are done.
 
 ## Complete (implemented and tested)
-Product-photo tool (incl. per-photo download, remove after processing), converter (format, quality, crop/pad to aspect ratio, background colour, resize, rotate, flip, renaming, per-file and ZIP download), content-sniffed uploads, early access, batch statistics, health check, SEO foundation plus `/product-photos` explainer content, accessibility (automated), error and empty states, Content-Security-Policy with nonces for scripts and styles, HSTS, docs. Evidence: TEST_RESULTS.md (0.5.0 run: 59 unit, 21 DB, 66 e2e, all passing).
+Product-photo tool (incl. per-photo download, remove after processing), converter (format, quality, crop/pad to aspect ratio, background colour, resize, rotate, flip, renaming, per-file and ZIP download), content-sniffed uploads, early access, batch statistics, health check, SEO foundation plus `/product-photos` explainer content, accessibility (automated), error and empty states, Content-Security-Policy with nonces for scripts and styles, HSTS, docs. Evidence: TEST_RESULTS.md (0.5.1 run: 59 unit, 21 DB, 69 e2e passing + 1 phone-only test skipped on desktop).
 
 ## Status by area (0.5.0)
 | Area | State |
@@ -16,7 +16,7 @@ Product-photo tool (incl. per-photo download, remove after processing), converte
 | Interactive (drag) crop | Not implemented: aspect-ratio crop covers the common case; drag crop stays on ROADMAP phase 2 |
 | Pricing, about, contact pages | Not implemented: not in the route inventory; pricing undecided (MONETIZATION.md), contact blocked on B2 |
 | Accounts, payments, AI, templates | Not implemented by design (PRD "Won't", ROADMAP) |
-| Real devices, Safari/Firefox, screen readers | Not verified (blocked on hardware) |
+| Real devices, Safari/Firefox, screen readers | Not verified (blocked on hardware); scripted keyboard and accessible-name audit passing (0.5.1) |
 
 ## Blockers before public launch
 | # | Item | Owner action |
@@ -29,9 +29,9 @@ Product-photo tool (incl. per-photo download, remove after processing), converte
 
 ## Next recommended work (in order)
 1. Owner blockers B1–B5 above (they gate launch, not code).
-2. Verify Flipkart and Meesho rules; then write the two guide pages (SEO_STRATEGY content plan).
+2. Verify Flipkart and Meesho rules in the **logged-in** seller panels (owner; public official pages don't exist, checked 18 Oct 2026), then write the two guide pages (SEO_STRATEGY content plan).
 3. After deploying: confirm CSP and HSTS headers arrive on Hostinger and watch CPU now that pages render per request (K13).
-4. Screen-reader pass (NVDA + VoiceOver) and fixes.
+4. Real screen-reader pass (NVDA + VoiceOver) — scripted keyboard/name audit done and its 2 defects fixed in 0.5.1 (ACCESSIBILITY.md); a human pass is still needed.
 5. Interactive drag crop and local saved settings (`localStorage`), if validation shows repeat use.
 6. Optional: extract the result tile from `Workbench.tsx` (now ~410 lines) when a third tool reuses it.
 

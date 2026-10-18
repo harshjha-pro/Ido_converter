@@ -16,6 +16,7 @@ export function DropZone({ onFiles, compact, title = "Drop product photos here",
   const take = (list: FileList | null) => { if (list && list.length && !disabled) onFiles(Array.from(list)); };
   return (
     <label
+      data-dropzone
       htmlFor={id}
       className={`${s.drop} ${compact ? s.dropCompact : ""} ${over ? s.over : ""}`}
       onDragEnter={e => { e.preventDefault(); setOver(true); }}

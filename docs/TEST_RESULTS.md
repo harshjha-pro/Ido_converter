@@ -24,6 +24,9 @@ _Executed 18 October 2026 in the development container: Node 22.22, Chromium 141
 
 First-load JS: shared 103 KB; homepage 137 KB (includes Zod for the form); tool pages 119–122 KB.
 
+## 0.5.1 run (18 October 2026)
+Same setup as 0.5.0. `npm test` 59 passed; `npm run test:db` 21 passed, 1 skipped; `npm run test:e2e` with `E2E_DATABASE_URL` **69 passed, 1 skipped** (the sheet focus test runs on the phone project only). Lint and typecheck pass. Scripted keyboard walkthrough results are in ACCESSIBILITY.md.
+
 ## 0.5.0 run (18 October 2026)
 Clean production build served by `next start`, MariaDB 10.11.14 installed in the container, Chromium 141 via Playwright 1.56.
 

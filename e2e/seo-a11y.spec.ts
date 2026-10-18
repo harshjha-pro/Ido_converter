@@ -111,3 +111,35 @@ test.describe("layout", () => {
     expect(await panel.evaluate(el => el.scrollWidth - el.clientWidth)).toBe(0);
   });
 });
+
+test.describe("keyboard and focus", () => {
+  test("removing a file keeps focus in the list, then on the drop zone", async ({ page }) => {
+    await page.goto("/tools/image-converter");
+    await page.locator("input[type=file]").setInputFiles(["e2e/fixtures/photo-wide.jpg", "e2e/fixtures/logo-transparent.png"]);
+    await page.getByRole("button", { name: "Remove photo-wide.jpg" }).focus();
+    await page.keyboard.press("Enter");
+    await expect(page.getByRole("button", { name: "Remove logo-transparent.png" })).toBeFocused();
+    await page.keyboard.press("Enter");
+    await expect(page.locator("[data-dropzone] input")).toBeFocused();
+  });
+
+  test("the photo details sheet keeps Tab inside it and returns focus on Escape", async ({ page }, info) => {
+    test.skip(info.project.name !== "phone", "the details panel is a modal sheet only on small screens");
+    await page.route("**/api/events/batch", route => route.fulfill({ status: 204, body: "" }));
+    await page.goto("/product-photos?samples=1");
+    await page.getByRole("button", { name: "Process 4 photos" }).last().click();
+    await expect(page.getByRole("button", { name: "Download ZIP" }).last()).toBeVisible({ timeout: 60_000 });
+    const tile = page.getByRole("button", { name: /^teal-mug\.jpg: / });
+    await tile.focus();
+    await page.keyboard.press("Enter");
+    const sheet = page.getByRole("dialog");
+    await expect(sheet.getByRole("button", { name: "Close", exact: true })).toBeFocused();
+    for (let i = 0; i < 15; i++) {
+      await page.keyboard.press(i % 4 === 3 ? "Shift+Tab" : "Tab");
+      expect(await sheet.evaluate(el => el.contains(document.activeElement))).toBe(true);
+    }
+    await page.keyboard.press("Escape");
+    await expect(sheet).toHaveCount(0);
+    await expect(tile).toBeFocused();
+  });
+});

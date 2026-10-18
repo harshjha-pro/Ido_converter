@@ -8,7 +8,7 @@
 | Q4 | Node.js 20+ is available for the Web App | `engines` in package.json | hPanel check |
 | Q5 | The first segment is Indian cataloguers and multi-marketplace sellers | PRD | Validation interviews |
 | Q6 | Amazon India rules (pure white, 85% fill, ≥1000 px, ASIN.MAIN naming) come from Amazon staff forum posts | `lib/presets.ts` | Confirm in Seller Central help |
-| Q7 | Flipkart and Meesho rules are from third-party guides | `lib/presets.ts` (labelled Unverified) | Confirm in Seller Hub / Supplier Panel |
+| Q7 | Flipkart and Meesho rules are from third-party guides | `lib/presets.ts` (labelled Unverified) | Confirm in Seller Hub / Supplier Panel while logged in; no official public page found (18 Oct 2026) |
 | Q8 | The done-for-you offer promises a 24-hour turnaround and 10 free photos | Homepage copy | Owner confirms they can deliver |
 | Q9 | No business name, address or legal entity is shown anywhere | Privacy, Terms | Owner details and legal review |
 | Q10 | All crawlers, including AI crawlers, may read public pages | `app/robots.ts` | Owner decision (TECHNICAL_SEO.md §4) |
