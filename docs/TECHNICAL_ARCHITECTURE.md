@@ -6,7 +6,7 @@ _The architecture as implemented on 18 October 2026. It also covers the route in
 
 ```
 Browser ──────────────────────────────────────────────┐
-  Next.js pages (static HTML + React)                  │
+  Next.js pages (server-rendered + React, nonce CSP)   │
   Web Worker: lib/image/{engine,convert}.ts  ← images never leave the device
   fetch JSON ─────────────┐                            │
                           ▼                            │
@@ -21,14 +21,16 @@ Backend details: `backend.md`. Schema: `DATABASE_DESIGN.md`.
 
 | Route | Type | Purpose | Indexed | Primary keyword (map) |
 |---|---|---|---|---|
-| `/` | Static | Value proposition, hero drop zone, rules, early access, FAQ | Yes | product photos for marketplaces |
-| `/product-photos` | Static shell + client tool | Marketplace batch tool | Yes | product photo resizer Amazon/Flipkart/Meesho |
-| `/tools/image-converter` | Static shell + client tool | Format, size and quality conversion | Yes | bulk image converter |
-| `/photo-guide` | Static | Shooting guide | Yes | product photography with a phone, white background |
-| `/privacy`, `/terms` | Static | Trust and legal | Yes (low priority) | — |
+| `/` | Rendered per request | Value proposition, hero drop zone, rules, early access, FAQ | Yes | product photos for marketplaces |
+| `/product-photos` | Server shell + client tool | Marketplace batch tool | Yes | product photo resizer Amazon/Flipkart/Meesho |
+| `/tools/image-converter` | Server shell + client tool | Format, size and quality conversion | Yes | bulk image converter |
+| `/photo-guide` | Rendered per request | Shooting guide | Yes | product photography with a phone, white background |
+| `/privacy`, `/terms` | Rendered per request | Trust and legal | Yes (low priority) | — |
 | `/robots.txt`, `/sitemap.xml` | Static | Crawling | — | — |
 | `/api/*` | Dynamic | Data endpoints | Disallowed in robots | — |
-| 404 | Static | Not-found page, `noindex` | No | — |
+| 404 | Rendered per request | Not-found page, `noindex` | No | — |
+
+Pages are rendered per request so each response carries a fresh CSP nonce (`middleware.ts`, ADR-13). `/robots.txt` and `/sitemap.xml` stay static.
 
 **Navigation:** header (Product photos, Image converter, Marketplace rules, Photo guide, plus a "Fix my photos" button); footer (the same plus FAQ, Privacy, Terms); breadcrumbs on inner pages. Route list for sitemap and tests: `lib/routes.ts`.
 

@@ -23,3 +23,4 @@
 - [ ] Health is green; home, tools, guide, privacy, terms return 200; a random path returns 404
 - [ ] One real sign-up and one real batch appear in the DB
 - [ ] Logs show no `client_ip_unknown` warnings (otherwise fix `CLIENT_IP_HEADER`)
+- [ ] `curl -sI https://<domain>/ | grep -i content-security-policy` shows a `'nonce-…'`; open the tool in a browser, process the samples, and check the console has no "Refused to…" CSP errors

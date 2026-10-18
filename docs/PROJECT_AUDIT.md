@@ -12,7 +12,7 @@ _Last reviewed: 18 October 2026. Baseline taken from the actual repository and t
 | Tests | Vitest unit/component (34), DB integration (20), Playwright e2e (8): all passing |
 | Lint/format | No linter or formatter configured |
 | Build | Passing; static pages, 3 dynamic API routes |
-| Security | Origin checks, strict validation, rate limits, parameterised SQL, security headers; no CSP |
+| Security | Origin checks, strict validation, rate limits, parameterised SQL, security headers; nonce-based CSP |
 | SEO | Titles and descriptions only; no canonical, robots.txt, sitemap, OG image or structured data |
 | Accessibility | Manual keyboard tests only; no automated scan |
 | Docs | README, backend.md, DESIGN.md and 8 backend docs |
@@ -32,7 +32,7 @@ _Last reviewed: 18 October 2026. Baseline taken from the actual repository and t
 | A9 | Medium | Layout shift 0.177 on `/product-photos` (phone, lab) | **Fixed**: 0.003 |
 | A10 | Medium | No runtime error page | **Fixed**: `app/error.tsx` |
 | A11 | Medium | Closing the tab mid-batch loses work without warning | **Fixed**: leave-page warning while processing |
-| A12 | Medium | No Content-Security-Policy | **Open**: needs nonce setup and testing (THREAT_MODEL S6) |
+| A12 | Medium | No Content-Security-Policy | **Fixed** (0.4.0): nonce CSP via middleware, e2e-tested |
 | A13 | Medium | Titles over 70 characters on 3 pages | **Fixed**, enforced by test |
 | A14 | Low | `Workbench.tsx` is about 480 lines | Open: split once a third tool reuses parts |
 | A15 | Low | Dev-only `braces` advisory via eslint-config-next; no patched version exists | Accepted; production audit is 0 (THREAT_MODEL S9) |

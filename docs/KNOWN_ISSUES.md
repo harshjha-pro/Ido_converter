@@ -8,9 +8,10 @@
 | K4 | EXIF, colour profiles and animation not preserved | Re-encoded outputs lose metadata | Stated in the privacy notice and FAQ |
 | K5 | Enclosed gaps (e.g. inside a mug handle) stay slightly off-white | Amazon may flag near-white areas | Cleaning works from the edges to protect white products; future: optional enclosed-region fill |
 | K6 | Busy backgrounds can't be fixed | Photos fail and are left out of the ZIP | Photo guide; done-for-you service; future AI removal |
-| K7 | No Content-Security-Policy | Weaker XSS defence-in-depth | Add with nonces (THREAT_MODEL S6) |
+| K7 | CSP allows inline styles (`style-src 'unsafe-inline'`) | Injected CSS isn't blocked (scripts are) | Needed for React `style` attributes; move them into CSS Modules, then drop it |
 | K8 | Flipkart and Meesho rules unverified | Presets may be wrong | Labelled "Unverified"; verify in the seller panels |
 | K9 | Converter usage not measured | No converter metrics | Add `converter_events` if needed |
 | K10 | No contact or support channel by default | Users can't reach us; deletion requests have no path | Configure WhatsApp; add a support email |
 | K11 | npm 10 resolver crash when adding dev dependencies; npm 11 lockfiles can fail npm 10 `npm ci` | Broken installs if the lockfile isn't repaired | Add with npm 11, then `npm install --package-lock-only` on npm 10 and verify `npm ci` (DEVELOPMENT.md). Caught and fixed in the 0.3.0 package check |
 | K12 | Homepage JS 137 KB (Zod in the form) | Slightly heavier home page | Lab LCP is fine; could lazy-load the form later |
+| K13 | Pages render per request (CSP nonces) instead of being static | Small server cost per page view; no static HTML caching | ~10 ms per page locally; watch CPU on Hostinger (ADR-13) |

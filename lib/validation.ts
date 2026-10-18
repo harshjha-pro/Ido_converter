@@ -4,6 +4,9 @@
  */
 import { z } from "zod";
 
+// Zod otherwise probes for eval with Function(""), which the page CSP blocks and reports as a violation.
+z.config({ jitless: true });
+
 export const CONSENT_VERSION = "2026-10-18";
 
 export const ROLES = ["seller", "cataloguer", "agency", "other"] as const;

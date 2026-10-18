@@ -48,7 +48,7 @@ None connected.
 
 - Zod 4.6.5: shared schemas, strict objects, used on both sides
 - Node `crypto`: HMAC-SHA256 for anonymised rate-limit keys
-- Security headers in `next.config.mjs`
+- Security headers in `next.config.mjs`; Content-Security-Policy with a per-request nonce in `middleware.ts` (`lib/csp.ts`)
 - Same-origin checks, body limits, honeypot (see `docs/BACKEND_SECURITY.md`)
 
 ## 9. Testing

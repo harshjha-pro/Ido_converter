@@ -40,4 +40,4 @@ Public, unauthenticated endpoints storing a small amount of personal data (lead 
 
 - **Client IP source.** If Hostinger doesn't pass `X-Forwarded-For`, all visitors share one rate-limit bucket. Confirm after deploying (`docs/ENVIRONMENT_CONFIGURATION.md`).
 - **No CAPTCHA.** Add one only if spam gets past the honeypot and rate limits.
-- **No Content-Security-Policy header yet.** Next.js inline scripts need nonces; add it as a separate, tested change.
+- **CSP allows inline styles.** Scripts need a per-request nonce (`middleware.ts`); styles keep `'unsafe-inline'` for React `style` attributes (KNOWN_ISSUES K7).

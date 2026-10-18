@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { headers } from "next/headers";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { SITE } from "@/lib/config";
@@ -21,7 +22,9 @@ export const viewport: Viewport = {
   ],
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  // Reading request headers renders every page per request, so each response gets a fresh CSP nonce.
+  await headers();
   return (
     <html lang="en">
       <body>

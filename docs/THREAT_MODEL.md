@@ -17,7 +17,7 @@ Visitors' images (on their device), early-access contacts (personal data), the d
 | S3 | Spam or bot sign-ups | Honeypot; 5/h per client; strict schema; origin check | Distributed bots; add a CAPTCHA if seen |
 | S4 | Cross-site request abuse (CSRF-like) | `Origin` must match; JSON-only; no cookies or sessions exist | — |
 | S5 | SQL injection | Parameterised queries only; no multi-statements for the app pool (tested) | — |
-| S6 | XSS | React escaping; no user HTML rendered; JSON-LD escapes `<`; no CSP yet | **Open: add a CSP** with nonces (Medium) |
+| S6 | XSS | React escaping; no user HTML rendered; JSON-LD escapes `<`; nonce-based CSP with `'strict-dynamic'` (injected inline scripts and handlers verified blocked) | Inline styles still allowed (Low) |
 | S7 | Personal data leak (logs, errors, exports) | Logs carry no PII; generic error bodies (tested); no admin UI; exports via CLI with formula escaping | Owner's handling of exports |
 | S8 | Rate-limit bypass or lockout | HMAC(IP) buckets; unknown IP → shared 20× bucket + warning | Spoofed headers if the proxy doesn't overwrite X-Forwarded-For (verify on Hostinger) |
 | S9 | Supply chain | Exact pins, ≥ 14-day-old releases, lockfile, audit 0 for production | Dev-only `braces` advisory (no fix exists; patterns are not attacker-controlled) |
@@ -37,7 +37,7 @@ Visitors' images (on their device), early-access contacts (personal data), the d
 | Finding | Severity | Status |
 |---|---|---|
 | Shared rate-limit bucket when the IP is unknown | High | Fixed |
-| No Content-Security-Policy | Medium | Open: implement with nonces and test every page |
+| No Content-Security-Policy | Medium | Fixed: nonce CSP on every page, e2e-tested (0.4.0) |
 | Real client IP header unverified on Hostinger | Medium | Open: post-deploy check |
 | Dev dependency `braces` advisory | Low | Accepted (dev only) |
 | No CAPTCHA | Low | Accepted until abuse is observed |

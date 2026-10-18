@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.0 — 18 October 2026
+- **Added:** Content-Security-Policy on every HTML page (`middleware.ts`, `lib/csp.ts`): per-request script nonce with `'strict-dynamic'`, `object-src 'none'`, `frame-ancestors 'none'`, `base-uri`/`form-action 'self'`, `connect-src 'self'`, `worker-src 'self' blob:`. `'unsafe-eval'` only under `next dev`.
+- **Changed:** pages are now rendered per request (needed for fresh nonces); see ADR-13. About 10 ms per page locally.
+- **Changed:** Zod runs in `jitless` mode, so its eval probe no longer trips the CSP.
+- **Added:** `tests/unit/csp.test.ts` (3) and `e2e/csp.spec.ts` (3 per viewport): header and fresh nonce on every page, nonce on every inline script, no policy on API/static files, and a full sample batch with zero CSP violations.
+- **Changed:** the repository now holds this Next.js app (the previous Astro site is in git history); CI runs lint, typecheck, unit tests and build.
+
 ## 0.3.0 — 18 October 2026
 - **Added:** bulk image converter (`/tools/image-converter`): JPG/PNG/WebP, resize by longest side, width or height, quality, rotate, flip, per-file download, ZIP.
 - **Added:** technical SEO: canonical URLs, Open Graph/Twitter tags, OG image, robots.txt, sitemap.xml, JSON-LD (WebSite, Organization, WebApplication, BreadcrumbList), breadcrumbs.
