@@ -1,0 +1,41 @@
+.header {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 30;
+  background: var(--surface); border-bottom: 1px solid var(--line);
+}
+.bar { display: flex; align-items: center; gap: var(--s4); min-height: var(--header-h); }
+.logo { display: inline-flex; align-items: center; gap: var(--s2); color: var(--ink); text-decoration: none; font-weight: 600; font-size: 18px; letter-spacing: -0.01em; }
+.logo svg { width: 24px; height: 24px; flex: none; }
+.nav { display: flex; gap: var(--s4); margin-inline: auto; }
+.nav a { color: var(--ink); text-decoration: none; font-size: 15px; padding: var(--s2) 0; border-bottom: 2px solid transparent; }
+.nav a:hover { border-bottom-color: var(--line); }
+.nav a[aria-current="page"] { border-bottom-color: var(--ink); font-weight: 600; }
+.menuBtn { display: none; }
+.cta { flex: none; }
+
+@media (max-width: 960px) {
+  .bar { gap: var(--s3); }
+  .nav { display: none; }
+  .nav.open {
+    display: flex; flex-direction: column; gap: 0; position: absolute; left: 0; right: 0; top: 100%;
+    margin: 0; padding: var(--s2) var(--s3) var(--s3); background: var(--surface); border-bottom: 1px solid var(--line);
+    box-shadow: var(--shadow-float);
+  }
+  .nav.open a { padding: var(--s3) 0; border-bottom: 1px solid var(--line); }
+  .nav.open a:last-child { border-bottom: 0; }
+  .menuBtn { display: inline-flex; margin-left: auto; }
+}
+@media (max-width: 480px) { .cta { display: none; } }
+
+.footer { border-top: 1px solid var(--line); margin-top: var(--s6); padding: var(--s5) 0 var(--s6); font-size: 14px; color: var(--graphite); }
+.footGrid { display: grid; gap: var(--s4); grid-template-columns: 1fr; }
+@media (min-width: 768px) { .footGrid { grid-template-columns: 2fr 1fr 1fr; } }
+.footGrid h2 { font-size: 14px; color: var(--ink); margin-bottom: var(--s2); }
+.footGrid ul { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s1); }
+.footGrid a { color: var(--graphite); text-decoration: none; }
+.footGrid a:hover { color: var(--ink); text-decoration: underline; }
+.footNote { margin-top: var(--s2); max-width: 48ch; }
+
+.crumbs ol { list-style: none; display: flex; flex-wrap: wrap; gap: var(--s1) var(--s2); margin: 0 0 var(--s3); padding: 0; font-size: 14px; color: var(--graphite); }
+.crumbs li + li::before { content: "/"; margin-right: var(--s2); color: var(--line); }
+.crumbs a { color: var(--graphite); }
+.crumbs a:hover { color: var(--ink); }

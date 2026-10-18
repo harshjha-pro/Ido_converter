@@ -1,0 +1,74 @@
+/* Buttons */
+.btn {
+  appearance: none;
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--s2);
+  min-height: 44px; padding: 0 var(--s4);
+  border-radius: var(--r-ctl); border: 1px solid var(--ink);
+  background: var(--ink); color: var(--surface);
+  font-weight: 600; font-size: 16px; line-height: 1.2; text-decoration: none; white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 120ms ease, color 120ms ease, border-color 120ms ease;
+}
+.btn:hover { background: var(--graphite); border-color: var(--graphite); }
+.secondary { background: transparent; color: var(--ink); border-color: var(--graphite); }
+.secondary:hover { background: var(--well); border-color: var(--ink); }
+.small { min-height: 36px; padding: 0 var(--s3); font-size: 14px; }
+.full { width: 100%; }
+.btn[disabled], .btn[aria-disabled="true"] { opacity: 0.45; cursor: not-allowed; }
+.btn[disabled]:hover { background: var(--ink); border-color: var(--ink); }
+.secondary[disabled]:hover { background: transparent; border-color: var(--graphite); }
+
+.textBtn {
+  appearance: none; background: none; border: 0; padding: var(--s2) 0; min-height: 44px;
+  color: var(--guide); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; font-size: 15px;
+}
+
+/* Tags */
+.tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  border-radius: var(--r-tag); padding: 0 var(--s2);
+  font-size: 13px; font-weight: 600; line-height: 22px; white-space: nowrap;
+}
+.tag::before { content: ""; width: 6px; height: 6px; border-radius: 50%; border: 1.5px solid currentColor; flex: none; }
+.pass { color: var(--pass); background: var(--pass-bg); }
+.check { color: var(--check); background: var(--check-bg); }
+.fail { color: var(--fail); background: var(--fail-bg); }
+.neutral { color: var(--graphite); background: var(--well); }
+
+/* Fields */
+.field { display: grid; gap: var(--s1); }
+.label { font-size: 14px; font-weight: 600; }
+.control {
+  display: flex; align-items: center; min-height: 44px;
+  border: 1px solid var(--graphite); border-radius: var(--r-ctl); background: var(--surface);
+}
+.control:focus-within { outline: 2px solid var(--guide); outline-offset: 2px; }
+.control input {
+  flex: 1; min-width: 0; height: 42px; border: 0; background: transparent; color: var(--ink);
+  font: inherit; padding: 0 var(--s3);
+}
+.control input:focus { outline: none; }
+.unit { padding: 0 var(--s3); color: var(--graphite); font-size: 14px; }
+.hint { font-size: 13px; color: var(--graphite); }
+.error { font-size: 13px; color: var(--fail); }
+.invalid { border-color: var(--fail); }
+
+.checkbox { display: flex; gap: var(--s2); align-items: flex-start; font-size: 14px; cursor: pointer; }
+.checkbox input { width: 18px; height: 18px; margin: 2px 0 0; accent-color: var(--ink); flex: none; }
+
+/* Progress */
+.progress { height: 4px; background: var(--well); border-radius: 4px; overflow: hidden; }
+.progress > span { display: block; height: 100%; background: var(--guide); transition: width 160ms ease; }
+
+/* Toast */
+.toast {
+  position: fixed; left: 50%; bottom: calc(var(--s4) + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%);
+  z-index: 40; display: flex; align-items: center; gap: var(--s3);
+  max-width: calc(100vw - var(--s5)); padding: var(--s2) var(--s2) var(--s2) var(--s3);
+  background: var(--ink); color: var(--surface); border-radius: var(--r-ctl); box-shadow: var(--shadow-float);
+  font-size: 15px;
+}
+.toast button {
+  appearance: none; background: none; border: 0; color: var(--surface); text-decoration: underline;
+  text-underline-offset: 3px; cursor: pointer; min-height: 36px; padding: 0 var(--s2); font-size: 14px;
+}

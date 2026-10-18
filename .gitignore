@@ -1,9 +1,8 @@
-node_modules/
-dist/
-.astro/
-Docs.zip
-.env
-.DS_Store
-extension/json-privacy-masker/dist/
-backend/config/config.php
-backend/storage/
+node_modules
+.next
+out
+*.tsbuildinfo
+next-env.d.ts
+.env*.local
+test-results
+playwright-report
