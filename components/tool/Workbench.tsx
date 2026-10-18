@@ -13,6 +13,7 @@ import { runProcess, runThumb, usingWorker } from "@/lib/image/client";
 import type { BatchEventInput } from "@/lib/validation";
 import { buildZip } from "@/lib/image/zip";
 import { acceptImages, csvReport, formatKB, outputName, saveBlob, takeHandoff } from "@/lib/image/files";
+import { extraKeys, presetDefaults, zipName } from "@/lib/image/productPlan";
 import { DropZone } from "./DropZone";
 import { useLeaveWarning } from "./useLeaveWarning";
 import { focusAfterRemove, trapTab } from "./focus";
@@ -170,7 +171,9 @@ export function Workbench() {
       maxBytes: Number(settings.maxKB) * 1024, clean: settings.clean, tolerance: preset.tolerance, minSide: preset.minSide,
     };
     for (const it of list) if (it.outUrl) URL.revokeObjectURL(it.outUrl);
-    setItems(prev => prev.map(it => ({ ...it, state: "ready", result: undefined, outUrl: undefined, output: undefined })));
+    setItems(prev => prev.map(it => ({ ...it, state: "ready", result: undefined, outUrl: undefined, output: undefined, extras: undefined })));
+    const extras = extraKeys(settings.presetKey, settings.extras);
+    const usedByExtra = Object.fromEntries(extras.map(k => [k, new Set<string>()]));
     setPhase("running"); setFilter("all"); setSelected(null); setDoneCount(0); setCancelled(false); setNotice("");
     cancelRef.current = false;
     const used = new Set<string>();
@@ -187,7 +190,16 @@ export function Workbench() {
       catch { result = { status: "fail", issues: ["Something went wrong with this photo. Try it again on its own."], inW: 0, inH: 0, background: "" }; }
       const output = result.blob ? outputName(settings.pattern || "{name}", it.name, i, used) : undefined;
       const outUrl = result.blob ? URL.createObjectURL(result.blob) : undefined;
-      setItems(prev => prev.map(x => x.id === it.id ? { ...x, state: "done", result, output, outUrl } : x));
+      // Extra marketplaces run at their preset defaults, after the main result, so the main preview appears first.
+      const extraResults: Item["extras"] = {};
+      for (const k of extras) {
+        if (cancelRef.current) break;
+        let r: ProcessResult;
+        try { r = await runProcess(it.file, presetDefaults(k)); }
+        catch { r = { status: "fail", issues: ["Something went wrong with this photo. Try it again on its own."], inW: 0, inH: 0, background: "" }; }
+        extraResults[k] = { result: r, output: r.blob ? outputName(PRESETS[k].pattern, it.name, i, usedByExtra[k]) : undefined };
+      }
+      setItems(prev => prev.map(x => x.id === it.id ? { ...x, state: "done", result, output, outUrl, extras: extraResults } : x));
       tally[result.status]++;
       setDoneCount(++n);
     }
@@ -214,6 +226,8 @@ export function Workbench() {
 
   /* ---------- Exports ---------- */
   const finished = items.filter(i => i.result?.blob);
+  // Extra marketplaces present in the latest results (the settings may have changed since).
+  const doneExtras = (Object.keys(PRESETS) as PresetKey[]).filter(k => items.some(i => i.extras?.[k]));
   const downloadZip = async () => {
     if (!finished.length || zipping) return;
     setZipping(true);
@@ -221,9 +235,15 @@ export function Workbench() {
       const folder = `idoconverter-${preset.folder}/`;
       const entries = finished.map(i => ({ name: folder + i.output, blob: i.result!.blob! }));
       entries.push({ name: folder + "report.csv", blob: new Blob([csvReport(items.map(i => ({ original: i.name, output: i.output, inKB: i.inKB, result: i.result })), preset.label)], { type: "text/csv" }) });
+      for (const k of doneExtras) {
+        const p = PRESETS[k], f = `idoconverter-${p.folder}/`;
+        for (const i of items) { const e = i.extras?.[k]; if (e?.result.blob && e.output) entries.push({ name: f + e.output, blob: e.result.blob }); }
+        entries.push({ name: f + "report.csv", blob: new Blob([csvReport(items.map(i => ({ original: i.name, output: i.extras?.[k]?.output, inKB: i.inKB, result: i.extras?.[k]?.result })), p.label)], { type: "text/csv" }) });
+      }
       const zip = await buildZip(entries);
-      saveBlob(`idoconverter-${preset.folder}.zip`, zip);
-      showToast(`ZIP downloaded · ${finished.length} photo${finished.length === 1 ? "" : "s"} · ${formatKB(Math.round(zip.size / 1024))}`);
+      saveBlob(zipName(preset.folder, doneExtras.length), zip);
+      const photos = entries.filter(e => !e.name.endsWith("report.csv")).length;
+      showToast(`ZIP downloaded · ${photos} photo${photos === 1 ? "" : "s"}${doneExtras.length ? ` in ${doneExtras.length + 1} folders` : ""} · ${formatKB(Math.round(zip.size / 1024))}`);
     } catch {
       showToast("Couldn’t build the ZIP. Try a smaller batch.");
     } finally {
@@ -294,7 +314,7 @@ export function Workbench() {
   return (
     <div className={s.withBar}>
       <div className={s.workspace}>
-        <ProductSettings settings={settings} disabled={phase === "running"} onPreset={k => setSettings(fromPreset(k))} update={update} />
+        <ProductSettings settings={settings} disabled={phase === "running"} onPreset={k => setSettings(prev => fromPreset(k, prev.extras))} update={update} />
 
         {/* Results */}
         <section aria-labelledby="res-h">
@@ -332,6 +352,15 @@ export function Workbench() {
               <div><b>{counts.fail}</b>Fail</div>
               {finished.length > 0 && <div><b>{formatKB(inTotal)} → {formatKB(outTotal)}</b>Total size</div>}
             </div>
+          )}
+          {phase === "done" && doneExtras.length > 0 && (
+            <ul className={s.extraSummary} aria-label="Other marketplaces in this ZIP">
+              {doneExtras.map(k => {
+                const c = { pass: 0, check: 0, fail: 0 };
+                for (const i of items) { const r = i.extras?.[k]?.result; if (r) c[r.status]++; }
+                return <li key={k}><b>{PRESETS[k].label}</b> {c.pass} Pass · {c.check} Check · {c.fail} Fail</li>;
+              })}
+            </ul>
           )}
           {dirty && <p className={s.help}>Settings changed. Process again to apply them.</p>}
           {phase === "done" && notWhite > 0 && (

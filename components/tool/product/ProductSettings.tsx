@@ -1,6 +1,6 @@
 "use client";
 import { Checkbox, NumberField, TextField } from "@/components/ui/Field";
-import { PRESETS, type PresetKey } from "@/lib/presets";
+import { MARKETPLACES, PRESETS, type PresetKey } from "@/lib/presets";
 import type { Settings } from "./types";
 import s from "../workbench.module.css";
 
@@ -26,6 +26,14 @@ export function ProductSettings({ settings, disabled, onPreset, update }: Props)
         </div>
         <p className={s.source}>{preset.source}{preset.checkedOn ? ` Last checked ${preset.checkedOn}.` : ""}</p>
       </div>
+      <fieldset className={`${s.panelSection} ${s.bare} ${s.fields}`}>
+        <legend className={s.groupLabel}>Also prepare for</legend>
+        {MARKETPLACES.filter(p => p.key !== settings.presetKey).map(p => (
+          <Checkbox key={p.key} label={`${p.label} (${p.size.toLocaleString("en-IN")} px)`} checked={settings.extras.includes(p.key)} disabled={disabled}
+            onChange={on => update({ extras: on ? [...settings.extras, p.key] : settings.extras.filter(k => k !== p.key) })} />
+        ))}
+        <p className={s.hintText}>Each extra marketplace uses its own preset and gets its own folder and report in the ZIP.</p>
+      </fieldset>
       <div className={`${s.panelSection} ${s.fields}`}>
         <NumberField label="Output size" unit="px" min={500} max={5000} step={100} value={settings.size} disabled={disabled}
           onChange={v => update({ size: v })} hint={`Square. Minimum for ${preset.label}: ${preset.minSide.toLocaleString("en-IN")} px.`} />
