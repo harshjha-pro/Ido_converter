@@ -1,0 +1,111 @@
+/* Design tokens — docs/DESIGN.md (Inspection desk). Contrast ratios are documented there. */
+:root {
+  --surface: #FFFFFF;
+  --well: #F4F5F7;
+  --ink: #14171A;
+  --graphite: #545B63;
+  --guide: #1F4FD1;
+  --pass: #1B7A4A;
+  --pass-bg: #E6F2EB;
+  --check: #9A5B00;
+  --check-bg: #FAF0DE;
+  --fail: #B42318;
+  --fail-bg: #FBE8E6;
+  --line: #D5D9DE;
+
+  /* Images and their overlays always use light values: marketplaces show products on white. */
+  --img-bg: #FFFFFF;
+  --img-mark: #545B63;
+  --img-guide: #1F4FD1;
+
+  --s1: 4px; --s2: 8px; --s3: 16px; --s4: 24px; --s5: 32px; --s6: 64px;
+  --r-tag: 4px; --r-ctl: 8px; --r-panel: 12px;
+  --shadow-float: 0 8px 32px rgba(20, 23, 26, 0.16);
+  --max: 1200px;
+  --header-h: 64px;
+
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", "Noto Sans Devanagari", "Helvetica Neue", Arial, sans-serif;
+
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --surface: #121518;
+    --well: #1B1F24;
+    --ink: #E9EBEE;
+    --graphite: #A3AAB3;
+    --guide: #8AA8FF;
+    --pass: #5BC992;
+    --pass-bg: #16302A;
+    --check: #E8A84A;
+    --check-bg: #33281A;
+    --fail: #FF8A7E;
+    --fail-bg: #3A1E1D;
+    --line: #343A41;
+    --shadow-float: 0 8px 32px rgba(0, 0, 0, 0.5);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --surface: #121518; --well: #1B1F24; --ink: #E9EBEE; --graphite: #A3AAB3; --guide: #8AA8FF;
+  --pass: #5BC992; --pass-bg: #16302A; --check: #E8A84A; --check-bg: #33281A; --fail: #FF8A7E; --fail-bg: #3A1E1D;
+  --line: #343A41; --shadow-float: 0 8px 32px rgba(0, 0, 0, 0.5);
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: calc(env(safe-area-inset-top, 0px) + var(--header-h) + var(--s3));
+}
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  color: var(--ink);
+  font: 16px/1.6 var(--sans);
+  font-variant-numeric: tabular-nums;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0 0 auto;
+  height: env(safe-area-inset-top, 0px);
+  z-index: 31;
+  background: var(--surface);
+}
+main { flex: 1; }
+
+h1, h2, h3, h4 { line-height: 1.15; margin: 0; font-weight: 600; text-wrap: balance; }
+p { margin: 0; }
+img, svg { max-width: 100%; }
+a { color: var(--guide); text-underline-offset: 3px; }
+:focus-visible { outline: 2px solid var(--guide); outline-offset: 2px; }
+button { font: inherit; }
+
+.wrap { width: 100%; max-width: var(--max); margin-inline: auto; padding-inline: var(--s3); }
+@media (min-width: 768px) { .wrap { padding-inline: var(--s4); } }
+
+.muted { color: var(--graphite); }
+.visually-hidden {
+  position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+.skip-link {
+  position: absolute; left: var(--s3); top: -64px; z-index: 50;
+  background: var(--ink); color: var(--surface); padding: var(--s2) var(--s3); border-radius: var(--r-ctl);
+}
+.skip-link:focus { top: var(--s2); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}

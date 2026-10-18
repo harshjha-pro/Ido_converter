@@ -1,0 +1,6 @@
+.editor { margin-top: var(--s4); max-width: 560px; }
+.editor h2 { font-size: 18px; }
+.fields { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s4); }
+.colorRow { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--s3); align-items: end; }
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s3); }
+.loading { margin-top: var(--s4); color: var(--graphite); }
