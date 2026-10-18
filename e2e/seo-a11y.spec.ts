@@ -77,3 +77,37 @@ test.describe("accessibility (axe, WCAG 2.2 AA rules)", () => {
     expect(results.violations.map(v => `${v.id}: ${v.nodes.length} × ${v.help}`)).toEqual([]);
   });
 });
+
+test.describe("layout", () => {
+  test("site styles load: the header shows the right navigation for the viewport", async ({ page }, info) => {
+    await page.goto("/");
+    const nav = page.getByRole("navigation", { name: "Main" });
+    const menu = page.getByRole("button", { name: "Menu" });
+    if (info.project.name === "desktop") {
+      await expect(nav).toBeVisible();
+      await expect(menu).toBeHidden();
+    } else {
+      await expect(nav).toBeHidden();
+      await menu.click();
+      await expect(nav.getByRole("link", { name: "Image converter" })).toBeVisible();
+    }
+    // Footer lists are unstyled bullets only if site.module.css failed to load.
+    expect(await page.locator("footer ul").first().evaluate(el => getComputedStyle(el).listStyleType)).toBe("none");
+  });
+
+  test("no page scrolls sideways at 360 px", async ({ page }) => {
+    await page.setViewportSize({ width: 360, height: 780 });
+    for (const r of PUBLIC_ROUTES) {
+      await page.goto(r.path);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth), r.path).toBe(0);
+    }
+  });
+
+  test("converter settings fit inside their panel", async ({ page }) => {
+    await page.goto("/tools/image-converter");
+    await page.locator("input[type=file]").setInputFiles(["e2e/fixtures/photo-wide.jpg"]);
+    await page.getByRole("group", { name: "Aspect ratio" }).getByRole("button", { name: "Custom" }).click();
+    const panel = page.locator("aside").first();
+    expect(await panel.evaluate(el => el.scrollWidth - el.clientWidth)).toBe(0);
+  });
+});

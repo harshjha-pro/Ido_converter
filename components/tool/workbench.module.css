@@ -29,10 +29,10 @@
 .panel { border: 1px solid var(--line); border-radius: var(--r-panel); padding: var(--s4); background: var(--surface); }
 .panel h2 { font-size: 16px; margin-bottom: var(--s3); }
 .panelSection + .panelSection { margin-top: var(--s4); padding-top: var(--s4); border-top: 1px solid var(--line); }
-.fields { display: grid; gap: var(--s3); }
+.fields { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s3); }
 .bare { border: 0; padding: 0; margin: 0; min-width: 0; }
 .groupLabel { font-size: 14px; font-weight: 600; padding: 0; margin-bottom: var(--s2); }
-.pair { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s2); }
+.pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--s2); }
 .hintText { font-size: 13px; color: var(--graphite); }
 
 /* Presets */
