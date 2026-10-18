@@ -6,7 +6,8 @@ import { ColorField, NumberField, TextField } from "@/components/ui/Field";
 import type { OutFormat } from "@/lib/image/convert";
 import { acceptImages } from "@/lib/image/files";
 import { ANCHORS, type Anchor } from "@/lib/image/watermark";
-import { WM_LIMITS, type WatermarkForm } from "@/lib/image/watermarkForm";
+import { WM_LIMITS, validateWatermarkForm, type WatermarkForm } from "@/lib/image/watermarkForm";
+import { SavedSettings } from "../SavedSettings";
 import s from "../workbench.module.css";
 
 const FORMATS: [OutFormat, string][] = [["keep", "Keep format"], ["image/jpeg", "JPG"], ["image/png", "PNG"], ["image/webp", "WebP"]];
@@ -18,11 +19,11 @@ const ANCHOR_LABEL: Record<Anchor, string> = {
 interface Props {
   form: WatermarkForm; disabled: boolean; update: (p: Partial<WatermarkForm>) => void;
   logo: File | null; onLogo: (f: File | null) => void;
-  /** Optional shortcut to a saved brand logo. */
-  brandLogo?: { file: File; onUse: () => void } | null;
+  /** Shortcuts from the saved brand kit (browser only). */
+  brand?: { name: string; colors: string[]; onUseLogo: (() => void) | null };
 }
 
-export function WatermarkSettings({ form, disabled, update, logo, onLogo, brandLogo }: Props) {
+export function WatermarkSettings({ form, disabled, update, logo, onLogo, brand }: Props) {
   const logoId = useId();
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
   const [logoError, setLogoError] = useState("");
@@ -43,6 +44,7 @@ export function WatermarkSettings({ form, disabled, update, logo, onLogo, brandL
 
   return (
     <aside className={`${s.panel} ${s.sticky}`} aria-labelledby="wm-set">
+      <SavedSettings tool="watermark" current={form} validate={validateWatermarkForm} onApply={update} disabled={disabled} />
       <div className={s.panelSection}>
         <h2 id="wm-set">Watermark</h2>
         <div className={s.presets} role="radiogroup" aria-labelledby="wm-set">
@@ -61,7 +63,18 @@ export function WatermarkSettings({ form, disabled, update, logo, onLogo, brandL
         {form.kind === "text" ? (
           <>
             <TextField label="Text" value={form.text} disabled={disabled} onChange={v => update({ text: v.slice(0, 100) })} hint="Up to 100 characters." />
+            {brand?.name && form.text !== brand.name && <TextButton className={s.start} disabled={disabled} onClick={() => update({ text: brand.name.slice(0, 100) })}>Use my shop name</TextButton>}
             <ColorField label="Text colour" value={form.color} disabled={disabled} onChange={v => update({ color: v })} />
+            {brand && brand.colors.length > 0 && (
+              <div className={s.segWrap} role="group" aria-label="Brand colours">
+                {brand.colors.map(c => (
+                  <button key={c} type="button" aria-pressed={form.color.toUpperCase() === c.toUpperCase()} disabled={disabled} onClick={() => update({ color: c.toUpperCase() })}>
+                    {/* Client-only (rendered after files are added), so React sets this through the CSSOM, which the CSP allows. */}
+                    <span className={s.swatch} style={{ background: c }} aria-hidden="true" />{c.toUpperCase()}
+                  </button>
+                ))}
+              </div>
+            )}
             <NumberField label="Text size" unit="%" min={WM_LIMITS.textSize[0]} max={WM_LIMITS.textSize[1]} value={form.textSize} disabled={disabled}
               onChange={v => update({ textSize: v })} hint="Height of the letters, as a share of the image’s shorter side." />
           </>
@@ -82,7 +95,7 @@ export function WatermarkSettings({ form, disabled, update, logo, onLogo, brandL
                   <strong>Choose a logo</strong><span className={s.sub}>JPG, PNG or WebP</span>
                 </label>
               )}
-              {brandLogo && !logo && <TextButton className={s.start} disabled={disabled} onClick={brandLogo.onUse}>Use my brand kit logo</TextButton>}
+              {brand?.onUseLogo && !logo && <TextButton className={s.start} disabled={disabled} onClick={brand.onUseLogo}>Use my brand kit logo</TextButton>}
               {logoError && <span className={s.errorText} role="alert">{logoError}</span>}
             </div>
             <NumberField label="Logo width" unit="%" min={WM_LIMITS.logoSize[0]} max={WM_LIMITS.logoSize[1]} value={form.logoSize} disabled={disabled}

@@ -26,7 +26,8 @@ export default function ToolsPage() {
           </li>
         ))}
       </ul>
-      <p className={s.spaced}>Not sure where to start? If you sell on a marketplace, start with <Link href="/product-photos">product photos</Link>, then read the <Link href="/photo-guide">photo guide</Link> for shots that pass first time.</p>
+      <p className={s.spaced}>Use the same shop name, logo and colours every time: save them once in your <Link href="/brand-kit">brand kit</Link>. It stays in this browser.</p>
+      <p>Not sure where to start? If you sell on a marketplace, start with <Link href="/product-photos">product photos</Link>, then read the <Link href="/photo-guide">photo guide</Link> for shots that pass first time.</p>
     </div>
   );
 }

@@ -1,7 +1,8 @@
 "use client";
 import { Checkbox, ColorField, NumberField, TextField } from "@/components/ui/Field";
 import type { OutFormat, ResizeMode, Rotation } from "@/lib/image/convert";
-import { SHAPES, type Background, type ConverterForm } from "@/lib/image/converterForm";
+import { SHAPES, validateConverterForm, type Background, type ConverterForm } from "@/lib/image/converterForm";
+import { SavedSettings } from "../SavedSettings";
 import s from "../workbench.module.css";
 
 const FORMATS: [OutFormat, string, string][] = [
@@ -19,6 +20,7 @@ export function ConverterSettings({ form, disabled, update }: Props) {
   const shaped = form.shape !== "original";
   return (
     <aside className={`${s.panel} ${s.sticky}`} aria-labelledby="cv-set">
+      <SavedSettings tool="converter" current={form} validate={validateConverterForm} onApply={update} disabled={disabled} />
       <div className={s.panelSection}>
         <h2 id="cv-set">Convert to</h2>
         <div className={s.presets} role="radiogroup" aria-labelledby="cv-set">

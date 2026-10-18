@@ -1,5 +1,6 @@
 /** The converter's form state, its validation and its mapping to engine settings. Pure, so it is unit-tested. */
 import type { ConvertSettings, FitMode, OutFormat, ResizeMode, Rotation } from "./convert";
+import { sameShape } from "@/lib/storage";
 
 export type Shape = "original" | "1:1" | "4:5" | "4:3" | "3:2" | "16:9" | "9:16" | "custom";
 export type Background = "white" | "black" | "transparent" | "custom";
@@ -55,4 +56,17 @@ export function toSettings(f: ConverterForm): ConvertSettings {
     rotate: f.rotate, flipH: f.flipH, flipV: f.flipV,
     aspect: aspectOf(f), fit: f.fit, background: backgroundValue(f),
   };
+}
+
+const FORMAT_VALUES = ["image/jpeg", "image/png", "image/webp", "keep"];
+const RESIZE_VALUES = ["none", "longest", "width", "height"];
+const shapeOf = sameShape(DEFAULT_FORM);
+
+/** Accepts stored settings only if every field is a value this form can produce. */
+export function validateConverterForm(v: unknown): ConverterForm | null {
+  const f = shapeOf(v);
+  if (!f) return null;
+  const ok = FORMAT_VALUES.includes(f.format) && RESIZE_VALUES.includes(f.resize) && [0, 90, 180, 270].includes(f.rotate)
+    && SHAPES.some(([k]) => k === f.shape) && ["crop", "pad"].includes(f.fit) && ["white", "black", "transparent", "custom"].includes(f.background);
+  return ok ? f : null;
 }

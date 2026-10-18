@@ -74,3 +74,5 @@
   appearance: none; background: none; border: 0; color: var(--surface); text-decoration: underline;
   text-underline-offset: 3px; cursor: pointer; min-height: 36px; padding: 0 var(--s2); font-size: 14px;
 }
+.select { flex: 1; min-width: 0; height: 42px; border: 0; background: transparent; color: var(--ink); font: inherit; padding: 0 var(--s3); }
+.select:focus { outline: none; }

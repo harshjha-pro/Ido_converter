@@ -1,6 +1,7 @@
 /** The watermark tool's form state, validation and mapping to engine settings. Pure, so it is unit-tested. */
 import type { OutFormat } from "./convert";
-import type { Placement, WatermarkSettings } from "./watermark";
+import { ANCHORS, type Placement, type WatermarkSettings } from "./watermark";
+import { sameShape } from "@/lib/storage";
 
 export interface WatermarkForm {
   kind: "text" | "logo";
@@ -42,4 +43,15 @@ export function toWatermarkSettings(f: WatermarkForm, logo?: Blob): WatermarkSet
     opacity: Number(f.opacity) / 100, placement: f.placement, margin: Number(f.margin) / 100,
     format: f.format, quality: Number(f.quality) / 100, logo: f.kind === "logo" ? logo : undefined,
   };
+}
+
+const shapeOf = sameShape(DEFAULT_WATERMARK);
+
+/** Accepts stored settings only if every field is a value this form can produce. The logo itself is never stored. */
+export function validateWatermarkForm(v: unknown): WatermarkForm | null {
+  const f = shapeOf(v);
+  if (!f) return null;
+  const ok = ["text", "logo"].includes(f.kind) && ([...ANCHORS, "tile"] as string[]).includes(f.placement)
+    && ["image/jpeg", "image/png", "image/webp", "keep"].includes(f.format);
+  return ok ? f : null;
 }

@@ -168,3 +168,10 @@
 /* Results for extra marketplaces in the same run */
 .extraSummary { list-style: none; padding: 0; margin: var(--s3) 0 0; display: grid; gap: var(--s1); font-size: 14px; color: var(--graphite); font-variant-numeric: tabular-nums; }
 .extraSummary b { color: var(--ink); font-weight: 600; margin-right: var(--s2); }
+
+/* Saved settings (browser only) */
+.saved { border-bottom: 1px solid var(--line); padding-bottom: var(--s3); margin-bottom: var(--s3); }
+.saved summary { cursor: pointer; font-weight: 600; font-size: 14px; min-height: 44px; display: flex; align-items: center; }
+.saved[open] summary { margin-bottom: var(--s2); }
+.saveRow { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--s2); align-items: center; }
+.swatch { display: inline-block; width: 14px; height: 14px; border-radius: 2px; border: 1px solid var(--graphite); margin-right: var(--s2); vertical-align: -2px; }

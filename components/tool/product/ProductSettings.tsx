@@ -1,7 +1,8 @@
 "use client";
 import { Checkbox, NumberField, TextField } from "@/components/ui/Field";
 import { MARKETPLACES, PRESETS, type PresetKey } from "@/lib/presets";
-import type { Settings } from "./types";
+import { validateProductSettings, type Settings } from "./types";
+import { SavedSettings } from "../SavedSettings";
 import s from "../workbench.module.css";
 
 interface Props { settings: Settings; disabled: boolean; onPreset: (k: PresetKey) => void; update: (p: Partial<Settings>) => void }
@@ -10,6 +11,7 @@ export function ProductSettings({ settings, disabled, onPreset, update }: Props)
   const preset = PRESETS[settings.presetKey];
   return (
     <aside className={`${s.panel} ${s.sticky}`} aria-labelledby="set-h">
+      <SavedSettings tool="product-photos" current={settings} validate={validateProductSettings} onApply={update} disabled={disabled} />
       <div className={s.panelSection}>
         <h2 id="set-h">Marketplace</h2>
         <div className={s.presets} role="radiogroup" aria-labelledby="set-h">
