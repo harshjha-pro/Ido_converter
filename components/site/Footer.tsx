@@ -18,6 +18,7 @@ export function Footer() {
             <li><Link href="/product-photos">Product photos</Link></li>
             <li><Link href="/tools/image-converter">Image converter</Link></li>
             <li><Link href="/tools/watermark">Watermark</Link></li>
+            <li><Link href="/templates">Templates</Link></li>
             <li><Link href="/tools">All tools</Link></li>
             <li><Link href="/brand-kit">Brand kit</Link></li>
             <li><Link href="/#rules">Marketplace rules</Link></li>

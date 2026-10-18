@@ -9,6 +9,7 @@ import s from "./site.module.css";
 const LINKS = [
   { href: "/product-photos", label: "Product photos" },
   { href: "/tools", label: "Tools" },
+  { href: "/templates", label: "Templates" },
   { href: "/photo-guide", label: "Photo guide" },
   { href: "/pricing", label: "Pricing" },
 ];

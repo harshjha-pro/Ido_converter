@@ -3,6 +3,7 @@
  * Runs in the Web Worker or on the main thread, like the other engines.
  */
 import { LIMITS } from "@/lib/config";
+import { FONT_STACK } from "@/lib/fonts";
 import { ctx2d, decode, makeCanvas, release } from "./engine";
 import { EXT, encode, resolveFormat, safeBackground, type ConvertResult, type OutFormat } from "./convert";
 
@@ -26,7 +27,6 @@ export interface WatermarkSettings {
 export interface Rect { x: number; y: number; w: number; h: number }
 
 export const ANCHORS: Anchor[] = ["top-left", "top", "top-right", "left", "center", "right", "bottom-left", "bottom", "bottom-right"];
-export const FONT_STACK = 'system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", "Noto Sans Devanagari", "Helvetica Neue", Arial, sans-serif';
 
 /** Where the mark goes on an image. Pure, so it is unit-tested. Tiling staggers alternate rows so marks don't line up in columns. */
 export function placements(imgW: number, imgH: number, markW: number, markH: number, placement: Placement, margin: number): Rect[] {

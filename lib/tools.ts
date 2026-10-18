@@ -17,4 +17,9 @@ export const TOOLS: Tool[] = [
     summary: "Your shop name or logo on every photo, at one position or repeated across the image, with the opacity you choose.",
     bestFor: "Social posts and buyer previews",
   },
+  {
+    name: "Templates", path: "/templates",
+    summary: "Editable designs for sale posts, new arrivals, festive offers, tips and YouTube thumbnails. Change the text, colours and photo, then download.",
+    bestFor: "Instagram, WhatsApp status and YouTube",
+  },
 ];
