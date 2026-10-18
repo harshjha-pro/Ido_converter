@@ -29,6 +29,7 @@ One source of truth per subject. Requested documents that would have duplicated 
 | [TEST_STRATEGY.md](TEST_STRATEGY.md) | Layers, scope, negative cases | Current |
 | [TEST_RESULTS.md](TEST_RESULTS.md) | Actual results, defects fixed, not executed | Current |
 | [RELEASE_CHECKLIST.md](RELEASE_CHECKLIST.md) | Release, manual regression, smoke tests | Current |
+| [GO_LIVE_STEPS.md](GO_LIVE_STEPS.md) | Click-by-click go-live for the owner (hPanel, phpMyAdmin, checks) | Current |
 | [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md) | Hostinger + MySQL deployment | Current |
 | [ENVIRONMENT_CONFIGURATION.md](ENVIRONMENT_CONFIGURATION.md) | Variables (names only), DB users, IP header check | Current |
 | [OPERATIONS.md](OPERATIONS.md) | Monitoring, logging, backup, rollback, restore, scaling | Current |

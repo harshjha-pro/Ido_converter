@@ -6,7 +6,8 @@ _Last updated: 18 October 2026 (0.6.0)_
 
 ## Owner decisions recorded (18 October 2026)
 - Domain: **idoconverter.com**, without www (the www host should 301 to it). Matches the `NEXT_PUBLIC_SITE_URL` default.
-- Support contact: "will add later". Set `NEXT_PUBLIC_SUPPORT_EMAIL` (and optionally `NEXT_PUBLIC_WHATSAPP_NUMBER`) before launch; the privacy page shows it automatically.
+- Support contact: **support@idoconverter.com** (shown on `/contact` and `/privacy`; the owner creates the mailbox). WhatsApp: **not shown for now**.
+- Go-live: the owner follows `docs/GO_LIVE_STEPS.md`; Claude can't log in to Hostinger. Next build: **wait** (owner's choice) until launch and seller feedback.
 - Real-device testing and legal review: the owner asked Claude to do them. Done as far as possible without devices or a lawyer: emulated phone/tablet/desktop testing, and a self-review of privacy and terms against the DPDP Act structure. **Neither replaces the real thing** (B1, B3 stay open).
 - Flipkart/Meesho rules: researched; no official public source exists (seller logins). Presets stay "Unverified"; Meesho minimum raised to 1000 px.
 - Scope: the owner asked for "all the other things the prompts describe". Built everything that needs no outside service: watermark tool, templates and editor, brand kit, saved settings, multi-marketplace export, tools/about/pricing pages. **Accounts, payments and AI wait** for keys and a budget (owner's choice).
@@ -22,7 +23,7 @@ _Last updated: 18 October 2026 (0.6.0)_
 | **Pages**: tools directory, about, pricing (free during early access) | `/tools`, `/about`, `/pricing` | Implemented, tested (SEO, axe, 360/768/1024 px) |
 | Early access, batch statistics, health | `/api/*`, MySQL | Implemented, tested (21 DB tests) |
 | Security: nonce CSP (scripts and styles), HSTS, content-sniffed uploads, origin checks, rate limits | `middleware.ts`, `lib/csp.ts`, `next.config.mjs` | Implemented, tested |
-| Contact page | — | **Blocked** on the owner's support email (B2) |
+| Contact page | `/contact` | Implemented (0.6.1) |
 | Interactive (drag) crop, carousels, free-form template layout, resizing one design to other sizes | — | Not implemented (ROADMAP phase 2/5 follow-ups) |
 | Accounts, payments, AI background removal/generation | — | **Not started by owner decision**: needs an auth library (new dependency), Razorpay keys, an SMTP mailbox and a paid AI provider |
 | Real devices, Safari/Firefox, screen readers | — | Not verified (no hardware here); emulated Chromium testing and scripted keyboard audit pass |
@@ -33,9 +34,9 @@ Evidence: TEST_RESULTS.md (0.6.0 run: 86 unit, 21 DB, 101 e2e passing + 1 phone-
 | # | Item | Owner action |
 |---|---|---|
 | B1 | Real-device testing (Android + iPhone, Safari) | Run RELEASE_CHECKLIST manual section |
-| B2 | Contact / support channel | Set `NEXT_PUBLIC_SUPPORT_EMAIL` (and WhatsApp if wanted) |
+| B2 | Support mailbox | Create support@idoconverter.com in hPanel (GO_LIVE_STEPS step 1) |
 | B3 | Legal review of privacy and terms | A lawyer must review; Claude's self-review is not legal advice (LEGAL_READINESS.md) |
-| B4 | Hostinger deploy + DB migration for idoconverter.com | DEPLOYMENT_GUIDE.md; ask Claude to prepare, owner approves the deploy |
+| B4 | Hostinger deploy + database for idoconverter.com | Follow `docs/GO_LIVE_STEPS.md`; first merge the work into `main` (or deploy this branch) |
 | B5 | Verify client IP header on Hostinger | ENVIRONMENT_CONFIGURATION.md check |
 
 ## Next recommended work (in order)

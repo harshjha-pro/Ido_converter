@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.6.1 — 18 October 2026
+- **Added:** `/contact` (help, privacy requests, misuse reports). Support address **support@idoconverter.com** (owner's choice) is the default; `NEXT_PUBLIC_SUPPORT_EMAIL` overrides it, `none` hides it. WhatsApp stays off (owner's choice).
+- **Added:** `database/hostinger_setup.sql`, a one-file phpMyAdmin setup (migrations + their records), built by `scripts/build-hostinger-sql.mjs`; verified on a fresh MariaDB 10.11 database (migrate dry-run: nothing pending; db:verify: all checks pass; re-import harmless) and guarded by a unit test.
+- **Added:** `docs/GO_LIVE_STEPS.md`, click-by-click go-live for the owner, matched to Hostinger's documented Node.js Web App flow.
+
 ## 0.6.0 — 18 October 2026
 Owner decisions: domain idoconverter.com (no www); build everything the prompts describe that needs no outside service; accounts, payments and AI wait for keys and budget.
 - **Added:** bulk watermark tool (`/tools/watermark`): text or logo, nine positions or repeated, opacity, size, margin, output format.

@@ -9,6 +9,7 @@ export const PUBLIC_ROUTES = [
   { path: "/photo-guide", updated: "2026-10-17", priority: 0.7 },
   { path: "/pricing", updated: "2026-10-18", priority: 0.5 },
   { path: "/about", updated: "2026-10-18", priority: 0.4 },
+  { path: "/contact", updated: "2026-10-18", priority: 0.4 },
   { path: "/privacy", updated: "2026-10-18", priority: 0.3 },
   { path: "/terms", updated: "2026-10-18", priority: 0.3 },
 ] as const;

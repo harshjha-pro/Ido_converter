@@ -11,7 +11,7 @@
 | K7 | ~~CSP allows inline styles~~ | — | **Fixed in 0.5.0**: no `style` attributes; production `style-src` uses the nonce. Dev mode still allows inline styles for Next's overlay |
 | K8 | Flipkart and Meesho rules unverified | Presets may be wrong | Labelled "Unverified". No official public page exists (searched 18 Oct 2026; Meesho's supplier site refuses logged-out visitors); third-party guides disagree (Flipkart minimum quoted as 1000×1000 or 200×1000; Meesho as 500–1500 px). Owner must check the logged-in seller panels |
 | K9 | Converter usage not measured | No converter metrics | Add `converter_events` if needed |
-| K10 | No contact or support channel by default | Users can't reach us; deletion requests have no path | Configure WhatsApp; add a support email |
+| K10 | Support mailbox must exist before launch | Mail to support@idoconverter.com bounces until the mailbox is created | Owner creates it in hPanel (GO_LIVE_STEPS step 1); `/contact` and `/privacy` already show it |
 | K11 | npm 10 resolver crash when adding dev dependencies; npm 11 lockfiles can fail npm 10 `npm ci` | Broken installs if the lockfile isn't repaired | Add with npm 11, then `npm install --package-lock-only` on npm 10 and verify `npm ci` (DEVELOPMENT.md). Caught and fixed in the 0.3.0 package check |
 | K12 | Homepage JS 137 KB (Zod in the form) | Slightly heavier home page | Lab LCP is fine; could lazy-load the form later |
 | K13 | Pages render per request (CSP nonces) instead of being static | Small server cost per page view; no static HTML caching | ~10 ms per page locally; watch CPU on Hostinger (ADR-13) |

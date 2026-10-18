@@ -1,5 +1,7 @@
 # Deployment guide (Hostinger Business, Node.js Web App + MySQL)
 
+**Owner:** follow the simpler click-by-click version in `GO_LIVE_STEPS.md`. This page is the technical reference.
+
 hPanel screens change; follow the current labels. Steps marked **verify** depend on your account.
 
 ## 1. Create the database
@@ -19,7 +21,8 @@ Pick one:
   ```
   Remove the Remote MySQL rule afterwards.
 - **Through SSH,** if your plan has it: run the same commands in the app folder with `localhost`.
-- **phpMyAdmin.** Import `database/migrations/0001_initial_schema.sql`, then record it so the runner knows:
+- **phpMyAdmin (simplest).** Import `database/hostinger_setup.sql` into the empty database. It contains every migration plus its `schema_migrations` record, so `npm run db:migrate` later agrees (verified on MariaDB 10.11; a unit test keeps it in step with the migrations; regenerate with `node scripts/build-hostinger-sql.mjs`).
+- **phpMyAdmin (manual).** Import `database/migrations/0001_initial_schema.sql`, then record it so the runner knows:
   ```sql
   CREATE TABLE IF NOT EXISTS schema_migrations (version VARCHAR(100) CHARACTER SET ascii COLLATE ascii_bin NOT NULL PRIMARY KEY, checksum CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL, applied_at DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
   INSERT INTO schema_migrations (version, checksum) VALUES ('0001_initial_schema', '<sha256 of the file>');

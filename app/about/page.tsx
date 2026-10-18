@@ -31,7 +31,7 @@ export default function About() {
       <p>Our checks are based on published marketplace rules where we could find them, and on third-party guides where we couldn’t, which we label “Unverified”. A pass is a technical pre-check, not a guarantee that a marketplace will accept a photo.</p>
 
       <h2>Where we are</h2>
-      <p>Idoconverter is in early access and free to use. We’re talking to sellers to learn what to build next. See <Link href="/pricing">pricing</Link> for what may come later, or <Link href="/#early-access">join early access</Link> to help shape it.</p>
+      <p>Idoconverter is in early access and free to use. We’re talking to sellers to learn what to build next. See <Link href="/pricing">pricing</Link> for what may come later, or <Link href="/#early-access">join early access</Link> to help shape it. Questions? <Link href="/contact">Contact us</Link>.</p>
     </article>
   );
 }
